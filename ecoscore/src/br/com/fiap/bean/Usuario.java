@@ -96,15 +96,18 @@ public class Usuario {
      */
     public void registrarAcao(int soulCoins, String descAcao) {
         // a confiabilidade do usuário deve alterar o recebimento de pontos
-        if (soulCoins <= 3) {
+        if (confiabilidade <= 30) {
             // Divide pela metade os pontos recebidos e então arredonda para o inteiro mais próximo pra depois transformar em Inteiro.
-            this.soulCoins = (int) Math.round(soulCoins * 0.5);
+            this.soulCoins += (int) Math.round(soulCoins * 0.5);
+            descAcao += "[pontos reduzidos pela metade]";
         } else {
             // Menor que tres metade, maior já recebe todos os pontos normais
-            this.soulCoins = soulCoins;
+            this.soulCoins += soulCoins;
         }
         this.atividadeRecente = this.atividadeRecente.concat(descAcao + "\n");
     }
+
+
 
     /**
      * Vai retornar todos os dados do perfil
