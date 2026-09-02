@@ -10,7 +10,7 @@ import javax.swing.text.JTextComponent;
 
 @SuppressWarnings("serial")
 public class GUIPrincipal extends JFrame{
-    private Usuario usuario = new Usuario("Murilo Souza","@murilo.souza",80, 220);
+    private Usuario usuario = new Usuario("Murilo", "@murilosouza", 80, 220);
     private Acao acao;
     private AcaoConquista acaoConquista;
     private AcaoPost acaoPost;
@@ -19,7 +19,7 @@ public class GUIPrincipal extends JFrame{
     private Container contentPane;
     private JMenuBar mnBarra;
     private JMenu mnSistema;
-    private JMenuItem miSair, miAjuda;
+    private JMenuItem miSair, miAjuda, miEditarUsuario;
     private JPanel painel;
     private JButton btRegistrarAcao, btRegistrarConquista, btRegistrarQuiz, btRegistrarPost, btRegistrarPenalidade, btSair;
     private JTextArea taDetalhesPerfil = new JTextArea(usuario.detalhesPerfil());
@@ -30,6 +30,18 @@ public class GUIPrincipal extends JFrame{
         definirEventos();
     }
     public void iniciarValores(){
+        try {
+            String nome = JOptionPane.showInputDialog("Digite o nome do usuário:\n(Poderá ser alterado mais tarde)");
+            usuario.setNome(nome);
+            String id = JOptionPane.showInputDialog("Digite o id do usuário:\n(Poderá ser alterado mais tarde)");
+            usuario.setId(id);
+            float confiabilidade = Float.parseFloat(JOptionPane.showInputDialog("Digite a confiabilidade desse usuário (0-100):\n(Poderá ser alterado mais tarde)"));
+            usuario.setConfiabilidade(confiabilidade);
+            int soulCoins = Integer.parseInt(JOptionPane.showInputDialog("Quantos Soul Coins ele tem?\n(Poderá ser alterado mais tarde)"));
+            usuario.setSoulCoins(soulCoins);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
+        }
         acao = new Acao("3kg de lixo reciclados");
         usuario.registrarAcao(acao.registrarPontos(calculadora.pontosReciclagem(3)), acao.detalhes());
         acao = new Acao("100L de água economizados");
@@ -38,7 +50,6 @@ public class GUIPrincipal extends JFrame{
         usuario.registrarAcao(acao.registrarPontos(calculadora.pontosCarbono(20)), acao.detalhes());
         acao = new Acao("Compra de uma muda de árvore");
         usuario.registrarAcao(acao.registrarPontos(calculadora.pontosNatureza(2)), acao.detalhes());
-
     }
     private void inicializarComponentes(){
         setTitle("Ecoscore - SoulUp");
@@ -49,6 +60,7 @@ public class GUIPrincipal extends JFrame{
         mnSistema.setMnemonic('S');
         miSair = new JMenuItem("Sair");
         miAjuda = new JMenuItem("Ajuda");
+        miEditarUsuario = new JMenuItem("Editar usuário");
         painel = new JPanel();
         painel.setLayout(new FlowLayout());
         btRegistrarAcao = new JButton("Registrar Ação simples");
@@ -63,6 +75,7 @@ public class GUIPrincipal extends JFrame{
         mnBarra.add(mnSistema);
         mnSistema.add(miSair);
         mnSistema.add(miAjuda);
+        mnSistema.add(miEditarUsuario);
 
         painel.add(btRegistrarAcao);
         painel.add(btRegistrarConquista);
@@ -85,6 +98,24 @@ public class GUIPrincipal extends JFrame{
                 JOptionPane.showMessageDialog(null,
                         "Esse protótipo registra ações sustentáveis e penalidades pra um usuário, mostrando na tela alterações\n\nAções possíveis:\nNormal - representa ações reais\nConquista - representa uma missão realizada\nPost - representa um post encerrado\nQuiz - representa um quiz de uma missão\n\nTipos de ação:\nNatureza - ações de plantio e natureza\nÁgua - ações de economia de água\nCarbono - relacionadas a crédit de carbono e automoveis\nReciclagem - relacionadas a reciclagem\n\nPenalidade:\nUma opção que reduz a confiabilidade do usuário, normalmente quando ele comete uma infração",
                         "Ajuda", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+        miEditarUsuario.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                try {
+                    String nome = JOptionPane.showInputDialog("Digite o novo nome do usuário:");
+                    usuario.setNome(nome);
+                    String id = JOptionPane.showInputDialog("Digite o novo id do usuário:");
+                    usuario.setId(id);
+                    float confiabilidade = Float.parseFloat(JOptionPane.showInputDialog("Digite a nova confiabilidade desse usuário (0-100):"));
+                    usuario.setConfiabilidade(confiabilidade);
+                    int soulCoins = Integer.parseInt(JOptionPane.showInputDialog("Quantos Soul Coins ele terá agora?"));
+                    usuario.setSoulCoins(soulCoins);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
+                }
+                taDetalhesPerfil.setText(usuario.detalhesPerfil());
             }
         });
         btRegistrarAcao.addActionListener(new ActionListener() {
