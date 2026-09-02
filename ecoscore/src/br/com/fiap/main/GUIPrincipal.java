@@ -20,9 +20,10 @@ public class GUIPrincipal extends JFrame{
     private JMenuBar mnBarra;
     private JMenu mnSistema;
     private JMenuItem miSair, miAjuda, miEditarUsuario;
-    private JPanel painel;
+    private JPanel painel, painelBts, painelTxt;
     private JButton btRegistrarAcao, btRegistrarConquista, btRegistrarQuiz, btRegistrarPost, btRegistrarPenalidade, btSair;
     private JTextArea taDetalhesPerfil = new JTextArea(usuario.detalhesPerfil());
+    private JLabel lbPerfil;
 
     public GUIPrincipal(){
         iniciarValores();
@@ -53,7 +54,7 @@ public class GUIPrincipal extends JFrame{
     }
     private void inicializarComponentes(){
         setTitle("Ecoscore - SoulUp");
-        setBounds(0,0,800,400);
+        setBounds(0,0,900,300);
         contentPane = getContentPane();
         mnBarra = new JMenuBar();
         mnSistema = new JMenu("Sistema");
@@ -62,7 +63,10 @@ public class GUIPrincipal extends JFrame{
         miAjuda = new JMenuItem("Ajuda");
         miEditarUsuario = new JMenuItem("Editar usuário");
         painel = new JPanel();
-        painel.setLayout(new FlowLayout());
+        painel.setLayout(new BoxLayout(painel, BoxLayout.Y_AXIS));
+        painelBts = new JPanel();
+        painelBts.setLayout(new FlowLayout());
+        painelTxt = new JPanel();
         btRegistrarAcao = new JButton("Registrar Ação simples");
         btRegistrarConquista = new JButton("Registrar Conquista ganha");
         btRegistrarQuiz = new JButton("Registrar Quiz feito");
@@ -70,6 +74,8 @@ public class GUIPrincipal extends JFrame{
         btRegistrarPenalidade = new JButton("Registrar penalidade");
         taDetalhesPerfil = new JTextArea(usuario.detalhesPerfil());
         taDetalhesPerfil.setEditable(false);
+        lbPerfil = new JLabel("Exemplo de pefil:");
+        taDetalhesPerfil.add(lbPerfil);
 
         setJMenuBar(mnBarra);
         mnBarra.add(mnSistema);
@@ -77,12 +83,15 @@ public class GUIPrincipal extends JFrame{
         mnSistema.add(miAjuda);
         mnSistema.add(miEditarUsuario);
 
-        painel.add(btRegistrarAcao);
-        painel.add(btRegistrarConquista);
-        painel.add(btRegistrarQuiz);
-        painel.add(btRegistrarPost);
-        painel.add(btRegistrarPenalidade);
-        painel.add(taDetalhesPerfil);
+        painelBts.add(btRegistrarAcao);
+        painelBts.add(btRegistrarConquista);
+        painelBts.add(btRegistrarQuiz);
+        painelBts.add(btRegistrarPost);
+        painelBts.add(btRegistrarPenalidade);
+        painelTxt.add(lbPerfil);
+        painelTxt.add(taDetalhesPerfil);
+        painel.add(painelTxt, BorderLayout.LINE_END);
+        painel.add(painelBts, BorderLayout.LINE_START);
         add(painel);
     }
     private void definirEventos(){
