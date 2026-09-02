@@ -25,5 +25,5 @@ jobs:
 
     - name: 4. Compilar todos os arquivos Java
       run: |
-        find src -name "*.java" > sources.txt
+        find ecoscore -name "*.java" > sources.txt
         javac -d bin @sources.txt
