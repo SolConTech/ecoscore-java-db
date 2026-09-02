@@ -20,10 +20,9 @@ jobs:
         java-version: '17' # Versão padrão usada na FIAP atualmente
         distribution: 'temurin'
 
-    - name: 3. Criar pasta para os arquivos compilados
-      run: mkdir bin
-
-    - name: 4. Compilar todos os arquivos Java
+    - name: 3. Compilar o projeto Java
       run: |
-        find ecoscore -name "*.java" > sources.txt
+        cd ecoscore
+        mkdir -p bin
+        find . -name "*.java" > sources.txt
         javac -d bin @sources.txt
