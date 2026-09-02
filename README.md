@@ -4,7 +4,7 @@
 
 **FIAP Challenge 2026 · SoulUp × SolCon**
 
-Protótipo de Java do EcoScore, aplicando regras de negócio com POO.
+Protótipo de Java do EcoScore, aplicando regras de negócio com POO e usando JFrame ara criar uma interface gráfca funcional.
 
 </div>
 
@@ -73,4 +73,4 @@ O sistema permite:
 
 # Como executar
 
-Execute a classe main, um exemplo de perfil irá aparecer, então você poderá usar as funcionalidades.
+Execute a classe GUIPrincipal, que pedirá para registrar um usuário, então você poderá usar as funcionalidades numa janela gráfica
