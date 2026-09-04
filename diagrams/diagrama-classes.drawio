@@ -1,11 +1,11 @@
 <mxfile host="65bd71144e">
     <diagram name="Diagrama SoulUp" id="soulup-uml">
-        <mxGraphModel dx="958" dy="741" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1240" pageHeight="520" background="#FFFFFF" math="0" shadow="0">
+        <mxGraphModel dx="1246" dy="911" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1240" pageHeight="520" background="#FFFFFF" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
                 <mxCell id="7" value="Usuario" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="40" y="40" width="480" height="200" as="geometry">
+                    <mxGeometry x="360" y="30" width="480" height="200" as="geometry">
                         <mxRectangle x="710" y="370" width="80" height="30" as="alternateBounds"/>
                     </mxGeometry>
                 </mxCell>
@@ -19,7 +19,7 @@
                     <mxGeometry y="128" width="480" height="72" as="geometry"/>
                 </mxCell>
                 <mxCell id="14" value="Acao" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="560" y="100" width="280" height="140" as="geometry">
+                    <mxGeometry x="40" y="40" width="280" height="140" as="geometry">
                         <mxRectangle x="520" y="40" width="80" height="30" as="alternateBounds"/>
                     </mxGeometry>
                 </mxCell>
@@ -32,11 +32,11 @@
                 <mxCell id="17" value="&lt;div style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); color: rgb(63, 63, 63);&quot;&gt;&lt;font color=&quot;#000000&quot;&gt;&lt;span style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); font-size: 14px; color: rgb(63, 63, 63);&quot;&gt;+ registra&lt;span style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); color: rgb(63, 63, 63);&quot;&gt;Pontos&lt;/span&gt;(&lt;/span&gt;&lt;span style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); background-color: transparent; font-size: 14px; color: rgb(63, 63, 63);&quot;&gt;pontosGerados : int&lt;/span&gt;&lt;span style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); background-color: transparent; font-size: 14px; color: rgb(63, 63, 63);&quot;&gt;) : int&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;span style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); font-size: 14px; color: rgb(63, 63, 63);&quot;&gt;&lt;font color=&quot;#000000&quot;&gt;+ detalhes() : String&lt;/font&gt;&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;" parent="14" vertex="1">
                     <mxGeometry y="98" width="280" height="42" as="geometry"/>
                 </mxCell>
-                <mxCell id="67" style="edgeStyle=none;html=1;exitX=0.25;exitY=0;exitDx=0;exitDy=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;" parent="1" source="18" target="17" edge="1">
+                <mxCell id="67" style="edgeStyle=none;html=1;exitX=0.25;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" source="18" target="17" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="18" value="AcaoPost" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="860" y="320" width="280" height="120" as="geometry">
+                    <mxGeometry x="630" y="270" width="280" height="120" as="geometry">
                         <mxRectangle x="710" y="370" width="80" height="30" as="alternateBounds"/>
                     </mxGeometry>
                 </mxCell>
@@ -49,11 +49,11 @@
                 <mxCell id="21" value="&lt;div style=&quot;color: rgb(63, 63, 63); scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251);&quot;&gt;&lt;div style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); color: rgb(63, 63, 63);&quot;&gt;&lt;div style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); color: rgb(63, 63, 63);&quot;&gt;&lt;span style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); font-size: 14px; color: rgb(63, 63, 63);&quot;&gt;+ registra&lt;span style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); color: rgb(63, 63, 63);&quot;&gt;Pontos&lt;/span&gt;(&lt;/span&gt;&lt;span style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); background-color: transparent; font-size: 14px; color: rgb(63, 63, 63);&quot;&gt;pontosGerados : int&lt;/span&gt;&lt;span style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); background-color: transparent; font-size: 14px; color: rgb(63, 63, 63);&quot;&gt;) : int&lt;/span&gt;&lt;/div&gt;&lt;span style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); font-size: 14px; color: rgb(63, 63, 63);&quot;&gt;+ detalhes() : String&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="text;whiteSpace=wrap;html=1;" parent="18" vertex="1">
                     <mxGeometry y="78" width="280" height="42" as="geometry"/>
                 </mxCell>
-                <mxCell id="65" style="edgeStyle=none;html=1;exitX=0.79;exitY=-0.01;exitDx=0;exitDy=0;entryX=0.285;entryY=1.063;entryDx=0;entryDy=0;entryPerimeter=0;exitPerimeter=0;" parent="1" source="32" target="17" edge="1">
+                <mxCell id="65" style="edgeStyle=none;html=1;exitX=0.79;exitY=-0.01;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitPerimeter=0;" parent="1" source="32" target="17" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="32" value="AcaoConquista" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="260" y="320" width="280" height="100" as="geometry">
+                    <mxGeometry x="50" y="270" width="280" height="100" as="geometry">
                         <mxRectangle x="710" y="370" width="80" height="30" as="alternateBounds"/>
                     </mxGeometry>
                 </mxCell>
@@ -70,7 +70,7 @@
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="43" value="AcaoQuiz" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="560" y="320" width="280" height="160" as="geometry">
+                    <mxGeometry x="340" y="270" width="280" height="160" as="geometry">
                         <mxRectangle x="710" y="370" width="80" height="30" as="alternateBounds"/>
                     </mxGeometry>
                 </mxCell>
@@ -93,6 +93,20 @@
                 </mxCell>
                 <mxCell id="56" value="&lt;div style=&quot;color: rgb(63, 63, 63); scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251);&quot;&gt;&lt;span style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); font-size: 14px; color: rgb(63, 63, 63);&quot;&gt;+ pontosNatureza(&lt;span style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); color: rgb(63, 63, 63);&quot;&gt;dificuldade : int&lt;/span&gt;) :&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color: rgb(63, 63, 63); font-size: 14px;&quot;&gt;int&lt;/span&gt;&lt;br style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); font-size: 14px; color: rgb(63, 63, 63);&quot;&gt;&lt;span style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); font-size: 14px; color: rgb(63, 63, 63);&quot;&gt;+ pontosCarbono(&lt;span style=&quot;color: rgb(63, 63, 63);&quot;&gt;qtdeCarbono : float&lt;/span&gt;) :&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color: rgb(63, 63, 63); font-size: 14px;&quot;&gt;int&lt;/span&gt;&lt;br style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); font-size: 14px; color: rgb(63, 63, 63);&quot;&gt;&lt;span style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); font-size: 14px; color: rgb(63, 63, 63);&quot;&gt;+ pontosAgua(&lt;span style=&quot;color: rgb(63, 63, 63);&quot;&gt;qtdeAgua : float&lt;/span&gt;) :&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color: rgb(63, 63, 63); font-size: 14px;&quot;&gt;int&lt;/span&gt;&lt;div style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); color: rgb(63, 63, 63);&quot;&gt;&lt;font style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); font-size: 14px; color: rgb(63, 63, 63);&quot;&gt;+ pontosReciclagem(&lt;span style=&quot;color: rgb(63, 63, 63);&quot;&gt;qtdeReciclada : float&lt;/span&gt;) : int&lt;/font&gt;&lt;/div&gt;&lt;/div&gt;" style="text;whiteSpace=wrap;html=1;" parent="53" vertex="1">
                     <mxGeometry y="34" width="320" height="86" as="geometry"/>
+                </mxCell>
+                <mxCell id="72" value="Missao" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="930" y="270" width="280" height="200" as="geometry">
+                        <mxRectangle x="710" y="370" width="80" height="30" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="73" value="&lt;div&gt;&lt;span style=&quot;color: rgb(63, 63, 63); font-size: 14px; background-color: transparent;&quot;&gt;- id : int&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: rgb(63, 63, 63); font-size: 14px; background-color: transparent;&quot;&gt;- nome : String&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: rgb(63, 63, 63); font-size: 14px; background-color: transparent;&quot;&gt;- descricao : String&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: rgb(63, 63, 63); font-size: 14px; background-color: transparent;&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63);&quot;&gt;- selo : ImageIcon&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: rgb(63, 63, 63); font-size: 14px; background-color: transparent;&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63);&quot;&gt;- tarefas : HashMap&amp;lt;String, boolean&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: rgb(63, 63, 63); font-size: 14px; background-color: transparent;&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63);&quot;&gt;- progresso : int&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;" style="text;whiteSpace=wrap;html=1;" vertex="1" parent="72">
+                    <mxGeometry y="26" width="280" height="104" as="geometry"/>
+                </mxCell>
+                <mxCell id="74" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="72">
+                    <mxGeometry y="130" width="280" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="75" value="&lt;div style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); color: rgb(63, 63, 63);&quot;&gt;&lt;div style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); color: rgb(63, 63, 63);&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;+ adicionarTarefa(String) : void&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); color: rgb(63, 63, 63);&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;+ concluirTarefa(String) : String&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); color: rgb(63, 63, 63);&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;+ detalhesMissao() : String&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="text;whiteSpace=wrap;html=1;" vertex="1" parent="72">
+                    <mxGeometry y="138" width="280" height="62" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>
