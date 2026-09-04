@@ -1,10 +1,12 @@
 package br.com.fiap.bean;
 
-import javax.management.openmbean.KeyAlreadyExistsException;
 import javax.swing.*;
 import java.util.HashMap;
-import java.util.HashSet;
 
+/**
+ * Classe que vai guardar informações de uma missão
+ * @since Java 21
+ */
 public class Missao {
     private int id;
     private String nome;
@@ -67,8 +69,12 @@ public class Missao {
     public void setProgresso(float progresso) {
         this.progresso = progresso;
     }
-    //privada piorque sói a classe vaiu usar mesmo, ela vai excutar no fuim de cada metodo de tarefa
+
+    /**
+     * Vai atualizar o progresso da missão, ela usada dentro da classe para atualizar o valor do atributo "progresso"
+     */
     private void atualizarProgresso(){
+        //privada piorque sói a classe vaiu usar mesmo, ela vai excutar no fuim de cada metodo de tarefa
         //validação básica pra ver se as tarefas estão vazias
         if (tarefas.isEmpty()){
             progresso = 0.0f;
@@ -80,6 +86,11 @@ public class Missao {
         this.progresso = (concluidas/ tarefas.size()) * 100.0f; //f pra gArantir float
     }
 
+    /**
+     * Adiciona uma tarefa à missão
+     * @param tarefaNome o nome da tarefa, com o que tem que ser feito
+     * @throws IllegalArgumentException Quando o nome da tarefa é vazio, com mais de 50 de lenght ou já existe na Missao
+     */
     public void adicionarTarefa(String tarefaNome) throws IllegalArgumentException {
         //Não pode ser vazia
         if (tarefaNome.isBlank()) {
@@ -96,7 +107,14 @@ public class Missao {
         //false == tarefa não realizada e true é igual a tarefa feita
         atualizarProgresso();
     }
-    public String concluirTarefa(String tarefaNome){
+
+    /**
+     * Conclui uma das tarefas da missão pelo nome.
+     * @param tarefaNome o nome da tarefa que será concluída
+     * @throws IllegalArgumentException quando a tarefa não existe
+     * @return uma mensagem dizendo que a tarefa fopi concluída, ou se ela já tinha sido antes.
+     */
+    public String concluirTarefa(String tarefaNome) throws IllegalArgumentException {
         if (!tarefas.containsKey(tarefaNome)) {
             throw new IllegalArgumentException(String.format("A tarefa \"%s\" não existe", tarefaNome));
         }
@@ -108,6 +126,11 @@ public class Missao {
         atualizarProgresso();
         return "Tarefa \"" + tarefaNome + "\" concluída";
     }
+
+    /**
+     * Informações completas da missão.
+     * @return String formatada com id, nome, descrição, progresso e tarefas.
+     */
     public String detalhesMissao(){
         String trfs = "";
         for (String tarefa : tarefas.keySet()){
@@ -116,8 +139,8 @@ public class Missao {
         if (tarefas.isEmpty()){
             trfs += "Nenhuma adicionada. Progresso também zero";
         }
-        return String.format("Nome: %s\nDescrição: %s\nProgresso:%.1f%%\nTarefas:%s\n",
-                             nome, descricao, progresso, trfs);
+        return String.format("Id: %d Nome: %s\nDescrição: %s\nProgresso:%.1f%%\nTarefas:%s\n",
+                             id, nome, descricao, progresso, trfs);
 
     }
 }
