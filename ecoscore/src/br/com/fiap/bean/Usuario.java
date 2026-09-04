@@ -14,6 +14,7 @@ public class Usuario {
     private int soulCoins;
     //Um valor "vazio" é definido para não dar erro na concatenação de strings.
     private ArrayList<String> atividadeRecente;
+    private ArrayList<Missao> missoes; //As misões que o usuário fez ou está fazendo, isso vai permitir pegar os selos das missões.
 
     public Usuario() {}
     // Construtor para registrar apenas nome do usuário e id, pois ambos não tem validação
@@ -90,6 +91,28 @@ public class Usuario {
         this.atividadeRecente = atividadeRecente;
     }
 
+    public ArrayList<Missao> getMissoes() {
+        return missoes;
+    }
+
+    public void setMissoes(ArrayList<Missao> missoes) {
+        this.missoes = missoes;
+    }
+
+    /**
+     * Adiciona uma missão ao usuário.
+     * @param missao Uma missao sendo adiconada ao usuário
+     */
+    public void addMissoes(Missao missao) throws IllegalArgumentException{
+        //Só adiciona a missão se eloa não existir antes
+        if (!missoes.contains(missao)) {
+            missoes.add(missao);
+        } else {
+            throw new IllegalArgumentException("Essa missão já foi adicionada!");
+        }
+
+    }
+
     /**
      * Vai registrar uma ação sustentavel para o user.
      * @param soulCoins recebe a quantidade de soulCoins ganhos
@@ -107,8 +130,6 @@ public class Usuario {
         }
         atividadeRecente.add(descAcao);
     }
-
-
 
     /**
      * Vai retornar todos os dados do perfil
