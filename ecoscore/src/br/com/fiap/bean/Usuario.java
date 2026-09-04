@@ -1,6 +1,7 @@
 package br.com.fiap.bean;
 
 import javax.swing.*;
+import java.util.ArrayList;
 
 /**
  * Classe que vai guardar as informações de cada usuário
@@ -12,7 +13,7 @@ public class Usuario {
     private float confiabilidade;
     private int soulCoins;
     //Um valor "vazio" é definido para não dar erro na concatenação de strings.
-    private String atividadeRecente = "";
+    private ArrayList<String> atividadeRecente;
 
     public Usuario() {}
     // Construtor para registrar apenas nome do usuário e id, pois ambos não tem validação
@@ -81,11 +82,11 @@ public class Usuario {
         }
     }
 
-    public String getAtividadeRecente() {
+    public ArrayList<String> getAtividadeRecente() {
         return atividadeRecente;
     }
 
-    public void setAtividadeRecente(String atividadeRecente) {
+    public void setAtividadeRecente(ArrayList<String> atividadeRecente) {
         this.atividadeRecente = atividadeRecente;
     }
 
@@ -104,7 +105,7 @@ public class Usuario {
             // Menor que tres metade, maior já recebe todos os pontos normais
             this.soulCoins += soulCoins;
         }
-        this.atividadeRecente = this.atividadeRecente.concat(descAcao + "\n");
+        atividadeRecente.add(descAcao);
     }
 
 
@@ -114,6 +115,10 @@ public class Usuario {
      * @return Uma string formatada com tudo ajustado
      */
     public String detalhesPerfil() {
+        String listaAtividaderecente = "";
+        for (String atividade : atividadeRecente){
+            listaAtividaderecente += atividade + "\n";
+        }
         return String.format("Nome: %s\nId: %s\nConfiabilidade: %.1f\nSoul Coins: %d\nAtividade recente:\n%s", nome, id, confiabilidade, soulCoins, atividadeRecente);
     }
 

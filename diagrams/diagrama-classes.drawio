@@ -95,7 +95,7 @@
                     <mxGeometry y="34" width="320" height="86" as="geometry"/>
                 </mxCell>
                 <mxCell id="72" value="Missao" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="930" y="270" width="280" height="200" as="geometry">
+                    <mxGeometry x="930" y="270" width="280" height="220" as="geometry">
                         <mxRectangle x="710" y="370" width="80" height="30" as="alternateBounds"/>
                     </mxGeometry>
                 </mxCell>
@@ -106,7 +106,7 @@
                     <mxGeometry y="130" width="280" height="8" as="geometry"/>
                 </mxCell>
                 <mxCell id="75" value="&lt;div style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); color: rgb(63, 63, 63);&quot;&gt;&lt;div style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); color: rgb(63, 63, 63);&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;- atualizarProgresso() : void&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); color: rgb(63, 63, 63);&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;+ adicionarTarefa(String) : void&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); color: rgb(63, 63, 63);&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;+ concluirTarefa(String) : String&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); color: rgb(63, 63, 63);&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;+ detalhesMissao() : String&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="text;whiteSpace=wrap;html=1;" vertex="1" parent="72">
-                    <mxGeometry y="138" width="280" height="62" as="geometry"/>
+                    <mxGeometry y="138" width="280" height="82" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>
