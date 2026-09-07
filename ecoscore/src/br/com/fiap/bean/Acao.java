@@ -8,33 +8,35 @@ import java.time.format.DateTimeFormatter;
  * @since Java 21
  */
 public class Acao {
-    private String nome;
-    private int soulCoinsGerados;
-    private LocalDateTime dataRealizacao;
+    private int idAcao;
+    private int idUsuario; //FK de Usuario.
+    private String dsAcao; //x reciclados
+    private int qtPontosGerados;
+    private LocalDateTime dtAcao;
 
     public Acao() {}
-    //Registra apenas o nome da ação, já que data e pontos são obtidos pelos métodos.
-    public Acao(String nome) {
-        this.nome = nome;
+    //Registra apenas o dsAcao da ação, já que data e pontos são obtidos pelos métodos.
+    public Acao(String dsAcao) {
+        this.dsAcao = dsAcao;
     }
 
-    public String getNome() {
-        return nome;
+    public String getDsAcao() {
+        return dsAcao;
     }
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setDsAcao(String dsAcao) {
+        this.dsAcao = dsAcao;
     }
-    public int getSoulCoinsGerados() {
-        return soulCoinsGerados;
+    public int getQtPontosGerados() {
+        return qtPontosGerados;
     }
-    public void setSoulCoinsGerados(int soulCoinsGerados) {
-        this.soulCoinsGerados = soulCoinsGerados;
+    public void setQtPontosGerados(int qtPontosGerados) {
+        this.qtPontosGerados = qtPontosGerados;
     }
-    public LocalDateTime getDataRealizacao() {
-        return dataRealizacao;
+    public LocalDateTime getDtAcao() {
+        return dtAcao;
     }
-    public void setDataRealizacao(LocalDateTime dataRealizacao) {
-        this.dataRealizacao = dataRealizacao;
+    public void setDtAcao(LocalDateTime dtAcao) {
+        this.dtAcao = dtAcao;
     }
 
     /**
@@ -43,8 +45,8 @@ public class Acao {
      * @return O número de Soul Coins gerados
      */
     public int registrarPontos(int pontosGerados) {
-        dataRealizacao = LocalDateTime.now();
-        soulCoinsGerados = pontosGerados;
+        dtAcao = LocalDateTime.now();
+        qtPontosGerados = pontosGerados;
         return pontosGerados;
     }
 
@@ -53,6 +55,6 @@ public class Acao {
      */
     public String detalhes() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-        return String.format("A ação \"%s\" foi realizada em (%s) e gerou %d Soul Coins.", nome, dataRealizacao.format(dtf), soulCoinsGerados);
+        return String.format("A ação \"%s\" foi realizada em (%s) e gerou %d Soul Coins.", dsAcao, dtAcao.format(dtf), qtPontosGerados);
     }
 }
