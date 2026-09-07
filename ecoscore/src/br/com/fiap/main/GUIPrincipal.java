@@ -2,14 +2,13 @@ package br.com.fiap.main;
 
 import br.com.fiap.bean.*;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.*;
-import javax.swing.text.JTextComponent;
 
 @SuppressWarnings("serial")
-public class GUIPrincipal extends JFrame{
+public class GUIPrincipal extends JFrame {
     private Usuario usuario = new Usuario("Murilo", "@murilosouza", 80, 220);
     private Acao acao;
     private AcaoConquista acaoConquista;
@@ -25,17 +24,17 @@ public class GUIPrincipal extends JFrame{
     private JTextArea taDetalhesPerfil = new JTextArea(usuario.detalhesPerfil());
     private JLabel lbPerfil;
 
-    public GUIPrincipal(){
+    public GUIPrincipal() {
         iniciarValores();
         inicializarComponentes();
         definirEventos();
     }
-    public void iniciarValores(){
+    public void iniciarValores() {
         try {
             String nome = JOptionPane.showInputDialog("Digite o nome do usuário:\n(Poderá ser alterado mais tarde)");
             usuario.setNome(nome);
             String id = JOptionPane.showInputDialog("Digite o id do usuário:\n(Poderá ser alterado mais tarde)");
-            usuario.setId(id);
+            usuario.setIdUsuario(id);
             float confiabilidade = Float.parseFloat(JOptionPane.showInputDialog("Digite a confiabilidade desse usuário (0-100):\n(Poderá ser alterado mais tarde)"));
             usuario.setConfiabilidade(confiabilidade);
             int soulCoins = Integer.parseInt(JOptionPane.showInputDialog("Quantos Soul Coins ele tem?\n(Poderá ser alterado mais tarde)"));
@@ -52,9 +51,9 @@ public class GUIPrincipal extends JFrame{
         acao = new Acao("Compra de uma muda de árvore");
         usuario.registrarAcao(acao.registrarPontos(calculadora.pontosNatureza(2)), acao.detalhes());
     }
-    private void inicializarComponentes(){
+    private void inicializarComponentes() {
         setTitle("Ecoscore - SoulUp");
-        setBounds(0,0,900,300);
+        setBounds(0, 0, 900, 300);
         contentPane = getContentPane();
         mnBarra = new JMenuBar();
         mnSistema = new JMenu("Sistema");
@@ -94,7 +93,7 @@ public class GUIPrincipal extends JFrame{
         painel.add(painelBts, BorderLayout.LINE_START);
         add(painel);
     }
-    private void definirEventos(){
+    private void definirEventos() {
         miSair.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -116,7 +115,7 @@ public class GUIPrincipal extends JFrame{
                     String nome = JOptionPane.showInputDialog("Digite o novo nome do usuário:");
                     usuario.setNome(nome);
                     String id = JOptionPane.showInputDialog("Digite o novo id do usuário:");
-                    usuario.setId(id);
+                    usuario.setIdUsuario(id);
                     float confiabilidade = Float.parseFloat(JOptionPane.showInputDialog("Digite a nova confiabilidade desse usuário (0-100):"));
                     usuario.setConfiabilidade(confiabilidade);
                     int soulCoins = Integer.parseInt(JOptionPane.showInputDialog("Quantos Soul Coins ele terá agora?"));
@@ -133,7 +132,7 @@ public class GUIPrincipal extends JFrame{
                 try {
                     int escolha = Integer.parseInt(JOptionPane.showInputDialog("Digite o tipo de ação:\n1. Natureza\n2. Carbono\n3. Água\n4. Reciclagem\n0. cancelar ação"));
                     acao = new Acao(JOptionPane.showInputDialog("Digite o nome da ação: "));
-                    switch (escolha){
+                    switch (escolha) {
                         case 1:
                             int dificuldade = Integer.parseInt(JOptionPane.showInputDialog("Qual é a dificuldade da ação realizada? Digite (entre 1 a 5): "));
                             usuario.registrarAcao(acao.registrarPontos(calculadora.pontosNatureza(dificuldade)),
@@ -173,26 +172,26 @@ public class GUIPrincipal extends JFrame{
                 try {
                     int escolha = Integer.parseInt(JOptionPane.showInputDialog("Digite o tipo de conquista:\n1. Natureza\n2. Carbono\n3. Água\n4. Reciclagem\n0. cancelar ação"));
                     acao = new AcaoConquista(JOptionPane.showInputDialog("Digite o nome da conquista: "), Integer.parseInt(JOptionPane.showInputDialog("Qual é a raridade dessa conquista? Digite (número de 1 a 4): ")));
-                    switch (escolha){
+                    switch (escolha) {
                         case 1:
                             int dificuldade = Integer.parseInt(JOptionPane.showInputDialog("Qual é a dificuldade da conquista realizada? Digite (entre 1 a 5): "));
                             usuario.registrarAcao(acao.registrarPontos(calculadora.pontosNatureza(dificuldade)),
-                                acao.detalhes());
+                                    acao.detalhes());
                             break;
                         case 2:
                             float kgCarbono = Float.parseFloat(JOptionPane.showInputDialog("Qual é a qtde. de carbono? Digite (um número): "));
                             usuario.registrarAcao(acao.registrarPontos(calculadora.pontosCarbono(kgCarbono)),
-                                acao.detalhes());
+                                    acao.detalhes());
                             break;
                         case 3:
                             float litros = Float.parseFloat(JOptionPane.showInputDialog("Qual é a qtde. de litros economizados? Digite (um número): "));
                             usuario.registrarAcao(acao.registrarPontos(calculadora.pontosAgua(litros)),
-                                acao.detalhes());
+                                    acao.detalhes());
                             break;
                         case 4:
                             float kgReciclados = Float.parseFloat(JOptionPane.showInputDialog("Qual é a qtde. de KG reciclados? Digite (um número): "));
                             usuario.registrarAcao(acao.registrarPontos(calculadora.pontosReciclagem(kgReciclados)),
-                                acao.detalhes());
+                                    acao.detalhes());
                             break;
                         case 0:
 
@@ -215,7 +214,7 @@ public class GUIPrincipal extends JFrame{
                     acao = new AcaoQuiz(JOptionPane.showInputDialog("Digite o nome do quiz: "),
                             Integer.parseInt(JOptionPane.showInputDialog("Digite a qtde. de acertos nesse quiz: ")),
                             Integer.parseInt(JOptionPane.showInputDialog("Digite o valor do quiz, a qtde. pontos por acerto: ")));
-                    switch (escolha){
+                    switch (escolha) {
                         case 1:
                             int dificuldade = Integer.parseInt(JOptionPane.showInputDialog("Qual é a dificuldade da ação atrelada ao quiz realizado? Digite (entre 1 a 5): "));
                             usuario.registrarAcao(acao.registrarPontos(calculadora.pontosNatureza(dificuldade)),
@@ -260,7 +259,7 @@ public class GUIPrincipal extends JFrame{
                     acao = new AcaoPost(JOptionPane.showInputDialog("Digite o nome do quiz: "),
                             Integer.parseInt(JOptionPane.showInputDialog("Digite a posição do post no ranking: ")),
                             Integer.parseInt(JOptionPane.showInputDialog("Digite o saldo de votos do post: ")));
-                    switch (escolha){
+                    switch (escolha) {
                         case 1:
                             int dificuldade = Integer.parseInt(JOptionPane.showInputDialog("Qual é a dificuldade da ação atrelada ao post? Digite (entre 1 a 5): "));
                             usuario.registrarAcao(acao.registrarPontos(calculadora.pontosNatureza(dificuldade)),
@@ -301,7 +300,7 @@ public class GUIPrincipal extends JFrame{
                     String descOcorrido = JOptionPane.showInputDialog("Descreva o ocorrido: ");
                     //Mensagem de confirmação mostrando o texto e confiabilidade que será tirada.
                     if (JOptionPane.showConfirmDialog(null,
-                            String.format("Tem certeza que quer retirar %d de confiabilidade do usuário %s com a descrição:\n%s",valorPenalidade,usuario.getNome(),descOcorrido), "Confirme",
+                            String.format("Tem certeza que quer retirar %d de confiabilidade do usuário %s com a descrição:\n%s", valorPenalidade, usuario.getNome(), descOcorrido), "Confirme",
                             JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == 0) {
                         usuario.registrarPenalidade(valorPenalidade, descOcorrido);
                     }
@@ -317,11 +316,8 @@ public class GUIPrincipal extends JFrame{
         GUIPrincipal frame = new GUIPrincipal();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Dimension tela = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setLocation((tela.width - frame.getSize().width) / 2 ,
+        frame.setLocation((tela.width - frame.getSize().width) / 2,
                 (tela.height - frame.getSize().height) / 2);
         frame.setVisible(true);
-
-
-
     }
 }

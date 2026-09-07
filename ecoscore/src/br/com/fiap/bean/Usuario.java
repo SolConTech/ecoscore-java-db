@@ -8,24 +8,22 @@ import java.util.ArrayList;
  * @since Java 21
  */
 public class Usuario {
+    private String idUsuario;
     private String nome;
-    private String id;
     private float confiabilidade;
     private int soulCoins;
-    //Um valor "vazio" é definido para não dar erro na concatenação de strings.
-    private ArrayList<String> atividadeRecente;
-    private ArrayList<Missao> missoes; //As misões que o usuário fez ou está fazendo, isso vai permitir pegar os selos das missões.
+    private ArrayList<String> atividadeRecente; //Últimas ações realizadas
 
     public Usuario() {}
-    // Construtor para registrar apenas nome do usuário e id, pois ambos não tem validação
-    public Usuario(String nome, String id) {
+    // Construtor para registrar apenas nome do usuário e idUsuario, pois ambos não tem validação
+    public Usuario(String nome, String idUsuario) {
         this.nome = nome;
-        setId(id);
+        setIdUsuario(idUsuario);
     }
-    // Construtor para registrar usuário quas completo (nome, id, confiabilidade e soul coins).
-    public Usuario(String nome, String id, float confiabilidade, int soulCoins) {
+    // Construtor para registrar usuário quas completo (nome, idUsuario, confiabilidade e soul coins).
+    public Usuario(String nome, String idUsuario, float confiabilidade, int soulCoins) {
         this.nome = nome;
-        setId(id);
+        setIdUsuario(idUsuario);
         setConfiabilidade(confiabilidade);
         setSoulCoins(soulCoins);
     }
@@ -38,13 +36,13 @@ public class Usuario {
         this.nome = nome;
     }
 
-    public String getId() {
-        return id;
+    public String getIdUsuario() {
+        return idUsuario;
     }
 
-    // A id é sempre minúscula.
-    public void setId(String id) {
-        this.id = id.toLowerCase();
+    // A idUsuario é sempre minúscula.
+    public void setIdUsuario(String idUsuario) {
+        this.idUsuario = idUsuario.toLowerCase();
     }
 
     public float getConfiabilidade() {
@@ -91,32 +89,10 @@ public class Usuario {
         this.atividadeRecente = atividadeRecente;
     }
 
-    public ArrayList<Missao> getMissoes() {
-        return missoes;
-    }
-
-    public void setMissoes(ArrayList<Missao> missoes) {
-        this.missoes = missoes;
-    }
-
-    /**
-     * Adiciona uma missão ao usuário.
-     * @param missao Uma missao sendo adiconada ao usuário
-     */
-    public void addMissoes(Missao missao) throws IllegalArgumentException{
-        //Só adiciona a missão se eloa não existir antes
-        if (!missoes.contains(missao)) {
-            missoes.add(missao);
-        } else {
-            throw new IllegalArgumentException("Essa missão já foi adicionada!");
-        }
-
-    }
-
     /**
      * Vai registrar uma ação sustentavel para o user.
      * @param soulCoins recebe a quantidade de soulCoins ganhos
-     * @param descAcao é o texto descrevendo a ação realizada
+     * @param descAcao  é o texto descrevendo a ação realizada
      */
     public void registrarAcao(int soulCoins, String descAcao) {
         // a confiabilidade do usuário deve alterar o recebimento de pontos
@@ -137,16 +113,16 @@ public class Usuario {
      */
     public String detalhesPerfil() {
         String listaAtividaderecente = "";
-        for (String atividade : atividadeRecente){
+        for (String atividade : atividadeRecente) {
             listaAtividaderecente += atividade + "\n";
         }
-        return String.format("Nome: %s\nId: %s\nConfiabilidade: %.1f\nSoul Coins: %d\nAtividade recente:\n%s", nome, id, confiabilidade, soulCoins, atividadeRecente);
+        return String.format("Nome: %s\nId: %s\nConfiabilidade: %.1f\nSoul Coins: %d\nAtividade recente:\n%s", nome, idUsuario, confiabilidade, soulCoins, atividadeRecente);
     }
 
     /**
      * Registra uma penalidade de confiabilidade para o usuário
      * @param valorPenalidade o valor que será descontado da confiabilidade do usuário
-     * @param descOcorrido uma string que descreve o ocorrido de uma penalidade
+     * @param descOcorrido    uma string que descreve o ocorrido de uma penalidade
      * @return uma string indicando o registro
      */
     public String registrarPenalidade(float valorPenalidade, String descOcorrido) {

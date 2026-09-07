@@ -9,7 +9,7 @@ public class Main {
         //Calculadora de Pontos
         CalculadoraPontos calculadora = new CalculadoraPontos();
         //Exemplo de usuário com 80% de confiabilidade e 220 Soul Coins
-        Usuario murilo = new Usuario("Murilo Souza","@murilo.souza",80, 220);
+        Usuario murilo = new Usuario("Murilo Souza", "@murilo.souza", 80, 220);
         //Exemplo de ação de reciclagem de 3kg, com registro no perfil
         Acao acao1 = new Acao("3kg de lixo reciclados");
         murilo.registrarAcao(acao1.registrarPontos(calculadora.pontosReciclagem(3)), acao1.detalhes());
@@ -39,7 +39,7 @@ public class Main {
                 String nome = JOptionPane.showInputDialog("Digite o nome do usuário: ");
                 usuario.setNome(nome);
                 String id = JOptionPane.showInputDialog("Digite o id do usuário: ");
-                usuario.setId(id);
+                usuario.setIdUsuario(id);
                 float confiabilidade = Float.parseFloat(JOptionPane.showInputDialog("Digite a confiabilidade desse usuário (0-100): "));
                 usuario.setConfiabilidade(confiabilidade);
                 int soulCoins = Integer.parseInt(JOptionPane.showInputDialog("Quantos Soul Coins ele tem? "));
@@ -47,15 +47,15 @@ public class Main {
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
             }
-            while (escolha != 0){
+            while (escolha != 0) {
                 try {
                     escolha = Integer.parseInt(JOptionPane.showInputDialog("Digite qual opção você gostaria de realizar:\n1. Registrar uma Ação simples\n2. Registrar uma conquista\n3. Registrar um quiz realizado\n4. Registrar um post encerrado\n5. Ver perfil atual\n6.Registrar penalidade\n0. Sair"));
-                    switch (escolha){
+                    switch (escolha) {
                         case 1:
                             try {
                                 escolha = Integer.parseInt(JOptionPane.showInputDialog("Digite o tipo de ação:\n1. Natureza\n2. Carbono\n3. Água\n4. Reciclagem\n0. cancelar ação"));
                                 acaoUsuario = new Acao(JOptionPane.showInputDialog("Digite o nome da ação: "));
-                                switch (escolha){
+                                switch (escolha) {
                                     case 1:
                                         int dificuldade = Integer.parseInt(JOptionPane.showInputDialog("Qual é a dificuldade da ação realizada? Digite (entre 1 a 5): "));
                                         usuario.registrarAcao(acaoUsuario.registrarPontos(calculadora.pontosNatureza(dificuldade)),
@@ -90,7 +90,7 @@ public class Main {
                             try {
                                 escolha = Integer.parseInt(JOptionPane.showInputDialog("Digite o tipo de conquista:\n1. Natureza\n2. Carbono\n3. Água\n4. Reciclagem\n0. cancelar ação"));
                                 acaoConquistaUsuario = new AcaoConquista(JOptionPane.showInputDialog("Digite o nome da conquista: "), Integer.parseInt(JOptionPane.showInputDialog("Qual é a raridade dessa conquista? Digite (número de 1 a 4): ")));
-                                switch (escolha){
+                                switch (escolha) {
                                     case 1:
                                         int dificuldade = Integer.parseInt(JOptionPane.showInputDialog("Qual é a dificuldade da conquista realizada? Digite (entre 1 a 5): "));
                                         usuario.registrarAcao(acaoConquistaUsuario.registrarPontos(calculadora.pontosNatureza(dificuldade)),
@@ -127,7 +127,7 @@ public class Main {
                                 acaoQuizUsuario = new AcaoQuiz(JOptionPane.showInputDialog("Digite o nome do quiz: "),
                                         Integer.parseInt(JOptionPane.showInputDialog("Digite a qtde. de acertos nesse quiz: ")),
                                         Integer.parseInt(JOptionPane.showInputDialog("Digite o valor do quiz, a qtde. pontos por acerto: ")));
-                                switch (escolha){
+                                switch (escolha) {
                                     case 1:
                                         int dificuldade = Integer.parseInt(JOptionPane.showInputDialog("Qual é a dificuldade da ação atrelada ao quiz realizado? Digite (entre 1 a 5): "));
                                         usuario.registrarAcao(acaoQuizUsuario.registrarPontos(calculadora.pontosNatureza(dificuldade)),
@@ -167,7 +167,7 @@ public class Main {
                                 acaoPostUsuario = new AcaoPost(JOptionPane.showInputDialog("Digite o nome do quiz: "),
                                         Integer.parseInt(JOptionPane.showInputDialog("Digite a posição do post no ranking: ")),
                                         Integer.parseInt(JOptionPane.showInputDialog("Digite o saldo de votos do post: ")));
-                                switch (escolha){
+                                switch (escolha) {
                                     case 1:
                                         int dificuldade = Integer.parseInt(JOptionPane.showInputDialog("Qual é a dificuldade da ação atrelada ao post? Digite (entre 1 a 5): "));
                                         usuario.registrarAcao(acaoPostUsuario.registrarPontos(calculadora.pontosNatureza(dificuldade)),
@@ -207,7 +207,7 @@ public class Main {
                             String descOcorrido = JOptionPane.showInputDialog("Descreva o ocorrido: ");
                             //Mensagem de confirmação mostrando o texto e confiabilidade que será tirada.
                             if (JOptionPane.showConfirmDialog(null,
-                                    String.format("Tem certeza que quer retirar %d de confiabilidade do usuário %s com a descrição:\n%s",valorPenalidade,usuario.getNome(),descOcorrido), "Confirme",
+                                    String.format("Tem certeza que quer retirar %d de confiabilidade do usuário %s com a descrição:\n%s", valorPenalidade, usuario.getNome(), descOcorrido), "Confirme",
                                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == 0) {
                                 usuario.registrarPenalidade(valorPenalidade, descOcorrido);
                             }
@@ -223,6 +223,5 @@ public class Main {
                 }
             }
         } while (JOptionPane.showConfirmDialog(null, "Quer registrar outro usuário?", "Continuar?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == 0);
-
     }
 }
