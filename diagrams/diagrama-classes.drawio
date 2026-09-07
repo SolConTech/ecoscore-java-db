@@ -44,7 +44,7 @@
                     <mxGeometry y="34" width="320" height="86" as="geometry"/>
                 </mxCell>
                 <mxCell id="72" value="Missao" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="880" y="35" width="280" height="220" as="geometry">
+                    <mxGeometry x="890" y="35" width="280" height="220" as="geometry">
                         <mxRectangle x="710" y="370" width="80" height="30" as="alternateBounds"/>
                     </mxGeometry>
                 </mxCell>
@@ -58,18 +58,18 @@
                     <mxGeometry y="138" width="280" height="82" as="geometry"/>
                 </mxCell>
                 <mxCell id="76" value="Post" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="560" y="40" width="280" height="240" as="geometry">
+                    <mxGeometry x="560" y="40" width="310" height="270" as="geometry">
                         <mxRectangle x="520" y="40" width="80" height="30" as="alternateBounds"/>
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="77" value="&lt;font color=&quot;#000000&quot;&gt;&lt;span style=&quot;font-size: 14px; color: rgb(63, 63, 63);&quot;&gt;- idPost : int&lt;/span&gt;&lt;/font&gt;&lt;div&gt;&lt;font color=&quot;#000000&quot;&gt;- idUsuario : int&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font color=&quot;#000000&quot;&gt;&lt;font color=&quot;#000000&quot;&gt;- idAcao : Integer&lt;br style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); color: rgb(63, 63, 63);&quot;&gt;&lt;/font&gt;&lt;span style=&quot;color: rgb(63, 63, 63); font-size: 14px;&quot;&gt;- dsPost : String&lt;/span&gt;&lt;br style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); font-size: 14px; color: rgb(63, 63, 63);&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63); font-size: 14px;&quot;&gt;- dtPost : LocalDateTime&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font color=&quot;#000000&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63); font-size: 14px;&quot;&gt;- numUpVotes : int&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font color=&quot;#000000&quot;&gt;&lt;span style=&quot;color: rgb(63, 63, 63); font-size: 14px;&quot;&gt;- numDownVotes : int&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;- numSaldoVotes&lt;/div&gt;" style="text;whiteSpace=wrap;html=1;" vertex="1" parent="76">
-                    <mxGeometry y="26" width="280" height="134" as="geometry"/>
+                    <mxGeometry y="26" width="310" height="134" as="geometry"/>
                 </mxCell>
                 <mxCell id="78" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="76">
-                    <mxGeometry y="160" width="280" height="8" as="geometry"/>
+                    <mxGeometry y="160" width="310" height="8" as="geometry"/>
                 </mxCell>
-                <mxCell id="79" value="&lt;div style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); color: rgb(63, 63, 63);&quot;&gt;&lt;font color=&quot;#000000&quot;&gt;&lt;span style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); font-size: 14px; color: rgb(63, 63, 63);&quot;&gt;+ addUpVote&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); color: rgb(63, 63, 63);&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;+ addDownVote&lt;/span&gt;&lt;/div&gt;&lt;span style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); font-size: 14px; color: rgb(63, 63, 63);&quot;&gt;&lt;font color=&quot;#000000&quot;&gt;+ detalhes() : String&lt;/font&gt;&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;" vertex="1" parent="76">
-                    <mxGeometry y="168" width="280" height="72" as="geometry"/>
+                <mxCell id="79" value="&lt;div style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); color: rgb(63, 63, 63);&quot;&gt;&lt;font color=&quot;#000000&quot;&gt;&lt;span style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); font-size: 14px; color: rgb(63, 63, 63);&quot;&gt;- updtSaldoVotes() : void&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); color: rgb(63, 63, 63);&quot;&gt;&lt;font color=&quot;#000000&quot;&gt;&lt;span style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); font-size: 14px; color: rgb(63, 63, 63);&quot;&gt;+ publicar(dsPost : String) : void&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); color: rgb(63, 63, 63);&quot;&gt;&lt;font color=&quot;#000000&quot;&gt;&lt;span style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); font-size: 14px; color: rgb(63, 63, 63);&quot;&gt;+ addUpVote() : void&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); color: rgb(63, 63, 63);&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;+ addDownVote() : void&lt;/span&gt;&lt;/div&gt;&lt;span style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); font-size: 14px; color: rgb(63, 63, 63);&quot;&gt;&lt;font color=&quot;#000000&quot;&gt;+ detalhes() : String&lt;/font&gt;&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;" vertex="1" parent="76">
+                    <mxGeometry y="168" width="310" height="102" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>
