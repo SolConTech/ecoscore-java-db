@@ -31,24 +31,19 @@ public class Usuario {
     public String getNome() {
         return nmUsuario;
     }
-
     public void setNome(String nmUsuario) {
         this.nmUsuario = nmUsuario;
     }
-
     public String getIdUsuario() {
         return idUsuario;
     }
-
     // A idUsuario é sempre minúscula.
     public void setIdUsuario(String idUsuario) {
         this.idUsuario = idUsuario.toLowerCase();
     }
-
     public float getVlMerito() {
         return vlMerito;
     }
-
     // Confiabilidade varia entre 0 e 100%, e é mostrada como porcentagem
     public void setVlMerito(float vlMerito) {
         try {
@@ -63,11 +58,9 @@ public class Usuario {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
-
     public int getQtSoulCoins() {
         return qtSoulCoins;
     }
-
     public void setQtSoulCoins(int qtSoulCoins) {
         try {
             if (qtSoulCoins >= 0) {
@@ -80,11 +73,9 @@ public class Usuario {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
-
     public ArrayList<String> getDsAtividadeRecente() {
         return dsAtividadeRecente;
     }
-
     public void setDsAtividadeRecente(ArrayList<String> dsAtividadeRecente) {
         this.dsAtividadeRecente = dsAtividadeRecente;
     }

@@ -3,6 +3,10 @@ package br.com.fiap.bean;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Uma atividade criada pelo usuario, é o que define sua posição no ranking
+ * @since Java 21
+ */
 public class Post {
     private int idPost;
     private String idUsuario; //FK de Usuario
@@ -29,7 +33,7 @@ public class Post {
         return idUsuario;
     }
     public void setIdUsuario(String idUsuario) {
-        this.idUsuario = idUsuario;
+        this.idUsuario = idUsuario.toLowerCase();
     }
     public Integer getIdAcao() {
         return idAcao;
@@ -95,7 +99,10 @@ public class Post {
      * Adiciona votos positivos para o post
      * @param qtUpVotes quantidade de votos positivos para adicionar
      */
-    public void addUpVote(int qtUpVotes) {
+    public void addUpVote(int qtUpVotes) throws IllegalArgumentException {
+        if (qtUpVotes <= 0) {
+            throw new IllegalArgumentException("Número de votos precisa ser maior que zero");
+        }
         numUpVotes += qtUpVotes;
     }
 
@@ -104,6 +111,9 @@ public class Post {
      * @param qtDownVotes quantidade de votos negativos para adicionar
      */
     public void addDownVote(int qtDownVotes) {
+        if (qtDownVotes <= 0) {
+            throw new IllegalArgumentException("Número de votos precisa ser maior que zero");
+        }
         numDownVotes += qtDownVotes;
     }
 
@@ -111,14 +121,9 @@ public class Post {
      * Mostra os detalhes do post, descrição, autor, ação atrelada, data e quantidade de votos.
      * @return Uma string formatada com as informações do post.
      */
-    public String detalhes() {
+    public String detalhesPost() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy 'às' hh:mm");
-        String detalhes = String.format("Autor = ?"); //Adicionar informação do usuário vindo do DAO
-        if (idAcao != null) {
-            //se for atrelado a uma ação a FK terá algum valor diferente de nulo
-            detalhes += String.format("\nAção = ?"); //Adicionar informação da ação vindo do DAO
-        }
-        detalhes += String.format("Publicado em: %s\nPositivos: %d | Negativos: %d | Saldo: %d", dtPost.format(dtf), numUpVotes, numDownVotes, numSaldoVotes);
-        return detalhes;
+        return String.format("Post publicado em (%s) com saldo de %d votos",
+                dtPost.format(dtf), numSaldoVotes);
     }
 }

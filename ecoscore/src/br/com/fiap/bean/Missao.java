@@ -14,7 +14,7 @@ public class Missao {
     private ImageIcon selo; //demonstração infelizmente não sei se consigo exibir os selos dps.
     private HashMap<String, Boolean> tarefas = new HashMap<String, Boolean>();
     private float progresso = 0.0f; // é porcentagem, 0 de 10 tarefas exemplo 10%.
-    public Missao(){}
+    public Missao() {}
     public Missao(int id, String nome, String descricao, ImageIcon selo) {
         this.id = id;
         this.nome = nome;
@@ -25,47 +25,36 @@ public class Missao {
     public int getId() {
         return id;
     }
-
     public void setId(int id) {
         this.id = id;
     }
-
     public String getNome() {
         return nome;
     }
-
     public void setNome(String nome) {
         this.nome = nome;
     }
-
     public String getDescricao() {
         return descricao;
     }
-
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
-
     public ImageIcon getSelo() {
         return selo;
     }
-
     public void setSelo(ImageIcon selo) {
         this.selo = selo;
     }
-
     public HashMap<String, Boolean> getTarefas() {
         return tarefas;
     }
-
     public void setTarefas(HashMap<String, Boolean> tarefas) {
         this.tarefas = tarefas;
     }
-
     public float getProgresso() {
         return progresso;
     }
-
     public void setProgresso(float progresso) {
         this.progresso = progresso;
     }
@@ -73,17 +62,17 @@ public class Missao {
     /**
      * Vai atualizar o progresso da missão, ela usada dentro da classe para atualizar o valor do atributo "progresso"
      */
-    private void atualizarProgresso(){
+    private void atualizarProgresso() {
         //privada piorque sói a classe vaiu usar mesmo, ela vai excutar no fuim de cada metodo de tarefa
         //validação básica pra ver se as tarefas estão vazias
-        if (tarefas.isEmpty()){
+        if (tarefas.isEmpty()) {
             progresso = 0.0f;
             return;
         }
         //Stream API que vê os valroes boolean, se for igual a rtue ele vai pra contagem, o count é o final da esteira e vai somar cada valor true
         float concluidas = tarefas.values().stream().filter(estado -> estado == true).count();
         //exemplo 1/10 = 0.10, 0.10 * 100 é igual 10, que seria 10% que é iugal 1/10
-        this.progresso = (concluidas/ tarefas.size()) * 100.0f; //f pra gArantir float
+        this.progresso = (concluidas / tarefas.size()) * 100.0f; //f pra gArantir float
     }
 
     /**
@@ -111,15 +100,15 @@ public class Missao {
     /**
      * Conclui uma das tarefas da missão pelo nome.
      * @param tarefaNome o nome da tarefa que será concluída
-     * @throws IllegalArgumentException quando a tarefa não existe
      * @return uma mensagem dizendo que a tarefa fopi concluída, ou se ela já tinha sido antes.
+     * @throws IllegalArgumentException quando a tarefa não existe
      */
     public String concluirTarefa(String tarefaNome) throws IllegalArgumentException {
-        if (!tarefas.containsKey(tarefaNome)) {
+        if (! tarefas.containsKey(tarefaNome)) {
             throw new IllegalArgumentException(String.format("A tarefa \"%s\" não existe", tarefaNome));
         }
         // como as chaves são boolean se for true a tarefa já foi feirta.
-        if (tarefas.get((tarefaNome))){
+        if (tarefas.get((tarefaNome))) {
             return "Tarefa \"" + tarefaNome + "\" já foi concluída anteriormente";
         }
         tarefas.put(tarefaNome, true);
@@ -131,16 +120,15 @@ public class Missao {
      * Informações completas da missão.
      * @return String formatada com id, nome, descrição, progresso e tarefas.
      */
-    public String detalhesMissao(){
+    public String detalhesMissao() {
         String trfs = "";
-        for (String tarefa : tarefas.keySet()){
+        for (String tarefa : tarefas.keySet()) {
             trfs += tarefas + "\n";
         }
-        if (tarefas.isEmpty()){
+        if (tarefas.isEmpty()) {
             trfs += "Nenhuma adicionada. Progresso também zero";
         }
         return String.format("Id: %d Nome: %s\nDescrição: %s\nProgresso:%.1f%%\nTarefas:%s\n",
-                             id, nome, descricao, progresso, trfs);
-
+                id, nome, descricao, progresso, trfs);
     }
 }
