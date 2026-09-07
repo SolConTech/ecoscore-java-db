@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter;
  */
 public class Acao {
     private int idAcao;
-    private int idUsuario; //FK de Usuario.
+    private String idUsuario; //FK de Usuario.
     private String dsAcao; //x reciclados
     private int qtPontosGerados;
     private LocalDateTime dtAcao;

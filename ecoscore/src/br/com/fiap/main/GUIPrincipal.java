@@ -36,9 +36,9 @@ public class GUIPrincipal extends JFrame {
             String id = JOptionPane.showInputDialog("Digite o id do usuário:\n(Poderá ser alterado mais tarde)");
             usuario.setIdUsuario(id);
             float confiabilidade = Float.parseFloat(JOptionPane.showInputDialog("Digite a confiabilidade desse usuário (0-100):\n(Poderá ser alterado mais tarde)"));
-            usuario.setConfiabilidade(confiabilidade);
+            usuario.setVlMerito(confiabilidade);
             int soulCoins = Integer.parseInt(JOptionPane.showInputDialog("Quantos Soul Coins ele tem?\n(Poderá ser alterado mais tarde)"));
-            usuario.setSoulCoins(soulCoins);
+            usuario.setQtSoulCoins(soulCoins);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
         }
@@ -117,9 +117,9 @@ public class GUIPrincipal extends JFrame {
                     String id = JOptionPane.showInputDialog("Digite o novo id do usuário:");
                     usuario.setIdUsuario(id);
                     float confiabilidade = Float.parseFloat(JOptionPane.showInputDialog("Digite a nova confiabilidade desse usuário (0-100):"));
-                    usuario.setConfiabilidade(confiabilidade);
+                    usuario.setVlMerito(confiabilidade);
                     int soulCoins = Integer.parseInt(JOptionPane.showInputDialog("Quantos Soul Coins ele terá agora?"));
-                    usuario.setSoulCoins(soulCoins);
+                    usuario.setQtSoulCoins(soulCoins);
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 }

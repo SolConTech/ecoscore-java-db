@@ -1,7 +1,6 @@
 package br.com.fiap.bean;
 
 import javax.swing.*;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
@@ -11,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 public class AcaoConquista extends Acao {
     private int raridade;
 
-    public AcaoConquista(){}
+    public AcaoConquista() {}
     public AcaoConquista(String nome) {
         super(nome);
     }
@@ -40,11 +39,11 @@ public class AcaoConquista extends Acao {
     public int registrarPontos(int pontosGerados) {
         //Os pontos são multiplicados por 1.5 e tem um adicional dependendo da raridade
         super.registrarPontos((int) (pontosGerados * 1.5 + raridade * 5));
-        return super.getSoulCoinsGerados();
+        return super.getQtPontosGerados();
     }
 
     public String detalhes() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-        return String.format("Conquista \"%s\" foi ganha em (%s) e gerou %d Soul Coins.", super.getNome(), super.getDataRealizacao().format(dtf), super.getSoulCoinsGerados());
+        return String.format("Conquista \"%s\" foi ganha em (%s) e gerou %d Soul Coins.", super.getDsAcao(), super.getDtAcao().format(dtf), super.getQtPontosGerados());
     }
 }

@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter;
  * Registra um quiz.
  * @since Java 21
  */
-public class AcaoQuiz extends Acao{
+public class AcaoQuiz extends Acao {
     private int acertos;
     private int pontosPorQuestao;
 
@@ -29,7 +29,6 @@ public class AcaoQuiz extends Acao{
             } else {
                 throw new Exception("Valor inválido. N´mero de aceros deve ser maior que zero");
             }
-
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
         }
@@ -58,8 +57,8 @@ public class AcaoQuiz extends Acao{
      */
     public int registrarPontos(int pontosGerados) {
         //Quiz vale a metade dos pontos quando atrelados a uma conquista ou outra ação
-        super.registrarPontos((int) (pontosGerados*0.5));
-        return super.getSoulCoinsGerados();
+        super.registrarPontos((int) (pontosGerados * 0.5));
+        return super.getQtPontosGerados();
     }
 
     /**
@@ -68,13 +67,13 @@ public class AcaoQuiz extends Acao{
      */
     public int registrarPontos() {
         //Quiz normal:
-        super.registrarPontos(pontosPorQuestao*acertos);
-        return super.getSoulCoinsGerados();
+        super.registrarPontos(pontosPorQuestao * acertos);
+        return super.getQtPontosGerados();
     }
 
     public String detalhes() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
         return String.format("Quiz \"%s\" concluído em (%s) e gerou %d Soul Coins. Acertou %d questões",
-                super.getNome(), super.getDataRealizacao().format(dtf), super.getSoulCoinsGerados(), acertos);
+                super.getDsAcao(), super.getDtAcao().format(dtf), super.getQtPontosGerados(), acertos);
     }
 }

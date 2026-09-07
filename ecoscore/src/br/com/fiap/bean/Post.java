@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter;
 
 public class Post {
     private int idPost;
-    private int idUsuario; //FK de Usuario
+    private String idUsuario; //FK de Usuario
     private Integer idAcao; //FK de Acao, é Integer pois pode ser null, post pode ser feito sem Ação
     private String dsPost;
     private LocalDateTime dtPost;
@@ -14,7 +14,7 @@ public class Post {
     private int numSaldoVotes;
 
     public Post() {}
-    public Post(int idPost, int idUsuario) {
+    public Post(int idPost, String idUsuario) {
         this.idPost = idPost;
         this.idUsuario = idUsuario;
     }
@@ -25,10 +25,10 @@ public class Post {
     public void setIdPost(int idPost) {
         this.idPost = idPost;
     }
-    public int getIdUsuario() {
+    public String getIdUsuario() {
         return idUsuario;
     }
-    public void setIdUsuario(int idUsuario) {
+    public void setIdUsuario(String idUsuario) {
         this.idUsuario = idUsuario;
     }
     public Integer getIdAcao() {
@@ -108,7 +108,7 @@ public class Post {
     }
 
     /**
-     * Mostra os detalhes do post, descrição, autor, ação atralelada, data e quantidade de votos.
+     * Mostra os detalhes do post, descrição, autor, ação atrelada, data e quantidade de votos.
      * @return Uma string formatada com as informações do post.
      */
     public String detalhes() {
