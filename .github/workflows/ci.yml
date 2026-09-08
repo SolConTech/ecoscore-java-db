@@ -2,9 +2,9 @@ name: Java CI Direto (Sem Maven/Gradle)
 
 on:
   push:
-    branches: [ "main", "develop" ]
+    branches: [ "**" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "**" ]
 
 jobs:
   build:
