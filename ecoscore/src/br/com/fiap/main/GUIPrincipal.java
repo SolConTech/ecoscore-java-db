@@ -11,9 +11,9 @@ import java.awt.event.ActionListener;
 public class GUIPrincipal extends JFrame {
     private Usuario usuario = new Usuario("Murilo", "@murilosouza", 80, 220);
     private Acao acao;
-    private AcaoConquista acaoConquista;
-    private AcaoPost acaoPost;
-    private AcaoQuiz acaoQuiz;
+    private Missao missao;
+    private Post Post;
+    private Quiz Quiz;
     private CalculadoraPontos calculadora = new CalculadoraPontos();
     private Container contentPane;
     private JMenuBar mnBarra;
@@ -43,13 +43,17 @@ public class GUIPrincipal extends JFrame {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
         }
         acao = new Acao("3kg de lixo reciclados");
-        usuario.registrarAcao(acao.registrarPontos(calculadora.pontosReciclagem(3)), acao.detalhes());
+        usuario.registrarAtividade(acao.detalhesAcao(),
+                                   acao.registrarPontos(calculadora.pontosReciclagem(5)));
         acao = new Acao("100L de água economizados");
-        usuario.registrarAcao(acao.registrarPontos(calculadora.pontosAgua(100)), acao.detalhes());
+        usuario.registrarAtividade(acao.detalhesAcao(),
+                                   acao.registrarPontos(calculadora.pontosAgua(100)));
         acao = new Acao("20kg de Carbono a menos no planeta");
-        usuario.registrarAcao(acao.registrarPontos(calculadora.pontosCarbono(20)), acao.detalhes());
+        usuario.registrarAtividade(acao.detalhesAcao(),
+                                   acao.registrarPontos(calculadora.pontosCarbono(20)), acao.detalhesAcao());
         acao = new Acao("Compra de uma muda de árvore");
-        usuario.registrarAcao(acao.registrarPontos(calculadora.pontosNatureza(2)), acao.detalhes());
+        usuario.registrarAtividade(acao.detalhesAcao(),
+                                   acao.registrarPontos(calculadora.pontosNatureza(2)), acao.detalhesAcao());
     }
     private void inicializarComponentes() {
         setTitle("Ecoscore - SoulUp");
@@ -135,23 +139,23 @@ public class GUIPrincipal extends JFrame {
                     switch (escolha) {
                         case 1:
                             int dificuldade = Integer.parseInt(JOptionPane.showInputDialog("Qual é a dificuldade da ação realizada? Digite (entre 1 a 5): "));
-                            usuario.registrarAcao(acao.registrarPontos(calculadora.pontosNatureza(dificuldade)),
-                                    acao.detalhes());
+                            usuario.registrarAtividade(acao.detalhesAcao(),
+                                                       acao.registrarPontos(calculadora.pontosNatureza(dificuldade)));
                             break;
                         case 2:
                             float kgCarbono = Integer.parseInt(JOptionPane.showInputDialog("Qual é a qtde. de carbono? Digite (um número): "));
-                            usuario.registrarAcao(acao.registrarPontos(calculadora.pontosCarbono(kgCarbono)),
-                                    acao.detalhes());
+                            usuario.registrarAtividade(acao.detalhesAcao(),
+                                                       acao.registrarPontos(calculadora.pontosCarbono(kgCarbono)));
                             break;
                         case 3:
                             float litros = Integer.parseInt(JOptionPane.showInputDialog("Qual é a qtde. de litros economizados? Digite (um número): "));
-                            usuario.registrarAcao(acao.registrarPontos(calculadora.pontosAgua(litros)),
-                                    acao.detalhes());
+                            usuario.registrarAtividade(acao.detalhesAcao(),
+                                                       acao.registrarPontos(calculadora.pontosAgua(litros)));
                             break;
                         case 4:
                             float kgReciclados = Integer.parseInt(JOptionPane.showInputDialog("Qual é a qtde. de KG reciclados? Digite (um número): "));
-                            usuario.registrarAcao(acao.registrarPontos(calculadora.pontosReciclagem(kgReciclados)),
-                                    acao.detalhes());
+                            usuario.registrarAtividade(acao.detalhesAcao(),
+                                                       acao.registrarPontos(calculadora.pontosReciclagem(kgReciclados)));
                             break;
                         case 0:
                             break;
@@ -168,37 +172,14 @@ public class GUIPrincipal extends JFrame {
         btRegistrarConquista.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                AcaoConquista acao;
+                Missao missao;
                 try {
-                    int escolha = Integer.parseInt(JOptionPane.showInputDialog("Digite o tipo de conquista:\n1. Natureza\n2. Carbono\n3. Água\n4. Reciclagem\n0. cancelar ação"));
-                    acao = new AcaoConquista(JOptionPane.showInputDialog("Digite o nome da conquista: "), Integer.parseInt(JOptionPane.showInputDialog("Qual é a raridade dessa conquista? Digite (número de 1 a 4): ")));
-                    switch (escolha) {
-                        case 1:
-                            int dificuldade = Integer.parseInt(JOptionPane.showInputDialog("Qual é a dificuldade da conquista realizada? Digite (entre 1 a 5): "));
-                            usuario.registrarAcao(acao.registrarPontos(calculadora.pontosNatureza(dificuldade)),
-                                    acao.detalhes());
-                            break;
-                        case 2:
-                            float kgCarbono = Float.parseFloat(JOptionPane.showInputDialog("Qual é a qtde. de carbono? Digite (um número): "));
-                            usuario.registrarAcao(acao.registrarPontos(calculadora.pontosCarbono(kgCarbono)),
-                                    acao.detalhes());
-                            break;
-                        case 3:
-                            float litros = Float.parseFloat(JOptionPane.showInputDialog("Qual é a qtde. de litros economizados? Digite (um número): "));
-                            usuario.registrarAcao(acao.registrarPontos(calculadora.pontosAgua(litros)),
-                                    acao.detalhes());
-                            break;
-                        case 4:
-                            float kgReciclados = Float.parseFloat(JOptionPane.showInputDialog("Qual é a qtde. de KG reciclados? Digite (um número): "));
-                            usuario.registrarAcao(acao.registrarPontos(calculadora.pontosReciclagem(kgReciclados)),
-                                    acao.detalhes());
-                            break;
-                        case 0:
-
-                            break;
-                        default:
-                            throw new Exception("Opção inválida (0-4)");
-                    }
+                    missao = new Missao(Integer.parseInt(JOptionPane.showInputDialog("Digite o ID da missão (máx. 20 caracteres): ")),
+                                      JOptionPane.showInputDialog("Digite o nome da conquista: "),
+                                      JOptionPane.showInputDialog("Qual a descrição da conquista? (máx. 50 caracteres): "),
+                                      JOptionPane.showInputDialog("Qual o nome do selo que a missão vai dar? (máx. 10 caracteres): "),
+                                      Integer.parseInt(JOptionPane.showInputDialog("Digite quantos pontos essa missão vai gerar: ")));
+                    usuario.registrarAtividade(missao.getNmMissao(), missao.getQtPontosGerados(), missao.getSelo());
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 }
@@ -208,42 +189,14 @@ public class GUIPrincipal extends JFrame {
         btRegistrarQuiz.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                AcaoQuiz acao;
+                Quiz quiz;
                 try {
-                    int escolha = Integer.parseInt(JOptionPane.showInputDialog("Digite o tipo de quiz:\n1. Natureza\n2. Carbono\n3. Água\n4. Reciclagem\n5. sem ação (Pontos apenas por resposta)\n0. Cancelar ação"));
-                    acao = new AcaoQuiz(JOptionPane.showInputDialog("Digite o nome do quiz: "),
-                            Integer.parseInt(JOptionPane.showInputDialog("Digite a qtde. de acertos nesse quiz: ")),
-                            Integer.parseInt(JOptionPane.showInputDialog("Digite o valor do quiz, a qtde. pontos por acerto: ")));
-                    switch (escolha) {
-                        case 1:
-                            int dificuldade = Integer.parseInt(JOptionPane.showInputDialog("Qual é a dificuldade da ação atrelada ao quiz realizado? Digite (entre 1 a 5): "));
-                            usuario.registrarAcao(acao.registrarPontos(calculadora.pontosNatureza(dificuldade)),
-                                    acao.detalhes());
-                            break;
-                        case 2:
-                            float kgCarbono = Float.parseFloat(JOptionPane.showInputDialog("Qual é a qtde. de carbono atrelada? Digite (um número): "));
-                            usuario.registrarAcao(acao.registrarPontos(calculadora.pontosCarbono(kgCarbono)),
-                                    acao.detalhes());
-                            break;
-                        case 3:
-                            float litros = Float.parseFloat(JOptionPane.showInputDialog("Qual é a qtde. de litros atrelaods? Digite (um número): "));
-                            usuario.registrarAcao(acao.registrarPontos(calculadora.pontosAgua(litros)),
-                                    acao.detalhes());
-                            break;
-                        case 4:
-                            float kgReciclados = Float.parseFloat(JOptionPane.showInputDialog("Qual é a qtde. de KG reciclados atrelados? Digite (um número): "));
-                            usuario.registrarAcao(acao.registrarPontos(calculadora.pontosReciclagem(kgReciclados)),
-                                    acao.detalhes());
-                            break;
-                        case 5:
-                            usuario.registrarAcao(acao.registrarPontos(), acao.detalhes());
-                            break;
-                        case 0:
-
-                            break;
-                        default:
-                            throw new Exception("Opção inválida (0-4)");
-                    }
+                    quiz = new Quiz(Integer.parseInt(JOptionPane.showInputDialog("Digite o id do quiz: ")),
+                                    usuario.getIdUsuario(),
+                                    Integer.parseInt(JOptionPane.showInputDialog("Digite o num. de questões desse quiz: ")),
+                                    Integer.parseInt(JOptionPane.showInputDialog("Digite o num. de acertos desse quiz: ")),
+                                    Integer.parseInt(JOptionPane.showInputDialog("Digite o num. de pontos por questão: ")));
+                    usuario.registrarAtividade(quiz.detalhesQuiz(), quiz.getQtPontosGerados());
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 }
@@ -253,39 +206,11 @@ public class GUIPrincipal extends JFrame {
         btRegistrarPost.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                AcaoPost acao;
+                Post post;
                 try {
-                    int escolha = Integer.parseInt(JOptionPane.showInputDialog("Digite o tipo de post:\n1. Natureza\n2. Carbono\n3. Água\n4. Reciclagem\n0. Cancelar ação"));
-                    acao = new AcaoPost(JOptionPane.showInputDialog("Digite o nome do quiz: "),
-                            Integer.parseInt(JOptionPane.showInputDialog("Digite a posição do post no ranking: ")),
-                            Integer.parseInt(JOptionPane.showInputDialog("Digite o saldo de votos do post: ")));
-                    switch (escolha) {
-                        case 1:
-                            int dificuldade = Integer.parseInt(JOptionPane.showInputDialog("Qual é a dificuldade da ação atrelada ao post? Digite (entre 1 a 5): "));
-                            usuario.registrarAcao(acao.registrarPontos(calculadora.pontosNatureza(dificuldade)),
-                                    acao.detalhes());
-                            break;
-                        case 2:
-                            float kgCarbono = Float.parseFloat(JOptionPane.showInputDialog("Qual é a qtde. de carbono atrelada? Digite (um número): "));
-                            usuario.registrarAcao(acao.registrarPontos(calculadora.pontosCarbono(kgCarbono)),
-                                    acao.detalhes());
-                            break;
-                        case 3:
-                            float litros = Float.parseFloat(JOptionPane.showInputDialog("Qual é a qtde. de litros atrelaods? Digite (um número): "));
-                            usuario.registrarAcao(acao.registrarPontos(calculadora.pontosAgua(litros)),
-                                    acao.detalhes());
-                            break;
-                        case 4:
-                            float kgReciclados = Float.parseFloat(JOptionPane.showInputDialog("Qual é a qtde. de KG reciclados atrelados? Digite (um número): "));
-                            usuario.registrarAcao(acao.registrarPontos(calculadora.pontosReciclagem(kgReciclados)),
-                                    acao.detalhes());
-                            break;
-                        case 0:
-
-                            break;
-                        default:
-                            throw new Exception("Opção inválida (0-4)");
-                    }
+                    post = new Post(Integer.parseInt(JOptionPane.showInputDialog("Digite o id do post: ")),
+                                    usuario.getIdUsuario());
+                    usuario.registrarAtividade(post.detalhesPost());
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 }
