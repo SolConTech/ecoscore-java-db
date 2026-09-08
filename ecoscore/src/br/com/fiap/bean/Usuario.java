@@ -13,6 +13,7 @@ public class Usuario {
     private float vlMerito; //A confiabilidade do usuário, quanto o voto e as ações dele são confiáveis
     private int qtSoulCoins;
     private ArrayList<String> dsAtividadeRecente; //Últimas ações realizadas
+    private ArrayList<String> selosGanhos;
 
     public Usuario() {}
     // Construtor para registrar apenas nmUsuario do usuário e idUsuario, pois ambos não tem validação
@@ -81,7 +82,7 @@ public class Usuario {
     }
 
     /**
-     * Vai registrar uma atividade que o user realizou.
+     * Registrar uma atividade do usuário.
      * @param dsAtividade é o texto descrevendo a atividade realizada
      * @throws IllegalArgumentException quando a dsAtvidade é vazia ou nula
      */
@@ -93,7 +94,7 @@ public class Usuario {
     }
 
     /**
-     * Registra uma atividade que gerou do usuário.
+     * Registra uma atividade que gerou pontos ao usuário.
      * @param dsAtividade é o texto descrevendo a atividade realizada.
      * @param qtSoulCoins e a quantidade de pontos gerada por aquela atividade.
      * @throws IllegalArgumentException quando a dsAtvidade é vazia ou nula.
@@ -107,13 +108,39 @@ public class Usuario {
             // Divide pela metade os pontos recebidos e então arredonda para o inteiro mais próximo pra depois transformar em Inteiro.
             int vlSolconReduzidos = (int) Math.round(qtSoulCoins * 0.5);
             this.qtSoulCoins += vlSolconReduzidos;
-            dsAtividade += String.format(" %d pontos", vlSolconReduzidos);
+            dsAtividade += String.format(" [%d pontos]", vlSolconReduzidos);
         } else {
             // Menor que tres metade, maior já recebe todos os pontos normais
-            dsAtividade += String.format(" %d pontos", qtSoulCoins);
+            dsAtividade += String.format("[ %d pontos]", qtSoulCoins);
             registrarAtividade(dsAtividade);
             this.qtSoulCoins += qtSoulCoins;
         }
+    }
+
+    /**
+     * Registra uma atividade que gerou pontos e um selo ao usuário.
+     * @param dsAtividade é o texto descrevendo a atividade realizada.
+     * @param qtSoulCoins e a quantidade de pontos gerada por aquela atividade.
+     * @param selo        é o selo recebido
+     * @throws IllegalArgumentException quando a dsAtvidade é vazia ou nula.
+     */
+    public void registrarAtividade(String dsAtividade, int qtSoulCoins, String selo) throws IllegalArgumentException {
+        if (dsAtividade == null || dsAtividade.isBlank()) {
+            throw new IllegalArgumentException("A descrição da ação não pode ser vazia");
+        }
+        // a vlMerito do usuário deve alterar o recebimento de pontos
+        if (vlMerito <= 30) {
+            // Divide pela metade os pontos recebidos e então arredonda para o inteiro mais próximo pra depois transformar em Inteiro.
+            int vlSolconReduzidos = (int) Math.round(qtSoulCoins * 0.5);
+            this.qtSoulCoins += vlSolconReduzidos;
+            dsAtividade += String.format(" [%d pontos]", vlSolconReduzidos);
+        } else {
+            // Menor que tres metade, maior já recebe todos os pontos normais
+            dsAtividade += String.format(" [%d pontos]", qtSoulCoins);
+            registrarAtividade(dsAtividade);
+            this.qtSoulCoins += qtSoulCoins;
+        }
+        selosGanhos.add(selo);
     }
 
     /**

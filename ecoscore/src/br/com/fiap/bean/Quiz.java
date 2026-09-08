@@ -10,20 +10,20 @@ import java.time.format.DateTimeFormatter;
 public class Quiz {
     private int idQuiz;
     private String idUsuario;
-    private int numQuestao;
+    private int numQuestoes;
     private int numAcertos;
     private int qtPontosPorQuestao;
     private int qtPontosGerados;
     private LocalDateTime dtQuiz;
 
     public Quiz() {}
-    public Quiz(int idQuiz, String idUsuario, int numQuestao, int numAcertos, int qtPontosPorQuestao, int qtPontosGerados) {
+    public Quiz(int idQuiz, String idUsuario, int numQuestoes, int numAcertos, int qtPontosPorQuestao) {
         this.idQuiz = idQuiz;
         this.idUsuario = idUsuario;
-        this.numQuestao = numQuestao;
-        this.numAcertos = numAcertos;
-        this.qtPontosPorQuestao = qtPontosPorQuestao;
-        this.qtPontosGerados = qtPontosGerados;
+        setNumQuestoes(numQuestoes);
+        setNumAcertos(numAcertos);
+        setQtPontosPorQuestao(qtPontosPorQuestao);
+        setQtPontosGerados();
         this.dtQuiz = LocalDateTime.now();
     }
 
@@ -40,29 +40,38 @@ public class Quiz {
         this.idUsuario = idUsuario.toLowerCase();
         ;
     }
-    public int getNumQuestao() {
-        return numQuestao;
+    public int getNumQuestoes() {
+        return numQuestoes;
     }
-    public void setNumQuestao(int numQuestao) {
-        this.numQuestao = numQuestao;
+    public void setNumQuestoes(int numQuestoes) throws IllegalArgumentException {
+        if (numQuestoes <= 0) {
+            throw new IllegalArgumentException("A qtde. de questões deve ser maior que zero.");
+        }
     }
     public int getNumAcertos() {
         return numAcertos;
     }
-    public void setNumAcertos(int numAcertos) {
+    public void setNumAcertos(int numAcertos) throws IllegalArgumentException {
+        if (numAcertos <= 0 || numAcertos > numQuestoes) {
+            throw new IllegalArgumentException("A qtde. questões deve ser maior que zero e menor que o número de questões");
+        }
         this.numAcertos = numAcertos;
     }
     public int getQtPontosPorQuestao() {
         return qtPontosPorQuestao;
     }
-    public void setQtPontosPorQuestao(int qtPontosPorQuestao) {
+    public void setQtPontosPorQuestao(int qtPontosPorQuestao) throws IllegalArgumentException {
+        if (qtPontosPorQuestao <= 0) {
+            throw new IllegalArgumentException("A qtde. de pontos por questão deve ser maior que zero.");
+        }
         this.qtPontosPorQuestao = qtPontosPorQuestao;
     }
     public int getQtPontosGerados() {
         return qtPontosGerados;
     }
-    public void setQtPontosGerados(int qtPontosGerados) {
-        this.qtPontosGerados = qtPontosGerados;
+    public void setQtPontosGerados() {
+        //depende apenas dos valores da própria classe.
+        this.qtPontosGerados = numAcertos * qtPontosPorQuestao;
     }
     public LocalDateTime getDtQuiz() {
         return dtQuiz;
@@ -76,7 +85,8 @@ public class Quiz {
      * @return a quantidade de acertos vezes o quanto cada ponto vale
      */
     public int registrarPontos() {
-        return numAcertos * qtPontosPorQuestao;
+        setQtPontosGerados(); //se o objeto não for criado com construtor com passagem.
+        return qtPontosGerados;
     }
 
     /**
@@ -85,6 +95,6 @@ public class Quiz {
      */
     public String detalhesQuiz() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-        return String.format("Um quiz foi realizada em (%s) e gerou %d Soul Coins.", dtQuiz.format(dtf), qtPontosGerados);
+        return String.format("Um quiz foi realizada em (%s), acertando %d/%d.", dtQuiz.format(dtf), numAcertos, numQuestoes);
     }
 }

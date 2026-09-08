@@ -45,6 +45,6 @@ for (int i = 0; i < ranking.size(); i++) {
 
     // Formata e exibe tudo diretamente na tela
     System.out.printf("%dº Lugar - %s (%d pontos)%n",
-                      posicao, jogador.getNome(), jogador.getPontuacao());
+                      posicao, jogador.getNmMissao(), jogador.getPontuacao());
 }  */
 }

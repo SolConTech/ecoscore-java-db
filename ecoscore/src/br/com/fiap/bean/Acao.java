@@ -47,7 +47,7 @@ public class Acao {
     public int registrarPontos(int pontosGerados) {
         dtAcao = LocalDateTime.now();
         qtPontosGerados = pontosGerados;
-        return pontosGerados;
+        return qtPontosGerados;
     }
 
     /**
@@ -55,6 +55,6 @@ public class Acao {
      */
     public String detalhesAcao() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-        return String.format("A ação \"%s\" foi realizada em (%s) e gerou %d Soul Coins.", dsAcao, dtAcao.format(dtf), qtPontosGerados);
+        return String.format("A ação \"%s\" foi realizada em (%s).", dsAcao, dtAcao.format(dtf));
     }
 }

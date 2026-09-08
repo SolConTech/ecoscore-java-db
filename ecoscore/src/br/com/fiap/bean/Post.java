@@ -20,7 +20,7 @@ public class Post {
     public Post() {}
     public Post(int idPost, String idUsuario) {
         this.idPost = idPost;
-        this.idUsuario = idUsuario;
+        setIdUsuario(idUsuario);
     }
 
     public int getIdPost() {
@@ -110,7 +110,7 @@ public class Post {
      * Remove votos positivos para o post
      * @param qtDownVotes quantidade de votos negativos para adicionar
      */
-    public void addDownVote(int qtDownVotes) {
+    public void addDownVote(int qtDownVotes) throws IllegalArgumentException {
         if (qtDownVotes <= 0) {
             throw new IllegalArgumentException("Número de votos precisa ser maior que zero");
         }
@@ -123,7 +123,7 @@ public class Post {
      */
     public String detalhesPost() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy 'às' hh:mm");
-        return String.format("Post publicado em (%s) com saldo de %d votos",
-                dtPost.format(dtf), numSaldoVotes);
+        return String.format("Post publicado em (%s) com saldo de %d votos (+%d/-%d).",
+                dtPost.format(dtf), numSaldoVotes, numDownVotes, numDownVotes);
     }
 }
