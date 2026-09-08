@@ -1,6 +1,6 @@
 package br.com.fiap.main;
 
-import br.com.fiap.bean.*;
+import br.com.fiap.dto.*;
 
 import javax.swing.*;
 
