@@ -13,7 +13,7 @@ public class ConnectionFactory {
             String url = "jdbc:oracle:thin:@oracle.fiap.com.br:1521:ORCL";
             final String USER = "rm573620";
             final String PASS = "010208";
-            con = DriverManager.getConnection(url, PASS, USER);
+            con = DriverManager.getConnection(url, USER, PASS);
             JOptionPane.showMessageDialog(null, "Conectado ao Ecoscore",
                                      "Sucesso", JOptionPane.INFORMATION_MESSAGE);
         } catch (ClassNotFoundException e) {
