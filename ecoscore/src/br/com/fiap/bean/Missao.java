@@ -1,146 +1,83 @@
 package br.com.fiap.bean;
 
-import javax.swing.*;
-import java.util.HashMap;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Classe que vai guardar informações de uma missão
  * @since Java 21
  */
 public class Missao {
-    private int id;
-    private String nome;
-    private String descricao;
-    private ImageIcon selo; //demonstração infelizmente não sei se consigo exibir os selos dps.
-    private HashMap<String, Boolean> tarefas = new HashMap<String, Boolean>();
-    private float progresso = 0.0f; // é porcentagem, 0 de 10 tarefas exemplo 10%.
-    public Missao(){}
-    public Missao(int id, String nome, String descricao, ImageIcon selo) {
-        this.id = id;
-        this.nome = nome;
-        this.descricao = descricao;
+    private int idMissao;
+    private String nmMissao;
+    private String dsMissao;
+    private String selo; //demonstração infelizmente não sei se consigo exibir os selos dps.
+    private int qtPontosGerados;
+    private LocalDateTime dtMissao;
+
+    public Missao() {}
+    public Missao(int idMissao, String nmMissao, String dsMissao, String selo, int qtPontosGerados) {
+        this.idMissao = idMissao;
+        this.nmMissao = nmMissao;
+        this.dsMissao = dsMissao;
         this.selo = selo;
+        this.qtPontosGerados = qtPontosGerados;
+        dtMissao = LocalDateTime.now();
     }
 
-    public int getId() {
-        return id;
+    public int getIdMissao() {
+        return idMissao;
     }
-
-    public void setId(int id) {
-        this.id = id;
+    public void setIdMissao(int idMissao) {
+        this.idMissao = idMissao;
     }
-
-    public String getNome() {
-        return nome;
+    public String getNmMissao() {
+        return nmMissao;
     }
-
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setNmMissao(String nmMissao) {
+        this.nmMissao = nmMissao;
     }
-
-    public String getDescricao() {
-        return descricao;
+    public String getDsMissao() {
+        return dsMissao;
     }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public void setDsMissao(String dsMissao) {
+        this.dsMissao = dsMissao;
     }
-
-    public ImageIcon getSelo() {
+    public String getSelo() {
         return selo;
     }
-
-    public void setSelo(ImageIcon selo) {
+    public void setSelo(String selo) {
         this.selo = selo;
     }
-
-    public HashMap<String, Boolean> getTarefas() {
-        return tarefas;
+    public int getQtPontosGerados() {
+        return qtPontosGerados;
     }
-
-    public void setTarefas(HashMap<String, Boolean> tarefas) {
-        this.tarefas = tarefas;
+    public void setQtPontosGerados(int qtPontosGerados) {
+        this.qtPontosGerados = qtPontosGerados;
     }
-
-    public float getProgresso() {
-        return progresso;
+    public LocalDateTime getDtMissao() {
+        return dtMissao;
     }
-
-    public void setProgresso(float progresso) {
-        this.progresso = progresso;
+    public void setDtMissao(LocalDateTime dtMissao) {
+        this.dtMissao = dtMissao;
     }
 
     /**
-     * Vai atualizar o progresso da missão, ela usada dentro da classe para atualizar o valor do atributo "progresso"
+     * Retornar ao Usuario quantos pontos essa atividade gerou
+     * @return o número de pontos gerados
      */
-    private void atualizarProgresso(){
-        //privada piorque sói a classe vaiu usar mesmo, ela vai excutar no fuim de cada metodo de tarefa
-        //validação básica pra ver se as tarefas estão vazias
-        if (tarefas.isEmpty()){
-            progresso = 0.0f;
-            return;
-        }
-        //Stream API que vê os valroes boolean, se for igual a rtue ele vai pra contagem, o count é o final da esteira e vai somar cada valor true
-        float concluidas = tarefas.values().stream().filter(estado -> estado == true).count();
-        //exemplo 1/10 = 0.10, 0.10 * 100 é igual 10, que seria 10% que é iugal 1/10
-        this.progresso = (concluidas/ tarefas.size()) * 100.0f; //f pra gArantir float
-    }
-
-    /**
-     * Adiciona uma tarefa à missão
-     * @param tarefaNome o nome da tarefa, com o que tem que ser feito
-     * @throws IllegalArgumentException Quando o nome da tarefa é vazio, com mais de 50 de lenght ou já existe na Missao
-     */
-    public void adicionarTarefa(String tarefaNome) throws IllegalArgumentException {
-        //Não pode ser vazia
-        if (tarefaNome.isBlank()) {
-            throw new IllegalArgumentException("A tarefa não pode ser vazia");
-        }
-        //regra de negócio, tarefas objetivas de no máximo 50 caracteres.
-        if (tarefaNome.length() > 50) {
-            throw new IllegalArgumentException("A tarefa deve ter no máximo 50 caracteres");
-        }
-        if (tarefas.containsKey(tarefaNome)) {
-            throw new IllegalArgumentException(String.format("A tarefa \"%s\" já existe", tarefaNome));
-        }
-        tarefas.put(tarefaNome, false);
-        //false == tarefa não realizada e true é igual a tarefa feita
-        atualizarProgresso();
-    }
-
-    /**
-     * Conclui uma das tarefas da missão pelo nome.
-     * @param tarefaNome o nome da tarefa que será concluída
-     * @throws IllegalArgumentException quando a tarefa não existe
-     * @return uma mensagem dizendo que a tarefa fopi concluída, ou se ela já tinha sido antes.
-     */
-    public String concluirTarefa(String tarefaNome) throws IllegalArgumentException {
-        if (!tarefas.containsKey(tarefaNome)) {
-            throw new IllegalArgumentException(String.format("A tarefa \"%s\" não existe", tarefaNome));
-        }
-        // como as chaves são boolean se for true a tarefa já foi feirta.
-        if (tarefas.get((tarefaNome))){
-            return "Tarefa \"" + tarefaNome + "\" já foi concluída anteriormente";
-        }
-        tarefas.put(tarefaNome, true);
-        atualizarProgresso();
-        return "Tarefa \"" + tarefaNome + "\" concluída";
+    public int registrarPontos() {
+        return qtPontosGerados;
     }
 
     /**
      * Informações completas da missão.
-     * @return String formatada com id, nome, descrição, progresso e tarefas.
+     * @return String formatada com idMissao, nmMissao, descrição, progresso e tarefas.
      */
-    public String detalhesMissao(){
-        String trfs = "";
-        for (String tarefa : tarefas.keySet()){
-            trfs += tarefas + "\n";
-        }
-        if (tarefas.isEmpty()){
-            trfs += "Nenhuma adicionada. Progresso também zero";
-        }
-        return String.format("Id: %d Nome: %s\nDescrição: %s\nProgresso:%.1f%%\nTarefas:%s\n",
-                             id, nome, descricao, progresso, trfs);
-
+    public String detalhesMissao() {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        return String.format("Missão \"%s\" realizada em (%s).",
+                nmMissao, dtMissao.format(dtf));
     }
 }
+

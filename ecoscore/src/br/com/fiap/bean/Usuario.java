@@ -8,127 +8,139 @@ import java.util.ArrayList;
  * @since Java 21
  */
 public class Usuario {
-    private String nome;
-    private String id;
-    private float confiabilidade;
-    private int soulCoins;
-    //Um valor "vazio" é definido para não dar erro na concatenação de strings.
-    private ArrayList<String> atividadeRecente;
-    private ArrayList<Missao> missoes; //As misões que o usuário fez ou está fazendo, isso vai permitir pegar os selos das missões.
+    private String idUsuario;
+    private String nmUsuario;
+    private float vlMerito; //A confiabilidade do usuário, quanto o voto e as ações dele são confiáveis
+    private int qtSoulCoins;
+    private ArrayList<String> dsAtividadeRecente; //Últimas ações realizadas
+    private ArrayList<String> selosGanhos;
 
     public Usuario() {}
-    // Construtor para registrar apenas nome do usuário e id, pois ambos não tem validação
-    public Usuario(String nome, String id) {
-        this.nome = nome;
-        setId(id);
+    // Construtor para registrar apenas nmUsuario do usuário e idUsuario, pois ambos não tem validação
+    public Usuario(String nmUsuario, String idUsuario) {
+        this.nmUsuario = nmUsuario;
+        setIdUsuario(idUsuario);
     }
-    // Construtor para registrar usuário quas completo (nome, id, confiabilidade e soul coins).
-    public Usuario(String nome, String id, float confiabilidade, int soulCoins) {
-        this.nome = nome;
-        setId(id);
-        setConfiabilidade(confiabilidade);
-        setSoulCoins(soulCoins);
+    // Construtor para registrar usuário quas completo (nome, idUsuario, vlMerito e soul coins).
+    public Usuario(String nmUsuario, String idUsuario, float vlMerito, int qtSoulCoins) {
+        this.nmUsuario = nmUsuario;
+        setIdUsuario(idUsuario);
+        setVlMerito(vlMerito);
+        setQtSoulCoins(qtSoulCoins);
     }
 
     public String getNome() {
-        return nome;
+        return nmUsuario;
     }
-
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setNome(String nmUsuario) {
+        this.nmUsuario = nmUsuario;
     }
-
-    public String getId() {
-        return id;
+    public String getIdUsuario() {
+        return idUsuario;
     }
-
-    // A id é sempre minúscula.
-    public void setId(String id) {
-        this.id = id.toLowerCase();
+    // A idUsuario é sempre minúscula.
+    public void setIdUsuario(String idUsuario) {
+        this.idUsuario = idUsuario.toLowerCase();
     }
-
-    public float getConfiabilidade() {
-        return confiabilidade;
+    public float getVlMerito() {
+        return vlMerito;
     }
-
     // Confiabilidade varia entre 0 e 100%, e é mostrada como porcentagem
-    public void setConfiabilidade(float confiabilidade) {
+    public void setVlMerito(float vlMerito) {
         try {
-            if (confiabilidade >= 0 && confiabilidade <= 100) {
-                this.confiabilidade = confiabilidade;
+            if (vlMerito >= 0 && vlMerito <= 100) {
+                this.vlMerito = vlMerito;
             } else {
-                // 50 é a confiabilidade padrão
-                setConfiabilidade(50);
-                throw new Exception("Valor inválido, digite um número de 1 a 100 para confiabilidade");
+                // 50 é a vlMerito padrão
+                setVlMerito(50);
+                throw new Exception("Valor inválido, digite um número de 1 a 100 para vlMerito");
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
-
-    public int getSoulCoins() {
-        return soulCoins;
+    public int getQtSoulCoins() {
+        return qtSoulCoins;
     }
-
-    public void setSoulCoins(int soulCoins) {
+    public void setQtSoulCoins(int qtSoulCoins) {
         try {
-            if (soulCoins >= 0) {
-                this.soulCoins = soulCoins;
+            if (qtSoulCoins >= 0) {
+                this.qtSoulCoins = qtSoulCoins;
             } else {
-                //0 é a confiabilidade padrão mesmo
+                //0 é a vlMerito padrão mesmo
                 throw new Exception("O número de Soul coins não pode ser negativo");
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
-
-    public ArrayList<String> getAtividadeRecente() {
-        return atividadeRecente;
+    public ArrayList<String> getDsAtividadeRecente() {
+        return dsAtividadeRecente;
     }
-
-    public void setAtividadeRecente(ArrayList<String> atividadeRecente) {
-        this.atividadeRecente = atividadeRecente;
-    }
-
-    public ArrayList<Missao> getMissoes() {
-        return missoes;
-    }
-
-    public void setMissoes(ArrayList<Missao> missoes) {
-        this.missoes = missoes;
+    public void setDsAtividadeRecente(ArrayList<String> dsAtividadeRecente) {
+        this.dsAtividadeRecente = dsAtividadeRecente;
     }
 
     /**
-     * Adiciona uma missão ao usuário.
-     * @param missao Uma missao sendo adiconada ao usuário
+     * Registrar uma atividade do usuário.
+     * @param dsAtividade é o texto descrevendo a atividade realizada
+     * @throws IllegalArgumentException quando a dsAtvidade é vazia ou nula
      */
-    public void addMissoes(Missao missao) throws IllegalArgumentException{
-        //Só adiciona a missão se eloa não existir antes
-        if (!missoes.contains(missao)) {
-            missoes.add(missao);
-        } else {
-            throw new IllegalArgumentException("Essa missão já foi adicionada!");
+    public void registrarAtividade(String dsAtividade) throws IllegalArgumentException {
+        if (dsAtividade == null || dsAtividade.isBlank()) {
+            throw new IllegalArgumentException("A descrição da atividade não pode ser vazia");
         }
-
+        dsAtividadeRecente.add(dsAtividade);
     }
 
     /**
-     * Vai registrar uma ação sustentavel para o user.
-     * @param soulCoins recebe a quantidade de soulCoins ganhos
-     * @param descAcao é o texto descrevendo a ação realizada
+     * Registra uma atividade que gerou pontos ao usuário.
+     * @param dsAtividade é o texto descrevendo a atividade realizada.
+     * @param qtSoulCoins e a quantidade de pontos gerada por aquela atividade.
+     * @throws IllegalArgumentException quando a dsAtvidade é vazia ou nula.
      */
-    public void registrarAcao(int soulCoins, String descAcao) {
-        // a confiabilidade do usuário deve alterar o recebimento de pontos
-        if (confiabilidade <= 30) {
+    public void registrarAtividade(String dsAtividade, int qtSoulCoins) throws IllegalArgumentException {
+        if (dsAtividade == null || dsAtividade.isBlank()) {
+            throw new IllegalArgumentException("A descrição da ação não pode ser vazia");
+        }
+        // a vlMerito do usuário deve alterar o recebimento de pontos
+        if (vlMerito <= 30) {
             // Divide pela metade os pontos recebidos e então arredonda para o inteiro mais próximo pra depois transformar em Inteiro.
-            this.soulCoins += (int) Math.round(soulCoins * 0.5);
-            descAcao += "[pontos reduzidos pela metade]";
+            int vlSolconReduzidos = (int) Math.round(qtSoulCoins * 0.5);
+            this.qtSoulCoins += vlSolconReduzidos;
+            dsAtividade += String.format(" [%d pontos]", vlSolconReduzidos);
         } else {
             // Menor que tres metade, maior já recebe todos os pontos normais
-            this.soulCoins += soulCoins;
+            dsAtividade += String.format("[ %d pontos]", qtSoulCoins);
+            registrarAtividade(dsAtividade);
+            this.qtSoulCoins += qtSoulCoins;
         }
-        atividadeRecente.add(descAcao);
+    }
+
+    /**
+     * Registra uma atividade que gerou pontos e um selo ao usuário.
+     * @param dsAtividade é o texto descrevendo a atividade realizada.
+     * @param qtSoulCoins e a quantidade de pontos gerada por aquela atividade.
+     * @param selo        é o selo recebido
+     * @throws IllegalArgumentException quando a dsAtvidade é vazia ou nula.
+     */
+    public void registrarAtividade(String dsAtividade, int qtSoulCoins, String selo) throws IllegalArgumentException {
+        if (dsAtividade == null || dsAtividade.isBlank()) {
+            throw new IllegalArgumentException("A descrição da ação não pode ser vazia");
+        }
+        // a vlMerito do usuário deve alterar o recebimento de pontos
+        if (vlMerito <= 30) {
+            // Divide pela metade os pontos recebidos e então arredonda para o inteiro mais próximo pra depois transformar em Inteiro.
+            int vlSolconReduzidos = (int) Math.round(qtSoulCoins * 0.5);
+            this.qtSoulCoins += vlSolconReduzidos;
+            dsAtividade += String.format(" [%d pontos]", vlSolconReduzidos);
+        } else {
+            // Menor que tres metade, maior já recebe todos os pontos normais
+            dsAtividade += String.format(" [%d pontos]", qtSoulCoins);
+            registrarAtividade(dsAtividade);
+            this.qtSoulCoins += qtSoulCoins;
+        }
+        selosGanhos.add(selo);
     }
 
     /**
@@ -137,16 +149,16 @@ public class Usuario {
      */
     public String detalhesPerfil() {
         String listaAtividaderecente = "";
-        for (String atividade : atividadeRecente){
+        for (String atividade : dsAtividadeRecente) {
             listaAtividaderecente += atividade + "\n";
         }
-        return String.format("Nome: %s\nId: %s\nConfiabilidade: %.1f\nSoul Coins: %d\nAtividade recente:\n%s", nome, id, confiabilidade, soulCoins, atividadeRecente);
+        return String.format("Nome: %s\nId: %s\nConfiabilidade: %.1f\nSoul Coins: %d\nAtividade recente:\n%s", nmUsuario, idUsuario, vlMerito, qtSoulCoins, dsAtividadeRecente);
     }
 
     /**
-     * Registra uma penalidade de confiabilidade para o usuário
-     * @param valorPenalidade o valor que será descontado da confiabilidade do usuário
-     * @param descOcorrido uma string que descreve o ocorrido de uma penalidade
+     * Registra uma penalidade de vlMerito para o usuário
+     * @param valorPenalidade o valor que será descontado da vlMerito do usuário
+     * @param descOcorrido    uma string que descreve o ocorrido de uma penalidade
      * @return uma string indicando o registro
      */
     public String registrarPenalidade(float valorPenalidade, String descOcorrido) {
@@ -155,11 +167,11 @@ public class Usuario {
             // 0 vai permitir que seja "cancelado"
             if (valorPenalidade >= 0) {
                 /*Se o valor da penalidade for maior que o valor atual então ele vai ser colocado como zero, isso impede que a confiablidade fique negativa, basicamente o mathmax vai pegar o maior valor, se o resultado for negativo será o 0*/
-                this.confiabilidade = Math.max(0, this.confiabilidade -= valorPenalidade);
+                this.vlMerito = Math.max(0, this.vlMerito -= valorPenalidade);
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
         }
-        return String.format("Penalidade registrada, %s perdeu %.1f%% de confiabilidade, ficando com %.1f%%. Desc: %s", nome, valorPenalidade, confiabilidade, descOcorrido);
+        return String.format("Penalidade registrada, %s perdeu %.1f%% de vlMerito, ficando com %.1f%%. Desc: %s", nmUsuario, valorPenalidade, vlMerito, descOcorrido);
     }
 }
