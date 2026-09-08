@@ -2,6 +2,9 @@ package br.com.fiap.bean;
 
 import java.time.LocalDateTime;
 
+/**
+ * Cada registro de um usuário do ranking
+ */
 public class RankingUsuario {
     private int idRanking;
     private String idUsuario;
