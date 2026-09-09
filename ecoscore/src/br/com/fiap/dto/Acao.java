@@ -20,6 +20,18 @@ public class Acao {
         this.dsAcao = dsAcao;
     }
 
+    public int getIdAcao() {
+        return idAcao;
+    }
+    public void setIdAcao(int idAcao) {
+        this.idAcao = idAcao;
+    }
+    public String getIdUsuario() {
+        return idUsuario;
+    }
+    public void setIdUsuario(String idUsuario) {
+        this.idUsuario = idUsuario;
+    }
     public String getDsAcao() {
         return dsAcao;
     }
