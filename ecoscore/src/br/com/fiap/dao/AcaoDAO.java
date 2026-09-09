@@ -19,7 +19,7 @@ public class AcaoDAO {
     }
 
     public String inserir(Acao acao){
-        String sql = "insert into acao(idUsuario, dsAcao, qtPontosGerados, dtAcao) values(?,?,?,?)";
+        String sql = "insert into acao(usuario_id_usuario, ds_acao, qt_pontosGerados, dt_acao) values(?,?,?,?)";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
             ps.setString(1, acao.getIdUsuario());
             ps.setString(2, acao.getDsAcao());
@@ -37,7 +37,7 @@ public class AcaoDAO {
     }
 
     public String alterar(Acao acao){
-        String sql = "update acao set idUsuario=?, dsAcao=?, qtPontosGerados=?, dtAcao=? where idAcao=?";
+        String sql = "update acao set USUARIO_ID_USUARIO=?, DS_ACAO=?, QT_PONTOSGERADOS=?, DT_ACAO=? where ID_ACAO=?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
             ps.setString(1, acao.getIdUsuario());
             ps.setString(2, acao.getDsAcao());
@@ -55,7 +55,7 @@ public class AcaoDAO {
     }
 
     public String excluir(Acao acao){
-        String sql = "delete from acao where idAcao=?";
+        String sql = "delete from acao where ID_ACAO=?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
             ps.setInt(1, acao.getIdAcao());
             if (ps.executeUpdate() > 0) {
@@ -69,7 +69,7 @@ public class AcaoDAO {
     }
 
     public ArrayList<Acao> listarTodos(){
-        String sql = "select * from acao order by placa";
+        String sql = "select * from acao order by USUARIO_ID_USUARIO";
         ArrayList<Acao> listaAcao = new ArrayList<>();
         try (PreparedStatement ps = getCon().prepareStatement(sql);
              ResultSet rs = ps.executeQuery()){
