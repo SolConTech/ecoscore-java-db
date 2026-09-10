@@ -9,6 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 @SuppressWarnings("serial")
@@ -46,20 +48,21 @@ public class GUIPrincipal extends JFrame {
             usuarioDAO = new UsuarioDAO(con);
             usuario = usuarioDAO.pegarUm("dragonborn123"); //como se fosse um login
             System.out.println(usuario);
+            acao = new Acao();
+            acaoDAO = new AcaoDAO(con);
+            acao = acaoDAO.pegarUm(4);
+            usuario.registrarAtividade(acao.detalhesAcao(), acao.getQtPontosGerados());
+            missao = new Missao(67,"Trilha de Agricultor", "Diversas missões e tarefas relacionadas com nosso parceiro que vende produtos de jardinagem.","Agricultor Mestre",1000);
+            usuario.registrarAtividade(missao.detalhesMissao(),missao.getQtPontosGerados(),missao.getSelo());
+            post = new Post(70,"dragonborn123","Veja esse post de M. Souza, onde ele posta sobre suas ações sociais mais recentes.");
+            post.addUpVote(57);
+            post.addDownVote(13);
+            usuario.registrarAtividade(post.detalhesPost());
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Erro de SQL:" + e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Erro:" + e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
         }
-        acao = new Acao(14,"dragonborn123","10L de água economizados");
-        acao.registrarPontos(calculadora.pontosAgua(10));
-        usuario.registrarAtividade(acao.detalhesAcao(), acao.getQtPontosGerados());
-        missao = new Missao(67,"Trilha de Agricultor", "Diversas missões e tarefas relacionadas com nosso parceiro que vende produtos de jardinagem.","Agricultor Mestre",1000);
-        usuario.registrarAtividade(missao.detalhesMissao(),missao.getQtPontosGerados(),missao.getSelo());
-        post = new Post(70,"dragonborn123","Veja esse post de M. Souza, onde ele posta sobre suas ações sociais mais recentes.");
-        post.addUpVote(57);
-        post.addDownVote(13);
-        usuario.registrarAtividade(post.detalhesPost());
     }
 
     private void inicializarComponentes() {

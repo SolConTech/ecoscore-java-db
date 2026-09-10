@@ -2,10 +2,7 @@ package br.com.fiap.dao;
 
 import br.com.fiap.dto.Quiz;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -97,8 +94,8 @@ public class QuizDAO {
                     quiz.setQtPontosPorQuestao(rs.getInt(5));
                     quiz.setQtPontosGerados(); //ela calcula com base no num acertos e num pontos questão
 
-                    LocalDateTime data = (LocalDateTime) rs.getObject(7);
-                    quiz.setDtQuiz(data);
+                    Timestamp data = rs.getTimestamp(7);
+                    quiz.setDtQuiz(data.toLocalDateTime());
 
                     listaQuiz.add(quiz);
                 }

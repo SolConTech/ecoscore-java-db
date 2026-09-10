@@ -3,10 +3,7 @@ package br.com.fiap.dao;
 import br.com.fiap.dto.Acao;
 import br.com.fiap.dto.Missao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -87,8 +84,8 @@ public class MissaoDAO {
                     missao.setDsMissao(rs.getString(3));
                     missao.setSelo(rs.getString(4));
                     missao.setQtPontosGerados(rs.getInt(5));
-                    LocalDateTime data = (LocalDateTime) rs.getObject(6);
-                    missao.setDtMissao(data);
+                    Timestamp data = rs.getTimestamp(6);
+                    missao.setDtMissao(data.toLocalDateTime());
 
                     listaMissao.add(missao);
                 }

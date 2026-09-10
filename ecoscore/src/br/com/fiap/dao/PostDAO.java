@@ -2,10 +2,7 @@ package br.com.fiap.dao;
 
 import br.com.fiap.dto.Post;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -95,8 +92,8 @@ public class PostDAO {
                     post.setIdUsuario(rs.getString(2));
                     post.setIdAcao(rs.getInt(3));
                     post.setDsPost(rs.getString(4));
-                    LocalDateTime data = (LocalDateTime) rs.getObject(5);
-                    post.setDtPost(data);
+                    Timestamp data = rs.getTimestamp(5);
+                    post.setDtPost(data.toLocalDateTime());
                     post.setNumUpVotes(rs.getInt(6));
                     post.setNumDownVotes(rs.getInt(7));
                     post.setNumSaldoVotes(rs.getInt(8));
