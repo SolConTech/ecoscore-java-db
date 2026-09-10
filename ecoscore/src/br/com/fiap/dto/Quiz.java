@@ -71,7 +71,7 @@ public class Quiz {
         return qtPontosGerados;
     }
     public void setQtPontosGerados() {
-        //depende apenas dos valores da própria classe.
+        //depende dos valores da própria classe.
         this.qtPontosGerados = numAcertos * qtPontosPorQuestao;
     }
     public LocalDateTime getDtQuiz() {

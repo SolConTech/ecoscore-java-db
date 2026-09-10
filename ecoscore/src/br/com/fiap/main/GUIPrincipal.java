@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 
 @SuppressWarnings("serial")
 public class GUIPrincipal extends JFrame {
@@ -32,7 +33,7 @@ public class GUIPrincipal extends JFrame {
     public JMenu mnArquivo, mnUsuario,mnMissao,mnAcao,mnPost,mnQuiz,mnAjuda;
     public JMenuItem miSair, miAjuda, miEditarExemplo,miLimparAtividades,miLimparSelos,miCriarUsuario,miLerUsuario,miAtualizarUsuario,miExcluirUsuario,miCriarMissao,miLerMissao,miAtualizarMissao,miExcluirMissao,miCriarAcao,miLerAcao,miAtualizarAcao,miExcluirAcao,miCriarPost,miLerPost,miAtualizarPost,miExcluirPost,miCriarQuiz,miLerQuiz,miAtualizarQuiz,miExcluirQuiz;
     private JPanel painel, painelBts, painelTxt;
-    private JButton btRegistrarAcao, btRegistrarConquista, btRegistrarQuiz, btRegistrarPost, btRegistrarPenalidade, btSair;
+    private JButton btRegistrarAcao, btRegistrarMissao, btRegistrarQuiz, btRegistrarPost, btRegistrarPenalidade, btSair;
     private JPopupMenu teste;
     private JTextArea taDetalhesPerfil = new JTextArea(usuario.detalhesPerfil());
     private JLabel lbPerfil;
@@ -58,24 +59,20 @@ public class GUIPrincipal extends JFrame {
 
             usuario = usuarioDAO.pegarUm("dragonborn123"); //como se fosse um login
             acao = acaoDAO.pegarUm(4);
-            usuario.registrarAtividade(acao.detalhesAcao(), acao.getQtPontosGerados());
+            usuario.registrarAtividade(acao.detalhesAcao());
             missao = missaoDAO.pegarUm(0);
             usuario.registrarAtividade(missao.detalhesMissao(),missao.getQtPontosGerados(),missao.getSelo());
             post = postDAO.pegarUm(0);
             usuario.registrarAtividade(post.detalhesPost());
             quiz = quizDAO.pegarUm(0);
-            usuario.registrarAtividade(quiz.detalhesQuiz(), quiz.getQtPontosGerados());
+            usuario.registrarAtividade(quiz.detalhesQuiz());
 
-            post.addUpVote(57);
-            post.addDownVote(13);
-            usuario.registrarAtividade(post.detalhesPost());
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Erro de SQL:" + e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Erro:" + e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
         }
     }
-
     private void inicializarComponentes() {
         setTitle("Ecoscore - SoulUp");
         setBounds(0, 0, 900, 300);
@@ -124,7 +121,7 @@ public class GUIPrincipal extends JFrame {
         painelBts.setLayout(new FlowLayout());
         painelTxt = new JPanel();
         btRegistrarAcao = new JButton("Registrar ação");
-        btRegistrarConquista = new JButton("Registrar missão");
+        btRegistrarMissao = new JButton("Registrar missão");
         btRegistrarQuiz = new JButton("Registrar quiz");
         btRegistrarPost = new JButton("Registrar post");
         btRegistrarPenalidade = new JButton("Registrar penalidade");
@@ -170,7 +167,7 @@ public class GUIPrincipal extends JFrame {
         mnAjuda.add(miAjuda);
 
         painelBts.add(btRegistrarAcao);
-        painelBts.add(btRegistrarConquista);
+        painelBts.add(btRegistrarMissao);
         painelBts.add(btRegistrarQuiz);
         painelBts.add(btRegistrarPost);
         painelBts.add(btRegistrarPenalidade);
@@ -242,90 +239,139 @@ public class GUIPrincipal extends JFrame {
                 taDetalhesPerfil.setText(usuario.detalhesPerfil());
             }
         });
+
         btRegistrarAcao.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                try {
+                try (Connection con = ConnectionFactory.abrirConexao()) {
+                    acaoDAO = new AcaoDAO(con);
+                    acao = new Acao();
+
                     int escolha = Integer.parseInt(JOptionPane.showInputDialog("Digite o tipo de ação:\n1. Natureza\n2. Carbono\n3. Água\n4. Reciclagem\n0. cancelar ação"));
-                    acao = new Acao(JOptionPane.showInputDialog("Digite o nome da ação: "));
                     switch (escolha) {
                         case 1:
                             int dificuldade = Integer.parseInt(JOptionPane.showInputDialog("Qual é a dificuldade da ação realizada? Digite (entre 1 a 5): "));
-                            usuario.registrarAtividade(acao.detalhesAcao(),
-                                                       acao.registrarPontos(calculadora.pontosNatureza(dificuldade)));
+                            acao.registrarPontos(calculadora.pontosNatureza(dificuldade));
                             break;
                         case 2:
                             float kgCarbono = Integer.parseInt(JOptionPane.showInputDialog("Qual é a qtde. de carbono? Digite (um número): "));
-                            usuario.registrarAtividade(acao.detalhesAcao(),
-                                                       acao.registrarPontos(calculadora.pontosCarbono(kgCarbono)));
+                            acao.registrarPontos(calculadora.pontosCarbono(kgCarbono));
                             break;
                         case 3:
                             float litros = Integer.parseInt(JOptionPane.showInputDialog("Qual é a qtde. de litros economizados? Digite (um número): "));
-                            usuario.registrarAtividade(acao.detalhesAcao(),
-                                                       acao.registrarPontos(calculadora.pontosAgua(litros)));
+                            acao.registrarPontos(calculadora.pontosAgua(litros));
                             break;
                         case 4:
                             float kgReciclados = Integer.parseInt(JOptionPane.showInputDialog("Qual é a qtde. de KG reciclados? Digite (um número): "));
-                            usuario.registrarAtividade(acao.detalhesAcao(),
-                                                       acao.registrarPontos(calculadora.pontosReciclagem(kgReciclados)));
+                            acao.registrarPontos(calculadora.pontosReciclagem(kgReciclados));
                             break;
                         case 0:
                             break;
                         default:
                             throw new Exception("Opção inválida (0-4)");
                     }
+                    if (escolha != 0){
+                        String descricao = JOptionPane.showInputDialog("Digite a descrição da ação: ");
+                        acao.setIdAcao(acaoDAO.criarId());
+                        acao.setIdUsuario(usuario.getIdUsuario());
+                        acao.setDsAcao(descricao);
+                        acao.setDtAcao(LocalDateTime.now());
+
+                        usuario.registrarAtividade(acao.detalhesAcao(),acao.getQtPontosGerados());
+                        String resultado = acaoDAO.inserir(acao);
+                        taDetalhesPerfil.setText(usuario.detalhesPerfil());
+                        JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
+                    }
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 }
-
-                taDetalhesPerfil.setText(usuario.detalhesPerfil());
             }
         });
-        btRegistrarConquista.addActionListener(new ActionListener() {
+        btRegistrarMissao.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 Missao missao;
-                try {
-                    missao = new Missao(Integer.parseInt(JOptionPane.showInputDialog("Digite o ID da missão (máx. 20 caracteres): ")),
-                                      JOptionPane.showInputDialog("Digite o nome da conquista: "),
-                                      JOptionPane.showInputDialog("Qual a descrição da conquista? (máx. 50 caracteres): "),
-                                      JOptionPane.showInputDialog("Qual o nome do selo que a missão vai dar? (máx. 10 caracteres): "),
-                                      Integer.parseInt(JOptionPane.showInputDialog("Digite quantos pontos essa missão vai gerar: ")));
-                    usuario.registrarAtividade(missao.getNmMissao(), missao.getQtPontosGerados(), missao.getSelo());
+                try (Connection con = ConnectionFactory.abrirConexao()){
+                    missao = new Missao();
+                    missaoDAO = new MissaoDAO(con);
+                    String nome = JOptionPane.showInputDialog("Digite o nome da missão: ");
+                    String descricao = JOptionPane.showInputDialog("Digite a descrição da missão: ");
+                    String selo = JOptionPane.showInputDialog("Digite o selo da missão: ");
+                    int pontos = Integer.parseInt(JOptionPane.showInputDialog("Digite a qtde. de pontos gerados: "));
+
+                    missao.setIdMissao(missaoDAO.criarId());
+                    missao.setNmMissao(nome);
+                    missao.setDsMissao(descricao);
+                    missao.setSelo(selo);
+                    missao.setQtPontosGerados(pontos);
+                    missao.setDtMissao(LocalDateTime.now());
+
+                    usuario.registrarAtividade(missao.detalhesMissao(),
+                            missao.getQtPontosGerados(),
+                            missao.getSelo());
+                    String resultado = missaoDAO.inserir(missao);
+                    taDetalhesPerfil.setText(usuario.detalhesPerfil());
+                    JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 }
-                taDetalhesPerfil.setText(usuario.detalhesPerfil());
             }
         });
         btRegistrarQuiz.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 Quiz quiz;
-                try {
-                    quiz = new Quiz(Integer.parseInt(JOptionPane.showInputDialog("Digite o id do quiz: ")),
-                                    usuario.getIdUsuario(),
-                                    Integer.parseInt(JOptionPane.showInputDialog("Digite o num. de questões desse quiz: ")),
-                                    Integer.parseInt(JOptionPane.showInputDialog("Digite o num. de acertos desse quiz: ")),
-                                    Integer.parseInt(JOptionPane.showInputDialog("Digite o num. de pontos por questão: ")));
-                    usuario.registrarAtividade(quiz.detalhesQuiz(), quiz.getQtPontosGerados());
+                try (Connection con = ConnectionFactory.abrirConexao()) {
+                    quizDAO = new QuizDAO(con);
+                    quiz = new Quiz();
+
+                    int numQuestoes = Integer.parseInt(JOptionPane.showInputDialog("Digite o número de questões: "));
+                    int numAcertos = Integer.parseInt(JOptionPane.showInputDialog("Digite o número de acertos: "));
+                    int pontosPorQuestao = Integer.parseInt(JOptionPane.showInputDialog("Digite os pontos por questão: "));
+
+                    quiz.setIdQuiz(quizDAO.criarId());
+                    quiz.setIdUsuario(usuario.getIdUsuario());
+                    quiz.setNumQuestoes(numQuestoes);
+                    quiz.setNumAcertos(numAcertos);
+                    quiz.setQtPontosPorQuestao(pontosPorQuestao);
+                    quiz.setQtPontosGerados();
+                    quiz.setDtQuiz(LocalDateTime.now());
+
+                    usuario.registrarAtividade(quiz.detalhesQuiz(),
+                            quiz.getQtPontosGerados());
+                    taDetalhesPerfil.setText(usuario.detalhesPerfil());
+                    String resultado = quizDAO.inserir(quiz);
+                    JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 }
-                taDetalhesPerfil.setText(usuario.detalhesPerfil());
             }
         });
         btRegistrarPost.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 Post post;
-                try {
-                    post = new Post(Integer.parseInt(JOptionPane.showInputDialog("Digite o id do post: ")), usuario.getIdUsuario(), "t");
+                try (Connection con = ConnectionFactory.abrirConexao()) {
+                    postDAO = new PostDAO(con);
+                    post = new Post();
+
+                    String texto = JOptionPane.showInputDialog("Digite o texto do post: (máx. 200 caracteres)");
+
+                    post.setIdPost(postDAO.criarId());
+                    post.setIdUsuario(usuario.getIdUsuario());
+                    post.setDsPost(texto);
+                    post.setDtPost(LocalDateTime.now());
+                    post.setNumUpVotes(0);
+                    post.setNumDownVotes(0);
+                    post.setNumSaldoVotes(0);
+
+                    String resultado = postDAO.inserir(post);
                     usuario.registrarAtividade(post.detalhesPost());
+                    taDetalhesPerfil.setText(usuario.detalhesPerfil());
+                    JOptionPane.showMessageDialog(null, resultado, "Posts", JOptionPane.INFORMATION_MESSAGE);
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 }
-                taDetalhesPerfil.setText(usuario.detalhesPerfil());
             }
         });
         btRegistrarPenalidade.addActionListener(new ActionListener() {
@@ -347,7 +393,489 @@ public class GUIPrincipal extends JFrame {
                 taDetalhesPerfil.setText(usuario.detalhesPerfil());
             }
         });
+
+        miCriarUsuario.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                try (Connection con = ConnectionFactory.abrirConexao()){
+                    usuario = new Usuario();
+                    usuarioDAO = new UsuarioDAO(con);
+
+                    String id = JOptionPane.showInputDialog("Digite o ID do usuário: ");
+                    String nome = JOptionPane.showInputDialog("Digite o nome do usuário: ");
+                    float merito = Float.parseFloat(JOptionPane.showInputDialog("Digite o valor de mérito: "));
+                    int soulCoins = Integer.parseInt(JOptionPane.showInputDialog("Digite a qtde. de SoulCoins: "));
+
+                    usuario.setIdUsuario(id);
+                    usuario.setNmUsuario(nome);
+                    usuario.setVlMerito(merito);
+                    usuario.setQtSoulCoins(soulCoins);
+
+                    String resultado = usuarioDAO.inserir(usuario);
+                    JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        miLerUsuario.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                try (Connection con = ConnectionFactory.abrirConexao()){
+                    usuarioDAO = new UsuarioDAO(con);
+                    ArrayList<Usuario> listaUsuarios = usuarioDAO.listarTodos();
+                    String allUsuarios = "";
+                    if (listaUsuarios != null) {
+                        for (Usuario usuario : listaUsuarios) {
+                            allUsuarios += String.format("ID: %s | Nome: %s | Mérito: %.1f | SoulCoins: %d\n",
+                                                         usuario.getIdUsuario(), usuario.getNmUsuario(),
+                                                         usuario.getVlMerito(), usuario.getQtSoulCoins());
+                        }
+                    }
+                    JOptionPane.showMessageDialog(null, allUsuarios, "Usuários", JOptionPane.INFORMATION_MESSAGE);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        miAtualizarUsuario.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                try (Connection con = ConnectionFactory.abrirConexao()){
+                    usuarioDAO = new UsuarioDAO(con);
+                    Usuario novoUsuario = new Usuario();
+                    String id = JOptionPane.showInputDialog("Digite o ID do usuário a atualizar: ");
+                    String nome = JOptionPane.showInputDialog("Novo nome: ");
+                    float merito = Float.parseFloat(JOptionPane.showInputDialog("Novo valor de mérito: "));
+                    int soulCoins = Integer.parseInt(JOptionPane.showInputDialog("Nova qtde. de SoulCoins: "));
+                    novoUsuario.setIdUsuario(id);
+                    novoUsuario.setNmUsuario(nome);
+                    novoUsuario.setVlMerito(merito);
+                    novoUsuario.setQtSoulCoins(soulCoins);
+                    String resultado = usuarioDAO.alterar(novoUsuario);
+                    JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
+                    //Se atualizar o usuário atual
+                    ArrayList<String> arAntiga = usuario.getDsAtividadeRecente();
+                    ArrayList<String> sgAntiga = usuario.getSelosGanhos();
+                    usuario = usuarioDAO.pegarUm(usuario.getIdUsuario());
+                    usuario.setDsAtividadeRecente(arAntiga);
+                    usuario.setSelosGanhos(sgAntiga);
+                    taDetalhesPerfil.setText(usuario.detalhesPerfil());
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        miExcluirUsuario.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                try (Connection con = ConnectionFactory.abrirConexao()){
+                    usuarioDAO = new UsuarioDAO(con);
+                    usuario = new Usuario();
+                    String id = JOptionPane.showInputDialog("Digite o ID do usuário a excluir: ");
+                    usuario.setIdUsuario(id);
+
+                    String resultado = usuarioDAO.excluir(usuario);
+                    JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+        miCriarMissao.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                try (Connection con = ConnectionFactory.abrirConexao()){
+                    missao = new Missao();
+                    missaoDAO = new MissaoDAO(con);
+                    String nome = JOptionPane.showInputDialog("Digite o nome da missão: ");
+                    String descricao = JOptionPane.showInputDialog("Digite a descrição da missão: ");
+                    String selo = JOptionPane.showInputDialog("Digite o selo da missão: ");
+                    int pontos = Integer.parseInt(JOptionPane.showInputDialog("Digite a qtde. de pontos gerados: "));
+
+                    missao.setIdMissao(missaoDAO.criarId());
+                    missao.setNmMissao(nome);
+                    missao.setDsMissao(descricao);
+                    missao.setSelo(selo);
+                    missao.setQtPontosGerados(pontos);
+                    missao.setDtMissao(LocalDateTime.now());
+
+                    usuario.registrarAtividade(missao.detalhesMissao(),
+                                               missao.getQtPontosGerados(),
+                                               missao.getSelo());
+                    String resultado = missaoDAO.inserir(missao);
+                    taDetalhesPerfil.setText(usuario.detalhesPerfil());
+                    JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        miLerMissao.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                try (Connection con = ConnectionFactory.abrirConexao()){
+                    missaoDAO = new MissaoDAO(con);
+                    ArrayList<Missao> lista = missaoDAO.listarTodos();
+                    String todasMissoes = "";
+                    if (lista != null) {
+                        for (Missao missao : lista) {
+                            todasMissoes = String.format("ID: %d | Nome: %s | Selo: %s SoulPoints: %d\n",
+                                                         missao.getIdMissao(), missao.getNmMissao(),
+                                                         missao.getSelo(),missao.getQtPontosGerados());
+                        }
+                    } else {
+                        todasMissoes += "Nenhuma missão encontrada!";
+                    }
+                    JOptionPane.showMessageDialog(null, todasMissoes, "Missões", JOptionPane.INFORMATION_MESSAGE);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        miAtualizarMissao.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                try (Connection con = ConnectionFactory.abrirConexao()){
+                    missao = new Missao();
+                    missaoDAO = new MissaoDAO(con);
+                    int id = Integer.parseInt(JOptionPane.showInputDialog("Digite o ID da missão a atualizar: "));
+                    String nome = JOptionPane.showInputDialog("Novo nome: ");
+                    String descricao = JOptionPane.showInputDialog("Nova descrição: ");
+                    String selo = JOptionPane.showInputDialog("Novo selo: ");
+                    int pontos = Integer.parseInt(JOptionPane.showInputDialog("Nova qtde. de pontos gerados: "));
+
+                    missao.setIdMissao(id);
+                    missao.setNmMissao(nome);
+                    missao.setDsMissao(descricao);
+                    missao.setSelo(selo);
+                    missao.setQtPontosGerados(pontos);
+                    missao.setDtMissao(LocalDateTime.now());
+
+                    String resultado = missaoDAO.alterar(missao);
+                    JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        miExcluirMissao.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                try (Connection con = ConnectionFactory.abrirConexao()){
+                    missao = new Missao();
+                    missaoDAO = new MissaoDAO(con);
+                    int id = Integer.parseInt(JOptionPane.showInputDialog("Digite o ID da missão a excluir: "));
+                    missao.setIdMissao(id);
+                    String resultado = missaoDAO.excluir(missao);
+                    JOptionPane.showMessageDialog(null, resultado, "Missão", JOptionPane.INFORMATION_MESSAGE);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+        miCriarAcao.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                try (Connection con = ConnectionFactory.abrirConexao()) {
+                    acaoDAO = new AcaoDAO(con);
+                    acao = new Acao();
+
+                    int escolha = Integer.parseInt(JOptionPane.showInputDialog("Digite o tipo de ação:\n1. Natureza\n2. Carbono\n3. Água\n4. Reciclagem\n0. cancelar ação"));
+                    switch (escolha) {
+                        case 1:
+                            int dificuldade = Integer.parseInt(JOptionPane.showInputDialog("Qual é a dificuldade da ação realizada? Digite (entre 1 a 5): "));
+                            acao.registrarPontos(calculadora.pontosNatureza(dificuldade));
+                            break;
+                        case 2:
+                            float kgCarbono = Integer.parseInt(JOptionPane.showInputDialog("Qual é a qtde. de carbono? Digite (um número): "));
+                            acao.registrarPontos(calculadora.pontosCarbono(kgCarbono));
+                            break;
+                        case 3:
+                            float litros = Integer.parseInt(JOptionPane.showInputDialog("Qual é a qtde. de litros economizados? Digite (um número): "));
+                            acao.registrarPontos(calculadora.pontosAgua(litros));
+                            break;
+                        case 4:
+                            float kgReciclados = Integer.parseInt(JOptionPane.showInputDialog("Qual é a qtde. de KG reciclados? Digite (um número): "));
+                            acao.registrarPontos(calculadora.pontosReciclagem(kgReciclados));
+                            break;
+                        case 0:
+                            break;
+                        default:
+                            throw new Exception("Opção inválida (0-4)");
+                    }
+                    if (escolha != 0){
+                        String descricao = JOptionPane.showInputDialog("Digite a descrição da ação: ");
+                        acao.setIdAcao(acaoDAO.criarId());
+                        acao.setIdUsuario(usuario.getIdUsuario());
+                        acao.setDsAcao(descricao);
+                        acao.setDtAcao(LocalDateTime.now());
+
+                        usuario.registrarAtividade(acao.detalhesAcao(),
+                                                   acao.getQtPontosGerados());
+                        String resultado = acaoDAO.inserir(acao);
+                        taDetalhesPerfil.setText(usuario.detalhesPerfil());
+                        JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
+                    }
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        miLerAcao.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                try (Connection con = ConnectionFactory.abrirConexao()) {
+                    acaoDAO = new AcaoDAO(con);
+                    ArrayList<Acao> lista = acaoDAO.listarTodos();
+                    String texto = "";
+                    if (lista != null) {
+                        for (Acao acao : lista) {
+                            texto += String.format("ID: %d | Usuário: %s | Descrição: %s | Pontos: %d\n",
+                                                   acao.getIdAcao(),acao.getIdUsuario(),
+                                                   acao.getDsAcao(), acao.getQtPontosGerados());
+                        }
+                    }
+                    JOptionPane.showMessageDialog(null, texto, "Ações", JOptionPane.INFORMATION_MESSAGE);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        miAtualizarAcao.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                try (Connection con = ConnectionFactory.abrirConexao()) {
+                    acaoDAO = new AcaoDAO(con);
+                    acao = new Acao();
+
+                    int id = Integer.parseInt(JOptionPane.showInputDialog("Digite o ID da ação a atualizar: "));
+                    String descricao = JOptionPane.showInputDialog("Nova descrição: ");
+                    int pontos = Integer.parseInt(JOptionPane.showInputDialog("Nova qtde. de pontos gerados: "));
+
+                    acao.setIdAcao(id);
+                    acao.setIdUsuario(usuario.getIdUsuario());
+                    acao.setDsAcao(descricao);
+                    acao.setQtPontosGerados(pontos);
+                    acao.setDtAcao(LocalDateTime.now());
+
+                    String resultado = acaoDAO.alterar(acao);
+                    JOptionPane.showMessageDialog(null, resultado, "Ação", JOptionPane.INFORMATION_MESSAGE);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        miExcluirAcao.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                try (Connection con = ConnectionFactory.abrirConexao()) {
+                    acaoDAO = new AcaoDAO(con);
+                    acao = new Acao();
+
+                    int id = Integer.parseInt(JOptionPane.showInputDialog("Digite o ID da ação a excluir: "));
+                    acao.setIdAcao(id);
+
+                    String resultado = acaoDAO.excluir(acao);
+                    JOptionPane.showMessageDialog(null, resultado, "Ação", JOptionPane.INFORMATION_MESSAGE);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+        miCriarPost.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                try (Connection con = ConnectionFactory.abrirConexao()) {
+                    postDAO = new PostDAO(con);
+                    post = new Post();
+
+                    String texto = JOptionPane.showInputDialog("Digite o texto do post: (máx. 200 caracteres)");
+
+                    post.setIdPost(postDAO.criarId());
+                    post.setIdUsuario(usuario.getIdUsuario());
+                    post.setDsPost(texto);
+                    post.setDtPost(LocalDateTime.now());
+                    post.setNumUpVotes(0);
+                    post.setNumDownVotes(0);
+                    post.setNumSaldoVotes(0);
+
+                    String resultado = postDAO.inserir(post);
+                    usuario.registrarAtividade(post.detalhesPost());
+                    taDetalhesPerfil.setText(usuario.detalhesPerfil());
+                    JOptionPane.showMessageDialog(null, resultado, "Posts", JOptionPane.INFORMATION_MESSAGE);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        miLerPost.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                try (Connection con = ConnectionFactory.abrirConexao()) {
+                    postDAO = new PostDAO(con);
+                    ArrayList<Post> lista = postDAO.listarTodos();
+                    String texto = "";
+                    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy - hh:mm");
+                    if (lista != null) {
+                        for (Post post : lista) {
+                            texto += String.format("ID: %d | Usuário: %s | Votos: +%d-%d=%d | Data: %s",
+                                                   post.getIdPost(),post.getIdUsuario(),post.getNumUpVotes(),
+                                                   post.getNumDownVotes(),post.getNumSaldoVotes(),post.getDtPost().format(dtf)); 
+                        }
+                    }
+                    JOptionPane.showMessageDialog(null, texto, "Posts", JOptionPane.INFORMATION_MESSAGE);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        miAtualizarPost.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                try (Connection con = ConnectionFactory.abrirConexao()) {
+                    postDAO = new PostDAO(con);
+                    post = new Post();
+
+                    int id = Integer.parseInt(JOptionPane.showInputDialog("Digite o ID do post a atualizar: "));
+                    int idAcao = Integer.parseInt(JOptionPane.showInputDialog("Novo ID da ação relacionada: "));
+                    String texto = JOptionPane.showInputDialog("Novo texto do post: ");
+                    int upVotes = Integer.parseInt(JOptionPane.showInputDialog("Qtde. de upvotes: "));
+                    int downVotes = Integer.parseInt(JOptionPane.showInputDialog("Qtde. de downvotes: "));
+
+                    post.setIdPost(id);
+                    post.setIdUsuario(usuario.getIdUsuario());
+                    post.setIdAcao(idAcao);
+                    post.setDsPost(texto);
+                    post.setDtPost(LocalDateTime.now());
+                    post.setNumUpVotes(upVotes);
+                    post.setNumDownVotes(downVotes);
+                    post.setNumSaldoVotes(upVotes - downVotes);
+
+                    String resultado = postDAO.alterar(post);
+                    JOptionPane.showMessageDialog(null, texto, "Posts", JOptionPane.INFORMATION_MESSAGE);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        miExcluirPost.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                try (Connection con = ConnectionFactory.abrirConexao()) {
+                    postDAO = new PostDAO(con);
+                    post = new Post();
+
+                    int id = Integer.parseInt(JOptionPane.showInputDialog("Digite o ID do post a excluir: "));
+                    post.setIdPost(id);
+
+                    String resultado = postDAO.excluir(post);
+                    JOptionPane.showMessageDialog(null, resultado, "Posts", JOptionPane.INFORMATION_MESSAGE);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+        miCriarQuiz.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                try (Connection con = ConnectionFactory.abrirConexao()) {
+                    quizDAO = new QuizDAO(con);
+                    quiz = new Quiz();
+
+                    int numQuestoes = Integer.parseInt(JOptionPane.showInputDialog("Digite o número de questões: "));
+                    int numAcertos = Integer.parseInt(JOptionPane.showInputDialog("Digite o número de acertos: "));
+                    int pontosPorQuestao = Integer.parseInt(JOptionPane.showInputDialog("Digite os pontos por questão: "));
+
+                    quiz.setIdQuiz(quizDAO.criarId());
+                    quiz.setIdUsuario(usuario.getIdUsuario());
+                    quiz.setNumQuestoes(numQuestoes);
+                    quiz.setNumAcertos(numAcertos);
+                    quiz.setQtPontosPorQuestao(pontosPorQuestao);
+                    quiz.setQtPontosGerados();
+                    quiz.setDtQuiz(LocalDateTime.now());
+
+                    usuario.registrarAtividade(quiz.detalhesQuiz(),
+                                               quiz.getQtPontosGerados());
+                    taDetalhesPerfil.setText(usuario.detalhesPerfil());
+                    String resultado = quizDAO.inserir(quiz);
+                    JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        miLerQuiz.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                try (Connection con = ConnectionFactory.abrirConexao()) {
+                    quizDAO = new QuizDAO(con);
+                    ArrayList<Quiz> lista = quizDAO.listarTodos();
+                    String texto = "";
+                    if (lista != null) {
+                        for (Quiz quiz : lista) {
+                            texto += String.format("ID: %d | Usuário: %s | Acertos: %d/%d | Pontos: %d\n",
+                                                   quiz.getIdQuiz(),quiz.getIdUsuario(),
+                                                   quiz.getNumAcertos(),quiz.getNumQuestoes(),
+                                                   quiz.getQtPontosGerados());
+                        }
+                    }
+                    JOptionPane.showMessageDialog(null, texto, "Quizzes", JOptionPane.INFORMATION_MESSAGE);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        miAtualizarQuiz.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                try (Connection con = ConnectionFactory.abrirConexao()) {
+                    quizDAO = new QuizDAO(con);
+                    quiz = new Quiz();
+
+                    int id = Integer.parseInt(JOptionPane.showInputDialog("Digite o ID do quiz a atualizar: "));
+                    int numQuestoes = Integer.parseInt(JOptionPane.showInputDialog("Novo número de questões: "));
+                    int numAcertos = Integer.parseInt(JOptionPane.showInputDialog("Novo número de acertos: "));
+                    int pontosPorQuestao = Integer.parseInt(JOptionPane.showInputDialog("Novos pontos por questão: "));
+
+                    quiz.setIdQuiz(id);
+                    quiz.setIdUsuario(usuario.getIdUsuario());
+                    quiz.setNumQuestoes(numQuestoes);
+                    quiz.setNumAcertos(numAcertos);
+                    quiz.setQtPontosPorQuestao(pontosPorQuestao);
+                    quiz.setQtPontosGerados();
+                    quiz.setDtQuiz(LocalDateTime.now());
+
+                    String resultado = quizDAO.alterar(quiz);
+                    JOptionPane.showMessageDialog(null, resultado, "Quiz", JOptionPane.INFORMATION_MESSAGE);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        miExcluirQuiz.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                try (Connection con = ConnectionFactory.abrirConexao()) {
+                    quizDAO = new QuizDAO(con);
+                    quiz = new Quiz();
+
+                    int id = Integer.parseInt(JOptionPane.showInputDialog("Digite o ID do quiz a excluir: "));
+                    quiz.setIdQuiz(id);
+
+                    String resultado = quizDAO.excluir(quiz);
+                    JOptionPane.showMessageDialog(null, resultado, "Quiz", JOptionPane.INFORMATION_MESSAGE);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
     }
+
     public static void main(String[] args) {
         GUIPrincipal frame = new GUIPrincipal();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

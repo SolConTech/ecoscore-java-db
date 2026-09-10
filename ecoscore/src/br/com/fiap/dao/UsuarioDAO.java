@@ -102,8 +102,6 @@ public class UsuarioDAO {
         }
     }
 
-
-
     public Usuario pegarUm(String idUsuario){
         String sql = "SELECT * FROM USUARIO WHERE ID_USUARIO = ?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)){

@@ -95,9 +95,9 @@ public class QuizDAO {
                     quiz.setQtPontosPorQuestao(rs.getInt(4));
                     quiz.setQtPontosGerados(); //ela calcula com base no num acertos e num pontos questão
 
-                    Timestamp data = rs.getTimestamp(5);
+                    Timestamp data = rs.getTimestamp(6);
                     quiz.setDtQuiz(data.toLocalDateTime());
-                    quiz.setIdUsuario(rs.getString(6));
+                    quiz.setIdUsuario(rs.getString(7));
 
                     listaQuiz.add(quiz);
                 }
@@ -146,8 +146,7 @@ public class QuizDAO {
                     quiz.setNumQuestoes(rs.getInt(2));
                     quiz.setNumAcertos(rs.getInt(3));
                     quiz.setQtPontosPorQuestao(rs.getInt(4));
-                    quiz.setQtPontosGerados(); //ela calcula com base no num acertos e num pontos questão
-                    //pula o cinco que viria
+                    quiz.setQtPontosGerados();
                     Timestamp data = rs.getTimestamp(6);
                     quiz.setDtQuiz(data.toLocalDateTime());
                     quiz.setIdUsuario(rs.getString(7));

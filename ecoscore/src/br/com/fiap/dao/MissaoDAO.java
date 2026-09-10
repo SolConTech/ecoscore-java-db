@@ -24,11 +24,12 @@ public class MissaoDAO {
     public String inserir(Missao missao){
         String sql = "insert into missao(ID_MISSAO,nm_missao, DS_MISSAO, SELO, qt_pontosGerados, dt_missao) values(?,?,?,?,?,?)";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
-            ps.setString(1, missao.getNmMissao());
-            ps.setString(2, missao.getDsMissao());
-            ps.setString(3, missao.getSelo());
-            ps.setInt(4,missao.getQtPontosGerados());
-            ps.setObject(5,missao.getDtMissao());
+            ps.setInt(1,missao.getIdMissao());
+            ps.setString(2, missao.getNmMissao());
+            ps.setString(3, missao.getDsMissao());
+            ps.setString(4, missao.getSelo());
+            ps.setInt(5,missao.getQtPontosGerados());
+            ps.setObject(6,missao.getDtMissao());
             if (ps.executeUpdate() > 0) {
                 return "Inserido com sucesso";
             } else {
