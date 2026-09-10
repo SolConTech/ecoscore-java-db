@@ -6,6 +6,7 @@ import br.com.fiap.dto.Missao;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class MissaoDAO {
     private Connection con;
@@ -92,6 +93,53 @@ public class MissaoDAO {
                 return listaMissao;
             } else {
                 return null;
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro de SQL: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public Integer criarId() {
+        String sql = "SELECT ID_MISSAO FROM MISSAO";
+        ArrayList<Integer> listaIds = new ArrayList<Integer>();
+        try (PreparedStatement ps = getCon().prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs != null) {
+                while (rs.next()) {
+                    int id = rs.getInt(1);
+                    listaIds.add(id);
+                }
+                //o orElse serve para não retornar 0«nada se a lista estiver vazia, o max retorna Integer
+                Integer id = listaIds.stream().max(Comparator.naturalOrder()).orElse(null);
+                return id+1;
+            } else {
+                return null;
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro de SQL: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public Missao pegarUm(int idMissao){
+        String sql = "SELECT * FROM MISSAO WHERE ID_MISSAO = ?";
+        try (PreparedStatement ps = getCon().prepareStatement(sql)){
+            ps.setInt(1,idMissao);
+            try (ResultSet rs = ps.executeQuery()){
+                if (rs.next()){
+                    Missao missao = new Missao();
+                    missao.setIdMissao(rs.getInt(1));
+                    missao.setNmMissao(rs.getString(2));
+                    missao.setDsMissao(rs.getString(3));
+                    missao.setSelo(rs.getString(4));
+                    missao.setQtPontosGerados(rs.getInt(5));
+                    Timestamp data = rs.getTimestamp(6);
+                    missao.setDtMissao(data.toLocalDateTime());
+                    return missao;
+                } else {
+                    return null;
+                }
             }
         } catch (SQLException e) {
             System.out.println("Erro de SQL: " + e.getMessage());

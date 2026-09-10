@@ -1,10 +1,13 @@
 package br.com.fiap.dao;
 
+import br.com.fiap.dto.Acao;
+import br.com.fiap.dto.Missao;
 import br.com.fiap.dto.Post;
 
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class PostDAO {
     private Connection con;
@@ -106,6 +109,56 @@ public class PostDAO {
                 return null;
             }
 
+        } catch (SQLException e) {
+            System.out.println("Erro de SQL: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public Integer criarId() {
+        String sql = "SELECT ID_post FROM POST";
+        ArrayList<Integer> listaIds = new ArrayList<Integer>();
+        try (PreparedStatement ps = getCon().prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs != null) {
+                while (rs.next()) {
+                    int id = rs.getInt(1);
+                    listaIds.add(id);
+                }
+                //o orElse serve para não retornar 0«nada se a lista estiver vazia, o max retorna Integer
+                Integer id = listaIds.stream().max(Comparator.naturalOrder()).orElse(null);
+                return id+1;
+            } else {
+                return null;
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro de SQL: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public Post pegarUm(int idPost){
+        String sql = "SELECT * FROM POST WHERE ID_POST = ?";
+        try (PreparedStatement ps = getCon().prepareStatement(sql)){
+            ps.setInt(1,idPost);
+            try (ResultSet rs = ps.executeQuery()){
+                if (rs.next()){
+                    Post post = new Post();
+                    post.setIdPost(rs.getInt(1));
+                    post.setIdUsuario(rs.getString(2));
+                    post.setIdAcao(rs.getInt(3));
+                    post.setDsPost(rs.getString(4));
+                    Timestamp data = rs.getTimestamp(5);
+                    post.setDtPost(data.toLocalDateTime());
+                    post.setNumUpVotes(rs.getInt(6));
+                    post.setNumDownVotes(rs.getInt(7));
+                    post.setNumSaldoVotes(rs.getInt(8));
+
+                    return post;
+                } else {
+                    return null;
+                }
+            }
         } catch (SQLException e) {
             System.out.println("Erro de SQL: " + e.getMessage());
             return null;

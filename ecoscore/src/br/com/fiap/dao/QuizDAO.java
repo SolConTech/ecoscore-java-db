@@ -1,10 +1,12 @@
 package br.com.fiap.dao;
 
+import br.com.fiap.dto.Post;
 import br.com.fiap.dto.Quiz;
 
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class QuizDAO {
     private Connection con;
@@ -105,6 +107,55 @@ public class QuizDAO {
                 return null;
             }
 
+        } catch (SQLException e) {
+            System.out.println("Erro de SQL: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public Integer criarId() {
+        String sql = "SELECT ID_QUIZ FROM QUIZ";
+        ArrayList<Integer> listaIds = new ArrayList<Integer>();
+        try (PreparedStatement ps = getCon().prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs != null) {
+                while (rs.next()) {
+                    int id = rs.getInt(1);
+                    listaIds.add(id);
+                }
+                //o orElse serve para não retornar 0«nada se a lista estiver vazia, o max retorna Integer
+                Integer id = listaIds.stream().max(Comparator.naturalOrder()).orElse(null);
+                return id+1;
+            } else {
+                return null;
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro de SQL: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public Quiz pegarUm(int idQuiz){
+        String sql = "SELECT * FROM QUIZ WHERE ID_QUIZ = ?";
+        try (PreparedStatement ps = getCon().prepareStatement(sql)){
+            ps.setInt(1,idQuiz);
+            try (ResultSet rs = ps.executeQuery()){
+                if (rs.next()){
+                    Quiz quiz = new Quiz();
+                    quiz.setIdQuiz(rs.getInt(1));
+                    quiz.setIdUsuario(rs.getString(2));
+                    quiz.setNumQuestoes(rs.getInt(3));
+                    quiz.setNumAcertos(rs.getInt(4));
+                    quiz.setQtPontosPorQuestao(rs.getInt(5));
+                    quiz.setQtPontosGerados(); //ela calcula com base no num acertos e num pontos questão
+                    Timestamp data = rs.getTimestamp(7);
+                    quiz.setDtQuiz(data.toLocalDateTime());
+
+                    return quiz;
+                } else {
+                    return null;
+                }
+            }
         } catch (SQLException e) {
             System.out.println("Erro de SQL: " + e.getMessage());
             return null;

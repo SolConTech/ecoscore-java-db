@@ -49,10 +49,12 @@ public class GUIPrincipal extends JFrame {
             usuario = usuarioDAO.pegarUm("dragonborn123"); //como se fosse um login
             System.out.println(usuario);
             acao = new Acao();
+            missao = new Missao();
             acaoDAO = new AcaoDAO(con);
+            missaoDAO = new MissaoDAO(con);
             acao = acaoDAO.pegarUm(4);
             usuario.registrarAtividade(acao.detalhesAcao(), acao.getQtPontosGerados());
-            missao = new Missao(67,"Trilha de Agricultor", "Diversas missões e tarefas relacionadas com nosso parceiro que vende produtos de jardinagem.","Agricultor Mestre",1000);
+            missao = missaoDAO.pegarUm(0);
             usuario.registrarAtividade(missao.detalhesMissao(),missao.getQtPontosGerados(),missao.getSelo());
             post = new Post(70,"dragonborn123","Veja esse post de M. Souza, onde ele posta sobre suas ações sociais mais recentes.");
             post.addUpVote(57);

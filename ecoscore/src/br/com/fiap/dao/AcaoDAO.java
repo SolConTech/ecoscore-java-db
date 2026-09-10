@@ -6,6 +6,7 @@ import br.com.fiap.dto.Usuario;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class AcaoDAO {
     private Connection con;
@@ -100,8 +101,8 @@ public class AcaoDAO {
         }
     }
 
-    //Vou usar com streeam api para pegar o maior id e adicionar um em novos registros
-    public ArrayList<Integer> listarIds() {
+    //Pega todos os ids e usa srteam api para pegar o maior e adicionar um
+    public Integer criarId() {
         String sql = "SELECT ID_ACAO FROM ACAO";
         ArrayList<Integer> listaIds = new ArrayList<Integer>();
         try (PreparedStatement ps = getCon().prepareStatement(sql);
@@ -111,7 +112,9 @@ public class AcaoDAO {
                     int id = rs.getInt(1);
                     listaIds.add(id);
                 }
-                return listaIds;
+                //o orElse serve para não retornar 0«nada se a lista estiver vazia, o max retorna Integer
+                Integer id = listaIds.stream().max(Comparator.naturalOrder()).orElse(null);
+                return id+1;
             } else {
                 return null;
             }
@@ -120,6 +123,7 @@ public class AcaoDAO {
             return null;
         }
     }
+
     public Acao pegarUm(int idAcao){
         String sql = "SELECT * FROM ACAO WHERE ID_ACAO = ?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)){
