@@ -1,26 +1,36 @@
 package br.com.fiap.main;
 
 import br.com.fiap.dto.*;
+import br.com.fiap.dao.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
 
 @SuppressWarnings("serial")
 public class GUIPrincipal extends JFrame {
-    private Usuario usuario = new Usuario("Murilo", "@murilosouza", 80, 220);
+    private Usuario usuario = new Usuario();
     private Acao acao;
     private Missao missao;
-    private Post Post;
-    private Quiz Quiz;
+    private Post post;
+    private Quiz quiz;
     private CalculadoraPontos calculadora = new CalculadoraPontos();
+    private UsuarioDAO usuarioDAO;
+    private AcaoDAO acaoDAO;
+    private MissaoDAO missaoDAO;
+    private QuizDAO quizDAO;
+    private PostDAO postDAO;
+    private RankingUsuarioDAO rankingUsuarioDAO;
+    Connection con;
     private Container contentPane;
-    private JMenuBar mnBarra;
-    private JMenu mnSistema;
-    private JMenuItem miSair, miAjuda, miEditarUsuario;
+    public JMenuBar mnBarra;
+    public JMenu mnArquivo, mnUsuario,mnMissao,mnAcao,mnPost,mnQuiz,mnAjuda;
+    public JMenuItem miSair, miAjuda, miEditarExemplo,miCriarUsuario,miLerUsuario,miAtualizarUsuario,miExcluirUsuario,miCriarMissao,miLerMissao,miAtualizarMissao,miExcluirMissao,miCriarAcao,miLerAcao,miAtualizarAcao,miExcluirAcao,miCriarPost,miLerPost,miAtualizarPost,miExcluirPost,miCriarQuiz,miLerQuiz,miAtualizarQuiz,miExcluirQuiz;
     private JPanel painel, painelBts, painelTxt;
     private JButton btRegistrarAcao, btRegistrarConquista, btRegistrarQuiz, btRegistrarPost, btRegistrarPenalidade, btSair;
+    private JPopupMenu teste;
     private JTextArea taDetalhesPerfil = new JTextArea(usuario.detalhesPerfil());
     private JLabel lbPerfil;
 
@@ -29,72 +39,120 @@ public class GUIPrincipal extends JFrame {
         inicializarComponentes();
         definirEventos();
     }
-    public void iniciarValores() {
-        try {
-            String nome = JOptionPane.showInputDialog("Digite o nome do usuário:\n(Poderá ser alterado mais tarde)");
-            usuario.setNmUsuario(nome);
-            String id = JOptionPane.showInputDialog("Digite o id do usuário:\n(Poderá ser alterado mais tarde)");
-            usuario.setIdUsuario(id);
-            float confiabilidade = Float.parseFloat(JOptionPane.showInputDialog("Digite a confiabilidade desse usuário (0-100):\n(Poderá ser alterado mais tarde)"));
-            usuario.setVlMerito(confiabilidade);
-            int soulCoins = Integer.parseInt(JOptionPane.showInputDialog("Quantos Soul Coins ele tem?\n(Poderá ser alterado mais tarde)"));
-            usuario.setQtSoulCoins(soulCoins);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
-        }
-        acao = new Acao("3kg de lixo reciclados");
-        usuario.registrarAtividade(acao.detalhesAcao(),
-                                   acao.registrarPontos(calculadora.pontosReciclagem(5)));
-        acao = new Acao("100L de água economizados");
-        usuario.registrarAtividade(acao.detalhesAcao(),
-                                   acao.registrarPontos(calculadora.pontosAgua(100)));
-        acao = new Acao("20kg de Carbono a menos no planeta");
-        usuario.registrarAtividade(acao.detalhesAcao(),
-                                   acao.registrarPontos(calculadora.pontosCarbono(20)), acao.detalhesAcao());
-        acao = new Acao("Compra de uma muda de árvore");
-        usuario.registrarAtividade(acao.detalhesAcao(),
-                                   acao.registrarPontos(calculadora.pontosNatureza(2)), acao.detalhesAcao());
+
+    public void iniciarValores(){
+        usuario = new Usuario("Astrogildo", "dragonborn123", 80, 220);
+        acao = new Acao(14,"dragonborn123","10L de água economizados");
+        acao.registrarPontos(calculadora.pontosAgua(10));
+        usuario.registrarAtividade(acao.detalhesAcao(), acao.getQtPontosGerados());
+        missao = new Missao(67,"Trilha de Agricultor", "Diversas missões e tarefas relacionadas com nosso parceiro que vende produtos de jardinagem.","Agricultor Mestre",1000);
+        usuario.registrarAtividade(missao.detalhesMissao(),missao.getQtPontosGerados(),missao.getSelo());
+        post = new Post(70,"dragonborn123","Veja esse post de M. Souza, onde ele posta sobre suas ações sociais mais recentes.");
+        post.addUpVote(57);
+        post.addDownVote(13);
+        usuario.registrarAtividade(post.detalhesPost());
     }
+
     private void inicializarComponentes() {
         setTitle("Ecoscore - SoulUp");
         setBounds(0, 0, 900, 300);
         contentPane = getContentPane();
         mnBarra = new JMenuBar();
-        mnSistema = new JMenu("Sistema");
-        mnSistema.setMnemonic('S');
+        mnArquivo = new JMenu("Arquivo");
+        mnUsuario = new JMenu("Usuario");
+        mnMissao = new JMenu("Missão");
+        mnAcao = new JMenu("Ação");
+        mnPost = new JMenu("Post");
+        mnQuiz = new JMenu("Quiz");
+        mnAjuda = new JMenu("Ajuda");
+
         miSair = new JMenuItem("Sair");
-        miAjuda = new JMenuItem("Ajuda");
-        miEditarUsuario = new JMenuItem("Editar usuário");
+        miAjuda = new JMenuItem("Tutorial");
+        miCriarUsuario = new JMenuItem("Criar Usuário");
+        miLerUsuario = new JMenuItem("Ler Usuário");
+        miAtualizarUsuario = new JMenuItem("Atualizar Usuário");
+        miExcluirUsuario = new JMenuItem("Excluir Usuário");
+
+        miCriarMissao = new JMenuItem("Criar Missão");
+        miLerMissao = new JMenuItem("Ler Missão");
+        miAtualizarMissao = new JMenuItem("Atualizar Missão");
+        miExcluirMissao = new JMenuItem("Excluir Missão");
+
+        miCriarAcao = new JMenuItem("Criar Ação");
+        miLerAcao = new JMenuItem("Ler Ação");
+        miAtualizarAcao = new JMenuItem("Atualizar Ação");
+        miExcluirAcao = new JMenuItem("Excluir Ação");
+
+        miCriarPost = new JMenuItem("Criar Post");
+        miLerPost = new JMenuItem("Ler Post");
+        miAtualizarPost = new JMenuItem("Atualizar Post");
+        miExcluirPost = new JMenuItem("Excluir Post");
+        miCriarQuiz = new JMenuItem("Criar Quiz");
+        miLerQuiz = new JMenuItem("Ler Quiz");
+        miAtualizarQuiz = new JMenuItem("Atualizar Quiz");
+        miExcluirQuiz = new JMenuItem("Excluir Quiz");
+        miEditarExemplo = new JMenuItem("Editar exemplo");
+
         painel = new JPanel();
         painel.setLayout(new BoxLayout(painel, BoxLayout.Y_AXIS));
         painelBts = new JPanel();
         painelBts.setLayout(new FlowLayout());
         painelTxt = new JPanel();
-        btRegistrarAcao = new JButton("Registrar Ação simples");
-        btRegistrarConquista = new JButton("Registrar Conquista ganha");
-        btRegistrarQuiz = new JButton("Registrar Quiz feito");
-        btRegistrarPost = new JButton("Registrar Post encerrado");
+        btRegistrarAcao = new JButton("Registrar Ação");
+        btRegistrarConquista = new JButton("Registrar Missão");
+        btRegistrarQuiz = new JButton("Registrar Quiz");
+        btRegistrarPost = new JButton("Registrar Post");
         btRegistrarPenalidade = new JButton("Registrar penalidade");
         taDetalhesPerfil = new JTextArea(usuario.detalhesPerfil());
         taDetalhesPerfil.setEditable(false);
-        lbPerfil = new JLabel("Exemplo de pefil:");
+        lbPerfil = new JLabel("Exemplo de perfil:");
         taDetalhesPerfil.add(lbPerfil);
 
         setJMenuBar(mnBarra);
-        mnBarra.add(mnSistema);
-        mnSistema.add(miSair);
-        mnSistema.add(miAjuda);
-        mnSistema.add(miEditarUsuario);
+        mnBarra.add(mnArquivo);
+        mnBarra.add(mnUsuario);
+        mnBarra.add(mnMissao);
+        mnBarra.add(mnAcao);
+        mnBarra.add(mnPost);
+        mnBarra.add(mnQuiz);
+        mnBarra.add(mnAjuda);
+        teste = new JPopupMenu("teste");
+
+        mnArquivo.add(miEditarExemplo);
+        mnArquivo.add(miSair);
+        mnUsuario.add(miCriarUsuario);
+        mnUsuario.add(miLerUsuario);
+        mnUsuario.add(miAtualizarUsuario);
+        mnUsuario.add(miExcluirUsuario);
+        mnMissao.add(miCriarMissao);
+        mnMissao.add(miLerMissao);
+        mnMissao.add(miAtualizarMissao);
+        mnMissao.add(miExcluirMissao);
+        mnAcao.add(miCriarAcao);
+        mnAcao.add(miLerAcao);
+        mnAcao.add(miAtualizarAcao);
+        mnAcao.add(miExcluirAcao);
+        mnPost.add(miCriarPost);
+        mnPost.add(miLerPost);
+        mnPost.add(miAtualizarPost);
+        mnPost.add(miExcluirPost);
+        mnQuiz.add(miCriarQuiz);
+        mnQuiz.add(miLerQuiz);
+        mnQuiz.add(miAtualizarQuiz);
+        mnQuiz.add(miExcluirQuiz);
+        mnAjuda.add(miAjuda);
 
         painelBts.add(btRegistrarAcao);
         painelBts.add(btRegistrarConquista);
         painelBts.add(btRegistrarQuiz);
         painelBts.add(btRegistrarPost);
         painelBts.add(btRegistrarPenalidade);
+
         painelTxt.add(lbPerfil);
         painelTxt.add(taDetalhesPerfil);
-        painel.add(painelTxt, BorderLayout.LINE_END);
-        painel.add(painelBts, BorderLayout.LINE_START);
+
+        painel.add(painelTxt);
+        painel.add(painelBts);
         add(painel);
     }
     private void definirEventos() {
@@ -112,18 +170,28 @@ public class GUIPrincipal extends JFrame {
                         "Ajuda", JOptionPane.INFORMATION_MESSAGE);
             }
         });
-        miEditarUsuario.addActionListener(new ActionListener() {
+        miEditarExemplo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 try {
                     String nome = JOptionPane.showInputDialog("Digite o novo nome do usuário:");
-                    usuario.setNmUsuario(nome);
+
                     String id = JOptionPane.showInputDialog("Digite o novo id do usuário:");
-                    usuario.setIdUsuario(id);
+
                     float confiabilidade = Float.parseFloat(JOptionPane.showInputDialog("Digite a nova confiabilidade desse usuário (0-100):"));
-                    usuario.setVlMerito(confiabilidade);
+
                     int soulCoins = Integer.parseInt(JOptionPane.showInputDialog("Quantos Soul Coins ele terá agora?"));
-                    usuario.setQtSoulCoins(soulCoins);
+
+                    if (JOptionPane.showConfirmDialog(null,
+                                             "Isso editará o exemplo na tela e atualizará o mesmo usuário no banco, você tem certeza disso?",
+                                                 "Confirme",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==1){
+                        usuario.setNmUsuario(nome);
+                        usuario.setIdUsuario(id);
+                        usuario.setVlMerito(confiabilidade);
+                        usuario.setQtSoulCoins(soulCoins);
+                        usuarioDAO.alterar(usuario);
+                        JOptionPane.showMessageDialog(null,"Ação realizada, para mudar \"Atividade Recente\" e \"Selos Ganhos\" tente limpar eles pelo menu arquivo");
+                    }
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 }
@@ -208,8 +276,7 @@ public class GUIPrincipal extends JFrame {
             public void actionPerformed(ActionEvent actionEvent) {
                 Post post;
                 try {
-                    post = new Post(Integer.parseInt(JOptionPane.showInputDialog("Digite o id do post: ")),
-                                    usuario.getIdUsuario());
+                    post = new Post(Integer.parseInt(JOptionPane.showInputDialog("Digite o id do post: ")), usuario.getIdUsuario(), "t");
                     usuario.registrarAtividade(post.detalhesPost());
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);

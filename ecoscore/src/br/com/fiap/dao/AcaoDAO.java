@@ -19,13 +19,14 @@ public class AcaoDAO {
     }
 
     public String inserir(Acao acao){
-        String sql = "insert into acao(usuario_id_usuario, ds_acao, qt_pontosGerados, dt_acao) values(?,?,?,?)";
+        String sql = "insert into acao(ID_ACAO,usuario_id_usuario, ds_acao, qt_pontosGerados, dt_acao) values(?,?,?,?,?)";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
-            ps.setString(1, acao.getIdUsuario());
-            ps.setString(2, acao.getDsAcao());
-            ps.setInt(3, acao.getQtPontosGerados());
+            ps.setInt(1,acao.getIdAcao());
+            ps.setString(2, acao.getIdUsuario());
+            ps.setString(3, acao.getDsAcao());
+            ps.setInt(4, acao.getQtPontosGerados());
             //pesquisei e esse é o melhor para datas com horas e minutos o driver vai transformar em data, tentei dar parse e não foi
-            ps.setObject(4,acao.getDtAcao());
+            ps.setObject(5,acao.getDtAcao());
             if (ps.executeUpdate() > 0) {
                 return "Inserido com sucesso";
             } else {

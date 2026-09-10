@@ -12,8 +12,8 @@ public class Usuario {
     private String nmUsuario;
     private float vlMerito; //A confiabilidade do usuário, quanto o voto e as ações dele são confiáveis
     private int qtSoulCoins;
-    private ArrayList<String> dsAtividadeRecente; //Últimas ações realizadas
-    private ArrayList<String> selosGanhos;
+    private ArrayList<String> dsAtividadeRecente = new ArrayList<String>(); //Últimas ações realizadas
+    private ArrayList<String> selosGanhos = new ArrayList<String>();
 
     public Usuario() {}
     // Construtor para registrar apenas nmUsuario do usuário e idUsuario, pois ambos não tem validação
@@ -150,9 +150,9 @@ public class Usuario {
     public String detalhesPerfil() {
         String listaAtividaderecente = "";
         for (String atividade : dsAtividadeRecente) {
-            listaAtividaderecente += atividade + "\n";
+            listaAtividaderecente += "\n-" + atividade;
         }
-        return String.format("Nome: %s\nId: %s\nConfiabilidade: %.1f\nSoul Coins: %d\nAtividade recente:\n%s", nmUsuario, idUsuario, vlMerito, qtSoulCoins, dsAtividadeRecente);
+        return String.format("Nome: %s\nId: %s\nConfiabilidade: %.1f\nSoul Coins: %d\nAtividade recente:\n%s", nmUsuario, idUsuario, vlMerito, qtSoulCoins, listaAtividaderecente);
     }
 
     /**

@@ -14,10 +14,19 @@ public class Acao {
     private int qtPontosGerados;
     private LocalDateTime dtAcao;
 
-    public Acao() {}
+    public Acao() {
+        dtAcao = LocalDateTime.now();
+    }
     //Registra apenas o dsAcao da ação, já que data e pontos são obtidos pelos métodos.
     public Acao(String dsAcao) {
         this.dsAcao = dsAcao;
+        dtAcao = LocalDateTime.now();
+    }
+    public Acao(int idAcao, String idUsuario, String dsAcao) {
+        this.idAcao = idAcao;
+        this.idUsuario = idUsuario;
+        this.dsAcao = dsAcao;
+        dtAcao = LocalDateTime.now();
     }
 
     public int getIdAcao() {
