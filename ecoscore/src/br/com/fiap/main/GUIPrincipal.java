@@ -32,7 +32,7 @@ public class GUIPrincipal extends JFrame {
     public void iniciarValores() {
         try {
             String nome = JOptionPane.showInputDialog("Digite o nome do usuário:\n(Poderá ser alterado mais tarde)");
-            usuario.setNome(nome);
+            usuario.setNmUsuario(nome);
             String id = JOptionPane.showInputDialog("Digite o id do usuário:\n(Poderá ser alterado mais tarde)");
             usuario.setIdUsuario(id);
             float confiabilidade = Float.parseFloat(JOptionPane.showInputDialog("Digite a confiabilidade desse usuário (0-100):\n(Poderá ser alterado mais tarde)"));
@@ -117,7 +117,7 @@ public class GUIPrincipal extends JFrame {
             public void actionPerformed(ActionEvent actionEvent) {
                 try {
                     String nome = JOptionPane.showInputDialog("Digite o novo nome do usuário:");
-                    usuario.setNome(nome);
+                    usuario.setNmUsuario(nome);
                     String id = JOptionPane.showInputDialog("Digite o novo id do usuário:");
                     usuario.setIdUsuario(id);
                     float confiabilidade = Float.parseFloat(JOptionPane.showInputDialog("Digite a nova confiabilidade desse usuário (0-100):"));
@@ -225,7 +225,7 @@ public class GUIPrincipal extends JFrame {
                     String descOcorrido = JOptionPane.showInputDialog("Descreva o ocorrido: ");
                     //Mensagem de confirmação mostrando o texto e confiabilidade que será tirada.
                     if (JOptionPane.showConfirmDialog(null,
-                            String.format("Tem certeza que quer retirar %d de confiabilidade do usuário %s com a descrição:\n%s", valorPenalidade, usuario.getNome(), descOcorrido), "Confirme",
+                            String.format("Tem certeza que quer retirar %d de confiabilidade do usuário %s com a descrição:\n%s", valorPenalidade, usuario.getNmUsuario(), descOcorrido), "Confirme",
                             JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == 0) {
                         usuario.registrarPenalidade(valorPenalidade, descOcorrido);
                     }

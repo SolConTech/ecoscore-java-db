@@ -29,10 +29,10 @@ public class Usuario {
         setQtSoulCoins(qtSoulCoins);
     }
 
-    public String getNome() {
+    public String getNmUsuario() {
         return nmUsuario;
     }
-    public void setNome(String nmUsuario) {
+    public void setNmUsuario(String nmUsuario) {
         this.nmUsuario = nmUsuario;
     }
     public String getIdUsuario() {
