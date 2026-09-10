@@ -90,14 +90,14 @@ public class QuizDAO {
                     Quiz quiz = new Quiz();
 
                     quiz.setIdQuiz(rs.getInt(1));
-                    quiz.setIdUsuario(rs.getString(2));
-                    quiz.setNumQuestoes(rs.getInt(3));
-                    quiz.setNumAcertos(rs.getInt(4));
-                    quiz.setQtPontosPorQuestao(rs.getInt(5));
+                    quiz.setNumQuestoes(rs.getInt(2));
+                    quiz.setNumAcertos(rs.getInt(3));
+                    quiz.setQtPontosPorQuestao(rs.getInt(4));
                     quiz.setQtPontosGerados(); //ela calcula com base no num acertos e num pontos questão
 
-                    Timestamp data = rs.getTimestamp(7);
+                    Timestamp data = rs.getTimestamp(5);
                     quiz.setDtQuiz(data.toLocalDateTime());
+                    quiz.setIdUsuario(rs.getString(6));
 
                     listaQuiz.add(quiz);
                 }
@@ -143,13 +143,14 @@ public class QuizDAO {
                 if (rs.next()){
                     Quiz quiz = new Quiz();
                     quiz.setIdQuiz(rs.getInt(1));
-                    quiz.setIdUsuario(rs.getString(2));
-                    quiz.setNumQuestoes(rs.getInt(3));
-                    quiz.setNumAcertos(rs.getInt(4));
-                    quiz.setQtPontosPorQuestao(rs.getInt(5));
+                    quiz.setNumQuestoes(rs.getInt(2));
+                    quiz.setNumAcertos(rs.getInt(3));
+                    quiz.setQtPontosPorQuestao(rs.getInt(4));
                     quiz.setQtPontosGerados(); //ela calcula com base no num acertos e num pontos questão
-                    Timestamp data = rs.getTimestamp(7);
+                    //pula o cinco que viria
+                    Timestamp data = rs.getTimestamp(6);
                     quiz.setDtQuiz(data.toLocalDateTime());
+                    quiz.setIdUsuario(rs.getString(7));
 
                     return quiz;
                 } else {

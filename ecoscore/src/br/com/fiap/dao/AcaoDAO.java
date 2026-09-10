@@ -81,13 +81,12 @@ public class AcaoDAO {
                 while (rs.next()) {
                     Acao acao = new Acao();
                     acao.setIdAcao(rs.getInt(1));
-                    acao.setIdUsuario(rs.getString(2));
-                    acao.setDsAcao(rs.getString(3));
-                    acao.setQtPontosGerados(rs.getInt(4));
-                    //outro metodo não funcionou, vai ter que ser ocm o timestamp
-                    //o banco usa ele, entao é só ciar e dar toLocalDateTime
-                    Timestamp data = rs.getTimestamp(5);
+                    acao.setDsAcao(rs.getString(2));
+                    acao.setQtPontosGerados(rs.getInt(3));
+                    //O banco usa Timestampo, então pra pegar uso ele e dou toLocalDateTime
+                    Timestamp data = rs.getTimestamp(4);
                     acao.setDtAcao(data.toLocalDateTime());
+                    acao.setIdUsuario(rs.getString(5));
 
                     listaAcao.add(acao);
                 }

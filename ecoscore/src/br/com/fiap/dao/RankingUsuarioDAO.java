@@ -81,8 +81,8 @@ public class RankingUsuarioDAO {
                     RankingUsuario rankingUsuario = new RankingUsuario();
 
                     rankingUsuario.setIdRanking(rs.getInt(1));
-                    rankingUsuario.setIdUsuario(rs.getString(2));
-                    rankingUsuario.setQtVotos(rs.getInt(3));
+                    rankingUsuario.setIdUsuario(rs.getString(3));
+                    rankingUsuario.setQtVotos(rs.getInt(2));
 
                     listaRankingUsuario.add(rankingUsuario);
                 }

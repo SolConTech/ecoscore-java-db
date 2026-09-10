@@ -91,15 +91,15 @@ public class PostDAO {
             if (rs != null){
                 while (rs.next()){
                     Post post = new Post();
-                    post.setIdPost(rs.getInt(1));
-                    post.setIdUsuario(rs.getString(2));
-                    post.setIdAcao(rs.getInt(3));
-                    post.setDsPost(rs.getString(4));
-                    Timestamp data = rs.getTimestamp(5);
+                    post.setIdAcao(rs.getInt(1));
+                    post.setDsPost(rs.getString(2));
+                    Timestamp data = rs.getTimestamp(3);
                     post.setDtPost(data.toLocalDateTime());
-                    post.setNumUpVotes(rs.getInt(6));
-                    post.setNumDownVotes(rs.getInt(7));
-                    post.setNumSaldoVotes(rs.getInt(8));
+                    post.setNumUpVotes(rs.getInt(4));
+                    post.setNumDownVotes(rs.getInt(5));
+                    post.setNumSaldoVotes(rs.getInt(6));
+                    post.setIdUsuario(rs.getString(7));
+                    post.setIdPost(rs.getInt(8));
 
                     listaPost.add(post);
                 }
@@ -144,15 +144,15 @@ public class PostDAO {
             try (ResultSet rs = ps.executeQuery()){
                 if (rs.next()){
                     Post post = new Post();
-                    post.setIdPost(rs.getInt(1));
-                    post.setIdUsuario(rs.getString(2));
-                    post.setIdAcao(rs.getInt(3));
-                    post.setDsPost(rs.getString(4));
-                    Timestamp data = rs.getTimestamp(5);
+                    post.setIdAcao(rs.getInt(1));
+                    post.setDsPost(rs.getString(2));
+                    Timestamp data = rs.getTimestamp(3);
                     post.setDtPost(data.toLocalDateTime());
-                    post.setNumUpVotes(rs.getInt(6));
-                    post.setNumDownVotes(rs.getInt(7));
-                    post.setNumSaldoVotes(rs.getInt(8));
+                    post.setNumUpVotes(rs.getInt(4));
+                    post.setNumDownVotes(rs.getInt(5));
+                    post.setNumSaldoVotes(rs.getInt(6));
+                    post.setIdUsuario(rs.getString(7));
+                    post.setIdPost(rs.getInt(8));
 
                     return post;
                 } else {

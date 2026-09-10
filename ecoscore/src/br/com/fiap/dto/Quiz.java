@@ -47,6 +47,7 @@ public class Quiz {
         if (numQuestoes <= 0) {
             throw new IllegalArgumentException("A qtde. de questões deve ser maior que zero.");
         }
+        this.numQuestoes = numQuestoes;
     }
     public int getNumAcertos() {
         return numAcertos;

@@ -46,17 +46,26 @@ public class GUIPrincipal extends JFrame {
     public void iniciarValores(){
         try (Connection con = ConnectionFactory.abrirConexao()){
             usuarioDAO = new UsuarioDAO(con);
-            usuario = usuarioDAO.pegarUm("dragonborn123"); //como se fosse um login
-            System.out.println(usuario);
+
             acao = new Acao();
             missao = new Missao();
+            post = new Post();
+            quiz = new Quiz();
             acaoDAO = new AcaoDAO(con);
             missaoDAO = new MissaoDAO(con);
+            postDAO = new PostDAO(con);
+            quizDAO = new QuizDAO(con);
+
+            usuario = usuarioDAO.pegarUm("dragonborn123"); //como se fosse um login
             acao = acaoDAO.pegarUm(4);
             usuario.registrarAtividade(acao.detalhesAcao(), acao.getQtPontosGerados());
             missao = missaoDAO.pegarUm(0);
             usuario.registrarAtividade(missao.detalhesMissao(),missao.getQtPontosGerados(),missao.getSelo());
-            post = new Post(70,"dragonborn123","Veja esse post de M. Souza, onde ele posta sobre suas ações sociais mais recentes.");
+            post = postDAO.pegarUm(0);
+            usuario.registrarAtividade(post.detalhesPost());
+            quiz = quizDAO.pegarUm(0);
+            usuario.registrarAtividade(quiz.detalhesQuiz(), quiz.getQtPontosGerados());
+
             post.addUpVote(57);
             post.addDownVote(13);
             usuario.registrarAtividade(post.detalhesPost());
