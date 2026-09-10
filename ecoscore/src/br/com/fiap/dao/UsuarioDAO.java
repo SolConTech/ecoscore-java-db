@@ -45,6 +45,7 @@ public class UsuarioDAO {
             ps.setString(1, usuario.getNmUsuario());
             ps.setFloat(2, usuario.getVlMerito());
             ps.setInt(3, usuario.getQtSoulCoins());
+            ps.setString(4,usuario.getIdUsuario());
 
             if (ps.executeUpdate() > 0) {
                 return "Alterado com sucesso";
@@ -95,6 +96,29 @@ public class UsuarioDAO {
                 return null;
             }
 
+        } catch (SQLException e) {
+            System.out.println("Erro de SQL: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public Usuario pegarUm(String idUsuario){
+        String sql = "SELECT * FROM USUARIO WHERE ID_USUARIO = ?";
+        try (PreparedStatement ps = getCon().prepareStatement(sql)){
+            ps.setString(1,idUsuario);
+            try (ResultSet rs = ps.executeQuery()){
+                if (rs.next()){
+                    Usuario usuario = new Usuario();
+                    usuario.setIdUsuario(rs.getString(1));
+                    usuario.setNmUsuario(rs.getString(2));
+                    usuario.setVlMerito(rs.getFloat(3));
+                    usuario.setQtSoulCoins(rs.getInt(4));
+
+                    return usuario;
+                } else {
+                    return null;
+                }
+            }
         } catch (SQLException e) {
             System.out.println("Erro de SQL: " + e.getMessage());
             return null;

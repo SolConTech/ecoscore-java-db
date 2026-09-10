@@ -21,7 +21,7 @@ public class Usuario {
         this.nmUsuario = nmUsuario;
         setIdUsuario(idUsuario);
     }
-    // Construtor para registrar usuário quas completo (nome, idUsuario, vlMerito e soul coins).
+    // Construtor para registrar usuário quase completo (nome, idUsuario, vlMerito e soul coins).
     public Usuario(String nmUsuario, String idUsuario, float vlMerito, int qtSoulCoins) {
         this.nmUsuario = nmUsuario;
         setIdUsuario(idUsuario);
@@ -80,7 +80,12 @@ public class Usuario {
     public void setDsAtividadeRecente(ArrayList<String> dsAtividadeRecente) {
         this.dsAtividadeRecente = dsAtividadeRecente;
     }
-
+    public ArrayList<String> getSelosGanhos() {
+        return selosGanhos;
+    }
+    public void setSelosGanhos(ArrayList<String> selosGanhos) {
+        this.selosGanhos = selosGanhos;
+    }
     /**
      * Registrar uma atividade do usuário.
      * @param dsAtividade é o texto descrevendo a atividade realizada
@@ -109,9 +114,10 @@ public class Usuario {
             int vlSolconReduzidos = (int) Math.round(qtSoulCoins * 0.5);
             this.qtSoulCoins += vlSolconReduzidos;
             dsAtividade += String.format(" [%d pontos]", vlSolconReduzidos);
+            registrarAtividade(dsAtividade);
         } else {
             // Menor que tres metade, maior já recebe todos os pontos normais
-            dsAtividade += String.format("[ %d pontos]", qtSoulCoins);
+            dsAtividade += String.format("[%d pontos]", qtSoulCoins);
             registrarAtividade(dsAtividade);
             this.qtSoulCoins += qtSoulCoins;
         }
@@ -134,6 +140,7 @@ public class Usuario {
             int vlSolconReduzidos = (int) Math.round(qtSoulCoins * 0.5);
             this.qtSoulCoins += vlSolconReduzidos;
             dsAtividade += String.format(" [%d pontos]", vlSolconReduzidos);
+            registrarAtividade(dsAtividade);
         } else {
             // Menor que tres metade, maior já recebe todos os pontos normais
             dsAtividade += String.format(" [%d pontos]", qtSoulCoins);
@@ -152,7 +159,12 @@ public class Usuario {
         for (String atividade : dsAtividadeRecente) {
             listaAtividaderecente += "\n-" + atividade;
         }
-        return String.format("Nome: %s\nId: %s\nConfiabilidade: %.1f\nSoul Coins: %d\nAtividade recente:\n%s", nmUsuario, idUsuario, vlMerito, qtSoulCoins, listaAtividaderecente);
+        String listaSelosGanhos = "";
+        for (String selo : selosGanhos) {
+            listaSelosGanhos += "\n-"+ selo;
+        }
+
+        return String.format("Nome: %s\nId: %s\nConfiabilidade: %.1f\nSoul Coins: %d\nAtividade recente:%s\nSelos ganhos:%s", nmUsuario, idUsuario, vlMerito, qtSoulCoins, listaAtividaderecente, listaSelosGanhos);
     }
 
     /**
