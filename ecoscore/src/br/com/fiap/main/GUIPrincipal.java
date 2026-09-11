@@ -22,6 +22,7 @@ public class GUIPrincipal extends JFrame {
     private Post post;
     private Quiz quiz;
     private CalculadoraPontos calculadora = new CalculadoraPontos();
+    private RankingUsuario ranking;
     private UsuarioDAO usuarioDAO;
     private AcaoDAO acaoDAO;
     private MissaoDAO missaoDAO;
@@ -29,11 +30,11 @@ public class GUIPrincipal extends JFrame {
     private PostDAO postDAO;
     private RankingUsuarioDAO rankingUsuarioDAO;
     private Container contentPane;
-    public JMenuBar mnBarra;
-    public JMenu mnArquivo, mnUsuario,mnMissao,mnAcao,mnPost,mnQuiz,mnAjuda;
-    public JMenuItem miSair, miAjuda, miEditarExemplo,miLimparAtividades,miLimparSelos,miCriarUsuario,miLerUsuario,miAtualizarUsuario,miExcluirUsuario,miCriarMissao,miLerMissao,miAtualizarMissao,miExcluirMissao,miCriarAcao,miLerAcao,miAtualizarAcao,miExcluirAcao,miCriarPost,miLerPost,miAtualizarPost,miExcluirPost,miCriarQuiz,miLerQuiz,miAtualizarQuiz,miExcluirQuiz;
+    private JMenuBar mnBarra;
+    private JMenu mnArquivo, mnUsuario,mnMissao,mnAcao,mnPost,mnQuiz,mnAjuda;
+    private JMenuItem miSair, miAjuda, miEditarExemplo,miLimparAtividades,miLimparSelos,miCriarUsuario,miLerUsuario,miAtualizarUsuario,miExcluirUsuario,miCriarMissao,miLerMissao,miAtualizarMissao,miExcluirMissao,miCriarAcao,miLerAcao,miAtualizarAcao,miExcluirAcao,miCriarPost,miLerPost,miAtualizarPost,miExcluirPost,miCriarQuiz,miLerQuiz,miAtualizarQuiz,miExcluirQuiz;
     private JPanel painel, painelBts, painelTxt;
-    private JButton btRegistrarAcao, btRegistrarMissao, btRegistrarQuiz, btRegistrarPost, btRegistrarPenalidade, btSair;
+    private JButton btRegistrarAcao, btRegistrarMissao, btRegistrarQuiz, btRegistrarPost, btRegistrarPenalidade, btRanking;
     private JPopupMenu teste;
     private JTextArea taDetalhesPerfil = new JTextArea(usuario.detalhesPerfil());
     private JLabel lbPerfil;
@@ -125,6 +126,7 @@ public class GUIPrincipal extends JFrame {
         btRegistrarQuiz = new JButton("Registrar quiz");
         btRegistrarPost = new JButton("Registrar post");
         btRegistrarPenalidade = new JButton("Registrar penalidade");
+        btRanking = new JButton("Ver ranking");
         taDetalhesPerfil = new JTextArea(usuario.detalhesPerfil());
         taDetalhesPerfil.setEditable(false);
         lbPerfil = new JLabel("Exemplo de perfil:");
@@ -171,6 +173,7 @@ public class GUIPrincipal extends JFrame {
         painelBts.add(btRegistrarQuiz);
         painelBts.add(btRegistrarPost);
         painelBts.add(btRegistrarPenalidade);
+        painelBts.add(btRanking);
 
         painelTxt.add(lbPerfil);
         painelTxt.add(taDetalhesPerfil);
@@ -354,18 +357,23 @@ public class GUIPrincipal extends JFrame {
                 try (Connection con = ConnectionFactory.abrirConexao()) {
                     postDAO = new PostDAO(con);
                     post = new Post();
+                    ranking = new RankingUsuario();
+                    rankingUsuarioDAO = new RankingUsuarioDAO(con);
 
                     String texto = JOptionPane.showInputDialog("Digite o texto do post: (máx. 200 caracteres)");
-
+                    int upVotes = Integer.parseInt(JOptionPane.showInputDialog("Quantos votos UP recebeu?"));
+                    int downVotes = Integer.parseInt(JOptionPane.showInputDialog("Quantos votos DOWN recebeu?"));
                     post.setIdPost(postDAO.criarId());
                     post.setIdUsuario(usuario.getIdUsuario());
                     post.setDsPost(texto);
                     post.setDtPost(LocalDateTime.now());
-                    post.setNumUpVotes(0);
-                    post.setNumDownVotes(0);
-                    post.setNumSaldoVotes(0);
+                    post.addUpVote(upVotes);
+                    post.addDownVote(downVotes);
 
                     String resultado = postDAO.inserir(post);
+                    ranking = rankingUsuarioDAO.pegarUm(usuario.getIdUsuario());
+                    ranking.setQtVotos(post.getNumSaldoVotes());
+                    rankingUsuarioDAO.alterar(ranking);
                     usuario.registrarAtividade(post.detalhesPost());
                     taDetalhesPerfil.setText(usuario.detalhesPerfil());
                     JOptionPane.showMessageDialog(null, resultado, "Posts", JOptionPane.INFORMATION_MESSAGE);
@@ -692,18 +700,23 @@ public class GUIPrincipal extends JFrame {
                 try (Connection con = ConnectionFactory.abrirConexao()) {
                     postDAO = new PostDAO(con);
                     post = new Post();
+                    rankingUsuarioDAO = new RankingUsuarioDAO(con);
+                    ranking = new RankingUsuario();
 
                     String texto = JOptionPane.showInputDialog("Digite o texto do post: (máx. 200 caracteres)");
-
+                    int upVotes = Integer.parseInt(JOptionPane.showInputDialog("Quantos votos UP recebeu?"));
+                    int downVotes = Integer.parseInt(JOptionPane.showInputDialog("Quantos votos DOWN recebeu?"));
                     post.setIdPost(postDAO.criarId());
                     post.setIdUsuario(usuario.getIdUsuario());
                     post.setDsPost(texto);
                     post.setDtPost(LocalDateTime.now());
-                    post.setNumUpVotes(0);
-                    post.setNumDownVotes(0);
-                    post.setNumSaldoVotes(0);
+                    post.setNumUpVotes(upVotes);
+                    post.setNumDownVotes(downVotes);
 
                     String resultado = postDAO.inserir(post);
+                    ranking = rankingUsuarioDAO.pegarUm(usuario.getIdUsuario());
+                    ranking.setQtVotos(post.getNumSaldoVotes());
+                    rankingUsuarioDAO.alterar(ranking);
                     usuario.registrarAtividade(post.detalhesPost());
                     taDetalhesPerfil.setText(usuario.detalhesPerfil());
                     JOptionPane.showMessageDialog(null, resultado, "Posts", JOptionPane.INFORMATION_MESSAGE);
@@ -748,7 +761,6 @@ public class GUIPrincipal extends JFrame {
 
                     post.setIdPost(id);
                     post.setIdUsuario(usuario.getIdUsuario());
-                    post.setIdAcao(idAcao);
                     post.setDsPost(texto);
                     post.setDtPost(LocalDateTime.now());
                     post.setNumUpVotes(upVotes);
@@ -871,6 +883,28 @@ public class GUIPrincipal extends JFrame {
                     JOptionPane.showMessageDialog(null, resultado, "Quiz", JOptionPane.INFORMATION_MESSAGE);
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+        btRanking.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                try (Connection con = ConnectionFactory.abrirConexao()){
+                    ranking = new RankingUsuario();
+                    rankingUsuarioDAO = new RankingUsuarioDAO(con);
+                    ArrayList<RankingUsuario> listaRanking = new ArrayList<>();
+                    listaRanking = rankingUsuarioDAO.listarTodos();
+                    String texto = "";
+                    int posicao = 1;
+                    for (RankingUsuario cadaPosicao : listaRanking) {
+                        texto += String.format("POS.: %dº | Nome: %s | Votos: %d\n",
+                                               posicao,cadaPosicao.getIdUsuario(),cadaPosicao.getQtVotos());
+                        posicao++;
+                    }
+                    JOptionPane.showMessageDialog(null,texto,"Ranking",JOptionPane.INFORMATION_MESSAGE);
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, "Erro de SQL: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });

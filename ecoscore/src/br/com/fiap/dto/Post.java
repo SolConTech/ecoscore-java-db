@@ -10,7 +10,6 @@ import java.time.format.DateTimeFormatter;
 public class Post {
     private int idPost;
     private String idUsuario; //FK de Usuario
-    private Integer idAcao; //FK de Acao, é Integer pois pode ser null, post pode ser feito sem Ação
     private String dsPost;
     private LocalDateTime dtPost;
     private int numUpVotes = 0; //começa em zero
@@ -35,12 +34,6 @@ public class Post {
     }
     public void setIdUsuario(String idUsuario) {
         this.idUsuario = idUsuario.toLowerCase();
-    }
-    public Integer getIdAcao() {
-        return idAcao;
-    }
-    public void setIdAcao(Integer idAcao) {
-        this.idAcao = idAcao;
     }
     public String getDsPost() {
         return dsPost;

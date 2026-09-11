@@ -1,11 +1,9 @@
 package br.com.fiap.dao;
 
+import br.com.fiap.dto.Missao;
 import br.com.fiap.dto.RankingUsuario;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class RankingUsuarioDAO {
@@ -70,7 +68,7 @@ public class RankingUsuarioDAO {
     }
 
     public ArrayList<RankingUsuario> listarTodos(){
-        String sql = "select * from ranking_usuario order by ID_RANKING";
+        String sql = "select * from ranking_usuario order by QT_VOTOS DESC";
         ArrayList<RankingUsuario> listaRankingUsuario = new ArrayList<>();
 
         try (PreparedStatement ps = getCon().prepareStatement(sql);
@@ -92,6 +90,27 @@ public class RankingUsuarioDAO {
                 return null;
             }
 
+        } catch (SQLException e) {
+            System.out.println("Erro de SQL: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public RankingUsuario pegarUm(String idUsuario){
+        String sql = "SELECT * FROM RANKING_USUARIO WHERE ID_USUARIO = ?";
+        try (PreparedStatement ps = getCon().prepareStatement(sql)){
+            ps.setString(1,idUsuario);
+            try (ResultSet rs = ps.executeQuery()){
+                if (rs.next()){
+                    RankingUsuario ranking = new RankingUsuario();
+                    ranking.setIdRanking(rs.getInt(1));
+                    ranking.setQtVotos(rs.getInt(2));
+                    ranking.setIdUsuario(rs.getString(3));
+                    return ranking;
+                } else {
+                    return null;
+                }
+            }
         } catch (SQLException e) {
             System.out.println("Erro de SQL: " + e.getMessage());
             return null;

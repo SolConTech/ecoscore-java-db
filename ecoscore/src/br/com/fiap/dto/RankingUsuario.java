@@ -32,22 +32,6 @@ public class RankingUsuario {
         return qtVotos;
     }
     public void setQtVotos(int qtVotos) {
-        this.qtVotos = qtVotos;
+        this.qtVotos += qtVotos;//adiciona votos
     }
-
-    /*
-    // Dentro do seu metodo Main ou classe de visualização:
-RankingDAO dao = new RankingDAO();
-ArrayList<RankingUsuario> ranking = RankingDAO.getRankingCompleto();
-
-System.out.println("====== RANKING GLOBAL ======");
-
-for (int i = 0; i < ranking.size(); i++) {
-    int posicao = i + 1; // Calcula a posição dinamicamente (0+1=1, 1+1=2...)
-    UsuarioRanking jogador = ranking.get(i);
-
-    // Formata e exibe tudo diretamente na tela
-    System.out.printf("%dº Lugar - %s (%d pontos)%n",
-                      posicao, jogador.getNmMissao(), jogador.getPontuacao());
-}  */
 }

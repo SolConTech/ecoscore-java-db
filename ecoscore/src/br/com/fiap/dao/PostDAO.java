@@ -23,16 +23,15 @@ public class PostDAO {
     }
 
     public String inserir(Post post){
-        String sql = "insert into post(ID_POST,USUARIO_ID_USUARIO,ACAO_ID_ACAO,DS_POST,DT_POST,NUM_UPVOTES,NUM_DOWNVOTES,NUM_SALDOVOTES) values(?,?,?,?,?,?,?,?)";
+        String sql = "insert into post(ID_POST,USUARIO_ID_USUARIO,DS_POST,DT_POST,NUM_UPVOTES,NUM_DOWNVOTES,NUM_SALDOVOTES) values(?,?,?,?,?,?,?)";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
             ps.setInt(1, post.getIdPost());
             ps.setString(2, post.getIdUsuario());
-            ps.setInt(3, post.getIdAcao());
-            ps.setString(4, post.getDsPost());
-            ps.setObject(5, post.getDtPost());
-            ps.setInt(6, post.getNumUpVotes());
-            ps.setInt(7, post.getNumDownVotes());
-            ps.setInt(8, post.getNumSaldoVotes());
+            ps.setString(3, post.getDsPost());
+            ps.setObject(4, post.getDtPost());
+            ps.setInt(5, post.getNumUpVotes());
+            ps.setInt(6, post.getNumDownVotes());
+            ps.setInt(7, post.getNumSaldoVotes());
 
             if (ps.executeUpdate() > 0) {
                 return "Inserido com sucesso";
@@ -45,16 +44,15 @@ public class PostDAO {
     }
 
     public String alterar(Post post){
-        String sql = "update post set USUARIO_ID_USUARIO=?, ACAO_ID_ACAO=?, DS_POST=?, DT_POST=?, NUM_UPVOTES=?, NUM_DOWNVOTES=?, NUM_SALDOVOTES=? where ID_POST=?";
+        String sql = "update post set USUARIO_ID_USUARIO=?, DS_POST=?, DT_POST=?, NUM_UPVOTES=?, NUM_DOWNVOTES=?, NUM_SALDOVOTES=? where ID_POST=?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
             ps.setString(1, post.getIdUsuario());
-            ps.setInt(2, post.getIdAcao());
-            ps.setString(3, post.getDsPost());
-            ps.setObject(4, post.getDtPost());
-            ps.setInt(5, post.getNumUpVotes());
-            ps.setInt(6, post.getNumDownVotes());
-            ps.setInt(7, post.getNumSaldoVotes());
-            ps.setInt(8, post.getIdPost());
+            ps.setString(2, post.getDsPost());
+            ps.setObject(3, post.getDtPost());
+            ps.setInt(4, post.getNumUpVotes());
+            ps.setInt(5, post.getNumDownVotes());
+            ps.setInt(6, post.getNumSaldoVotes());
+            ps.setInt(7, post.getIdPost());
 
             if (ps.executeUpdate() > 0) {
                 return "Alterado com sucesso";
@@ -91,7 +89,7 @@ public class PostDAO {
             if (rs != null){
                 while (rs.next()){
                     Post post = new Post();
-                    post.setIdAcao(rs.getInt(1));
+                    post.setIdPost(rs.getInt(1));
                     post.setDsPost(rs.getString(2));
                     Timestamp data = rs.getTimestamp(3);
                     post.setDtPost(data.toLocalDateTime());
@@ -99,7 +97,6 @@ public class PostDAO {
                     post.setNumDownVotes(rs.getInt(5));
                     post.setNumSaldoVotes(rs.getInt(6));
                     post.setIdUsuario(rs.getString(7));
-                    post.setIdPost(rs.getInt(8));
 
                     listaPost.add(post);
                 }
@@ -144,7 +141,7 @@ public class PostDAO {
             try (ResultSet rs = ps.executeQuery()){
                 if (rs.next()){
                     Post post = new Post();
-                    post.setIdAcao(rs.getInt(1));
+                    post.setIdPost(rs.getInt(1));
                     post.setDsPost(rs.getString(2));
                     Timestamp data = rs.getTimestamp(3);
                     post.setDtPost(data.toLocalDateTime());
@@ -152,7 +149,6 @@ public class PostDAO {
                     post.setNumDownVotes(rs.getInt(5));
                     post.setNumSaldoVotes(rs.getInt(6));
                     post.setIdUsuario(rs.getString(7));
-                    post.setIdPost(rs.getInt(8));
 
                     return post;
                 } else {
