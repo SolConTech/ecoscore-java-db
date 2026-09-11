@@ -1,10 +1,8 @@
 package br.com.fiap.dao;
 
 import br.com.fiap.dto.Acao;
-import br.com.fiap.dto.Usuario;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -12,7 +10,6 @@ public class AcaoDAO {
     private Connection con;
 
     public AcaoDAO() {}
-    ;
     public AcaoDAO(Connection con) {
         this.con = con;
     }
