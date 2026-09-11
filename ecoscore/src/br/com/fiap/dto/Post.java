@@ -10,17 +10,17 @@ import java.time.format.DateTimeFormatter;
 public class Post {
     private int idPost;
     private String idUsuario; //FK de Usuario
-    private Integer idAcao; //FK de Acao, é Integer pois pode ser null, post pode ser feito sem Ação
     private String dsPost;
     private LocalDateTime dtPost;
-    private int numUpVotes;
-    private int numDownVotes;
-    private int numSaldoVotes;
+    private int numUpVotes = 0; //começa em zero
+    private int numDownVotes = 0; //começa em zero
+    private int numSaldoVotes = 0; //começa em zero
 
     public Post() {}
-    public Post(int idPost, String idUsuario) {
+    public Post(int idPost, String idUsuario,String dsPost) {
         this.idPost = idPost;
         setIdUsuario(idUsuario);
+        dtPost = LocalDateTime.now();
     }
 
     public int getIdPost() {
@@ -34,12 +34,6 @@ public class Post {
     }
     public void setIdUsuario(String idUsuario) {
         this.idUsuario = idUsuario.toLowerCase();
-    }
-    public Integer getIdAcao() {
-        return idAcao;
-    }
-    public void setIdAcao(Integer idAcao) {
-        this.idAcao = idAcao;
     }
     public String getDsPost() {
         return dsPost;
@@ -104,6 +98,7 @@ public class Post {
             throw new IllegalArgumentException("Número de votos precisa ser maior que zero");
         }
         numUpVotes += qtUpVotes;
+        updtSaldoVotes();
     }
 
     /**
@@ -115,6 +110,7 @@ public class Post {
             throw new IllegalArgumentException("Número de votos precisa ser maior que zero");
         }
         numDownVotes += qtDownVotes;
+        updtSaldoVotes();
     }
 
     /**
@@ -124,6 +120,6 @@ public class Post {
     public String detalhesPost() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy 'às' hh:mm");
         return String.format("Post publicado em (%s) com saldo de %d votos (+%d/-%d).",
-                dtPost.format(dtf), numSaldoVotes, numDownVotes, numDownVotes);
+                dtPost.format(dtf), numSaldoVotes, numUpVotes, numDownVotes);
     }
 }

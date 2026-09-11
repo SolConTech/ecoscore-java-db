@@ -47,12 +47,13 @@ public class Quiz {
         if (numQuestoes <= 0) {
             throw new IllegalArgumentException("A qtde. de questões deve ser maior que zero.");
         }
+        this.numQuestoes = numQuestoes;
     }
     public int getNumAcertos() {
         return numAcertos;
     }
     public void setNumAcertos(int numAcertos) throws IllegalArgumentException {
-        if (numAcertos <= 0 || numAcertos > numQuestoes) {
+        if (numAcertos < 0 || numAcertos > numQuestoes) {
             throw new IllegalArgumentException("A qtde. questões deve ser maior que zero e menor que o número de questões");
         }
         this.numAcertos = numAcertos;
@@ -70,7 +71,7 @@ public class Quiz {
         return qtPontosGerados;
     }
     public void setQtPontosGerados() {
-        //depende apenas dos valores da própria classe.
+        //depende dos valores da própria classe.
         this.qtPontosGerados = numAcertos * qtPontosPorQuestao;
     }
     public LocalDateTime getDtQuiz() {

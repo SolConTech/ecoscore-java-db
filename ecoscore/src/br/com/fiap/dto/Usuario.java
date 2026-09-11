@@ -12,8 +12,8 @@ public class Usuario {
     private String nmUsuario;
     private float vlMerito; //A confiabilidade do usuário, quanto o voto e as ações dele são confiáveis
     private int qtSoulCoins;
-    private ArrayList<String> dsAtividadeRecente; //Últimas ações realizadas
-    private ArrayList<String> selosGanhos;
+    private ArrayList<String> dsAtividadeRecente = new ArrayList<String>(); //Últimas ações realizadas
+    private ArrayList<String> selosGanhos = new ArrayList<String>();
 
     public Usuario() {}
     // Construtor para registrar apenas nmUsuario do usuário e idUsuario, pois ambos não tem validação
@@ -21,7 +21,7 @@ public class Usuario {
         this.nmUsuario = nmUsuario;
         setIdUsuario(idUsuario);
     }
-    // Construtor para registrar usuário quas completo (nome, idUsuario, vlMerito e soul coins).
+    // Construtor para registrar usuário quase completo (nome, idUsuario, vlMerito e soul coins).
     public Usuario(String nmUsuario, String idUsuario, float vlMerito, int qtSoulCoins) {
         this.nmUsuario = nmUsuario;
         setIdUsuario(idUsuario);
@@ -29,10 +29,10 @@ public class Usuario {
         setQtSoulCoins(qtSoulCoins);
     }
 
-    public String getNome() {
+    public String getNmUsuario() {
         return nmUsuario;
     }
-    public void setNome(String nmUsuario) {
+    public void setNmUsuario(String nmUsuario) {
         this.nmUsuario = nmUsuario;
     }
     public String getIdUsuario() {
@@ -80,7 +80,12 @@ public class Usuario {
     public void setDsAtividadeRecente(ArrayList<String> dsAtividadeRecente) {
         this.dsAtividadeRecente = dsAtividadeRecente;
     }
-
+    public ArrayList<String> getSelosGanhos() {
+        return selosGanhos;
+    }
+    public void setSelosGanhos(ArrayList<String> selosGanhos) {
+        this.selosGanhos = selosGanhos;
+    }
     /**
      * Registrar uma atividade do usuário.
      * @param dsAtividade é o texto descrevendo a atividade realizada
@@ -109,9 +114,10 @@ public class Usuario {
             int vlSolconReduzidos = (int) Math.round(qtSoulCoins * 0.5);
             this.qtSoulCoins += vlSolconReduzidos;
             dsAtividade += String.format(" [%d pontos]", vlSolconReduzidos);
+            registrarAtividade(dsAtividade);
         } else {
             // Menor que tres metade, maior já recebe todos os pontos normais
-            dsAtividade += String.format("[ %d pontos]", qtSoulCoins);
+            dsAtividade += String.format("[%d pontos]", qtSoulCoins);
             registrarAtividade(dsAtividade);
             this.qtSoulCoins += qtSoulCoins;
         }
@@ -128,12 +134,16 @@ public class Usuario {
         if (dsAtividade == null || dsAtividade.isBlank()) {
             throw new IllegalArgumentException("A descrição da ação não pode ser vazia");
         }
+        if (selo == null && selo.isBlank()) {
+            selo = "N/A"; //não aplicável
+        }
         // a vlMerito do usuário deve alterar o recebimento de pontos
         if (vlMerito <= 30) {
             // Divide pela metade os pontos recebidos e então arredonda para o inteiro mais próximo pra depois transformar em Inteiro.
             int vlSolconReduzidos = (int) Math.round(qtSoulCoins * 0.5);
             this.qtSoulCoins += vlSolconReduzidos;
             dsAtividade += String.format(" [%d pontos]", vlSolconReduzidos);
+            registrarAtividade(dsAtividade);
         } else {
             // Menor que tres metade, maior já recebe todos os pontos normais
             dsAtividade += String.format(" [%d pontos]", qtSoulCoins);
@@ -150,9 +160,14 @@ public class Usuario {
     public String detalhesPerfil() {
         String listaAtividaderecente = "";
         for (String atividade : dsAtividadeRecente) {
-            listaAtividaderecente += atividade + "\n";
+            listaAtividaderecente += "\n-" + atividade;
         }
-        return String.format("Nome: %s\nId: %s\nConfiabilidade: %.1f\nSoul Coins: %d\nAtividade recente:\n%s", nmUsuario, idUsuario, vlMerito, qtSoulCoins, dsAtividadeRecente);
+        String listaSelosGanhos = "";
+        for (String selo : selosGanhos) {
+            listaSelosGanhos += "\n-"+ selo;
+        }
+
+        return String.format("Nome: %s\nId: %s\nConfiabilidade: %.1f\nSoul Coins: %d\nAtividade recente:%s\nSelos ganhos:%s", nmUsuario, idUsuario, vlMerito, qtSoulCoins, listaAtividaderecente, listaSelosGanhos);
     }
 
     /**
