@@ -13,7 +13,6 @@ public class Acao {
     private String dsAcao; //x reciclados
     private int qtPontosGerados;
     private LocalDateTime dtAcao;
-
     public Acao() {
         dtAcao = LocalDateTime.now();
     }

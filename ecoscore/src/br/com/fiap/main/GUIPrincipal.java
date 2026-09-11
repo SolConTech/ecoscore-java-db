@@ -98,21 +98,21 @@ public class GUIPrincipal extends JFrame {
         miExcluirUsuario = new JMenuItem("Excluir usuário");
 
         miCriarMissao = new JMenuItem("Criar missão");
-        miLerMissao = new JMenuItem("Ler missão");
+        miLerMissao = new JMenuItem("Listar missões");
         miAtualizarMissao = new JMenuItem("Atualizar missão");
         miExcluirMissao = new JMenuItem("Excluir missão");
 
         miCriarAcao = new JMenuItem("Criar ação");
-        miLerAcao = new JMenuItem("Ler ação");
+        miLerAcao = new JMenuItem("Listar ações");
         miAtualizarAcao = new JMenuItem("Atualizar ação");
         miExcluirAcao = new JMenuItem("Excluir ação");
 
         miCriarPost = new JMenuItem("Criar post");
-        miLerPost = new JMenuItem("Ler post");
+        miLerPost = new JMenuItem("Listar posts");
         miAtualizarPost = new JMenuItem("Atualizar post");
         miExcluirPost = new JMenuItem("Excluir post");
         miCriarQuiz = new JMenuItem("Criar quiz");
-        miLerQuiz = new JMenuItem("Ler quiz");
+        miLerQuiz = new JMenuItem("Listar quizzes");
         miAtualizarQuiz = new JMenuItem("Atualizar quiz");
         miExcluirQuiz = new JMenuItem("Excluir quiz");
         miEditarExemplo = new JMenuItem("Editar exemplo");
@@ -405,7 +405,7 @@ public class GUIPrincipal extends JFrame {
 
                     String resultado = postDAO.inserir(post);
                     ranking = rankingUsuarioDAO.pegarUm(usuario.getIdUsuario());
-                    ranking.setQtVotos(post.getNumSaldoVotes());
+                    ranking.addQtVotos(post.getNumSaldoVotes());
                     rankingUsuarioDAO.alterar(ranking);
                     usuario.registrarAtividade(post.detalhesPost());
                     taDetalhesPerfil.setText(usuario.detalhesPerfil());
@@ -748,7 +748,7 @@ public class GUIPrincipal extends JFrame {
 
                     String resultado = postDAO.inserir(post);
                     ranking = rankingUsuarioDAO.pegarUm(usuario.getIdUsuario());
-                    ranking.setQtVotos(post.getNumSaldoVotes());
+                    ranking.addQtVotos(post.getNumSaldoVotes());
                     rankingUsuarioDAO.alterar(ranking);
                     usuario.registrarAtividade(post.detalhesPost());
                     taDetalhesPerfil.setText(usuario.detalhesPerfil());

@@ -11,9 +11,10 @@ public class RankingUsuario {
     private int qtVotos;
 
     public RankingUsuario() {}
-    public RankingUsuario(int idRanking, String idUsuario, int numPosicao, LocalDateTime dtAtualizacao) {
+    public RankingUsuario(int idRanking, String idUsuario, int qtVotos) {
         this.idRanking = idRanking;
         this.idUsuario = idUsuario;
+        this.qtVotos = qtVotos;
     }
 
     public int getIdRanking() {
@@ -32,6 +33,9 @@ public class RankingUsuario {
         return qtVotos;
     }
     public void setQtVotos(int qtVotos) {
-        this.qtVotos += qtVotos;//adiciona votos
+        this.qtVotos = qtVotos;
+    }
+    public void addQtVotos(int qtVotos){
+        this.qtVotos += qtVotos;
     }
 }

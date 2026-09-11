@@ -53,7 +53,7 @@ public class Quiz {
         return numAcertos;
     }
     public void setNumAcertos(int numAcertos) throws IllegalArgumentException {
-        if (numAcertos <= 0 || numAcertos > numQuestoes) {
+        if (numAcertos < 0 || numAcertos > numQuestoes) {
             throw new IllegalArgumentException("A qtde. questões deve ser maior que zero e menor que o número de questões");
         }
         this.numAcertos = numAcertos;
