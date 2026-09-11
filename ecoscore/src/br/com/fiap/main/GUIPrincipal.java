@@ -290,15 +290,15 @@ public class GUIPrincipal extends JFrame {
                             acao.registrarPontos(calculadora.pontosNatureza(dificuldade));
                             break;
                         case 2:
-                            float kgCarbono = Integer.parseInt(JOptionPane.showInputDialog("Qual é a qtde. de carbono? Digite (um número): "));
+                            float kgCarbono = Float.parseFloat(JOptionPane.showInputDialog("Qual é a qtde. de carbono? Digite (um número): "));
                             acao.registrarPontos(calculadora.pontosCarbono(kgCarbono));
                             break;
                         case 3:
-                            float litros = Integer.parseInt(JOptionPane.showInputDialog("Qual é a qtde. de litros economizados? Digite (um número): "));
+                            float litros = Float.parseFloat(JOptionPane.showInputDialog("Qual é a qtde. de litros economizados? Digite (um número): "));
                             acao.registrarPontos(calculadora.pontosAgua(litros));
                             break;
                         case 4:
-                            float kgReciclados = Integer.parseInt(JOptionPane.showInputDialog("Qual é a qtde. de KG reciclados? Digite (um número): "));
+                            float kgReciclados = Float.parseFloat(JOptionPane.showInputDialog("Qual é a qtde. de KG reciclados? Digite (um número): "));
                             acao.registrarPontos(calculadora.pontosReciclagem(kgReciclados));
                             break;
                         case 0:
@@ -315,6 +315,10 @@ public class GUIPrincipal extends JFrame {
 
                         usuario.registrarAtividade(acao.detalhesAcao(),acao.getQtPontosGerados());
                         String resultado = acaoDAO.inserir(acao);
+
+                        usuarioDAO = new UsuarioDAO(con);
+                        usuarioDAO.alterar(usuario);
+
                         taDetalhesPerfil.setText(usuario.detalhesPerfil());
                         JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
                     }
@@ -345,6 +349,10 @@ public class GUIPrincipal extends JFrame {
                     usuario.registrarAtividade(missao.detalhesMissao(),
                             missao.getQtPontosGerados(),
                             missao.getSelo());
+
+                    usuarioDAO = new UsuarioDAO(con);
+                    usuarioDAO.alterar(usuario);
+
                     String resultado = missaoDAO.inserir(missao);
                     taDetalhesPerfil.setText(usuario.detalhesPerfil());
                     JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
@@ -375,6 +383,10 @@ public class GUIPrincipal extends JFrame {
 
                     usuario.registrarAtividade(quiz.detalhesQuiz(),
                             quiz.getQtPontosGerados());
+
+                    usuarioDAO = new UsuarioDAO(con);
+                    usuarioDAO.alterar(usuario);
+
                     taDetalhesPerfil.setText(usuario.detalhesPerfil());
                     String resultado = quizDAO.inserir(quiz);
                     JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
@@ -405,8 +417,13 @@ public class GUIPrincipal extends JFrame {
 
                     String resultado = postDAO.inserir(post);
                     ranking = rankingUsuarioDAO.pegarUm(usuario.getIdUsuario());
-                    ranking.addQtVotos(post.getNumSaldoVotes());
-                    rankingUsuarioDAO.alterar(ranking);
+                    if (ranking != null) {
+                        ranking.addQtVotos(post.getNumSaldoVotes());
+                        rankingUsuarioDAO.alterar(ranking);
+                    } else {
+                        ranking = new RankingUsuario(5,usuario.getIdUsuario(),post.getNumSaldoVotes());
+                        rankingUsuarioDAO.inserir(ranking);
+                    }
                     usuario.registrarAtividade(post.detalhesPost());
                     taDetalhesPerfil.setText(usuario.detalhesPerfil());
                     JOptionPane.showMessageDialog(null, resultado, "Posts", JOptionPane.INFORMATION_MESSAGE);
@@ -418,14 +435,16 @@ public class GUIPrincipal extends JFrame {
         btRegistrarPenalidade.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                try {
+                try (Connection con = ConnectionFactory.abrirConexao()){
                     int valorPenalidade = Integer.parseInt(JOptionPane.showInputDialog("Digite o valor da penalidade de confiabilidade (0-100, a confiabilidade não cairá abaixo de 0): "));
                     String descOcorrido = JOptionPane.showInputDialog("Descreva o ocorrido: ");
                     //Mensagem de confirmação mostrando o texto e confiabilidade que será tirada.
                     if (JOptionPane.showConfirmDialog(null,
                             String.format("Tem certeza que quer retirar %d de confiabilidade do usuário %s com a descrição:\n%s", valorPenalidade, usuario.getNmUsuario(), descOcorrido), "Confirme",
                             JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == 0) {
+                        usuarioDAO = new UsuarioDAO(con);
                         usuario.registrarPenalidade(valorPenalidade, descOcorrido);
+                        usuarioDAO.alterar(usuario);
                     }
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
@@ -545,6 +564,10 @@ public class GUIPrincipal extends JFrame {
                     usuario.registrarAtividade(missao.detalhesMissao(),
                                                missao.getQtPontosGerados(),
                                                missao.getSelo());
+
+                    usuarioDAO = new UsuarioDAO(con);
+                    usuarioDAO.alterar(usuario);
+
                     String resultado = missaoDAO.inserir(missao);
                     taDetalhesPerfil.setText(usuario.detalhesPerfil());
                     JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
@@ -562,7 +585,7 @@ public class GUIPrincipal extends JFrame {
                     String todasMissoes = "";
                     if (lista != null) {
                         for (Missao missao : lista) {
-                            todasMissoes = String.format("ID: %d | Nome: %s | Selo: %s SoulPoints: %d\n",
+                            todasMissoes += String.format("ID: %d | Nome: %s | Selo: %s SoulPoints: %d\n",
                                                          missao.getIdMissao(), missao.getNmMissao(),
                                                          missao.getSelo(),missao.getQtPontosGerados());
                         }
@@ -631,15 +654,15 @@ public class GUIPrincipal extends JFrame {
                             acao.registrarPontos(calculadora.pontosNatureza(dificuldade));
                             break;
                         case 2:
-                            float kgCarbono = Integer.parseInt(JOptionPane.showInputDialog("Qual é a qtde. de carbono? Digite (um número): "));
+                            float kgCarbono = Float.parseFloat(JOptionPane.showInputDialog("Qual é a qtde. de carbono? Digite (um número): "));
                             acao.registrarPontos(calculadora.pontosCarbono(kgCarbono));
                             break;
                         case 3:
-                            float litros = Integer.parseInt(JOptionPane.showInputDialog("Qual é a qtde. de litros economizados? Digite (um número): "));
+                            float litros = Float.parseFloat(JOptionPane.showInputDialog("Qual é a qtde. de litros economizados? Digite (um número): "));
                             acao.registrarPontos(calculadora.pontosAgua(litros));
                             break;
                         case 4:
-                            float kgReciclados = Integer.parseInt(JOptionPane.showInputDialog("Qual é a qtde. de KG reciclados? Digite (um número): "));
+                            float kgReciclados = Float.parseFloat(JOptionPane.showInputDialog("Qual é a qtde. de KG reciclados? Digite (um número): "));
                             acao.registrarPontos(calculadora.pontosReciclagem(kgReciclados));
                             break;
                         case 0:
@@ -657,6 +680,10 @@ public class GUIPrincipal extends JFrame {
                         usuario.registrarAtividade(acao.detalhesAcao(),
                                                    acao.getQtPontosGerados());
                         String resultado = acaoDAO.inserir(acao);
+
+                        usuarioDAO = new UsuarioDAO(con);
+                        usuarioDAO.alterar(usuario);
+
                         taDetalhesPerfil.setText(usuario.detalhesPerfil());
                         JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
                     }
@@ -768,7 +795,7 @@ public class GUIPrincipal extends JFrame {
                     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy - hh:mm");
                     if (lista != null) {
                         for (Post post : lista) {
-                            texto += String.format("ID: %d | Usuário: %s | Votos: +%d-%d=%d | Data: %s",
+                            texto += String.format("ID: %d | Usuário: %s | Votos: +%d-%d=%d | Data: %s\n",
                                                    post.getIdPost(),post.getIdUsuario(),post.getNumUpVotes(),
                                                    post.getNumDownVotes(),post.getNumSaldoVotes(),post.getDtPost().format(dtf)); 
                         }
@@ -787,7 +814,6 @@ public class GUIPrincipal extends JFrame {
                     post = new Post();
 
                     int id = Integer.parseInt(JOptionPane.showInputDialog("Digite o ID do post a atualizar: "));
-                    int idAcao = Integer.parseInt(JOptionPane.showInputDialog("Novo ID da ação relacionada: "));
                     String texto = JOptionPane.showInputDialog("Novo texto do post: ");
                     int upVotes = Integer.parseInt(JOptionPane.showInputDialog("Qtde. de upvotes: "));
                     int downVotes = Integer.parseInt(JOptionPane.showInputDialog("Qtde. de downvotes: "));
@@ -846,6 +872,10 @@ public class GUIPrincipal extends JFrame {
 
                     usuario.registrarAtividade(quiz.detalhesQuiz(),
                                                quiz.getQtPontosGerados());
+
+                    usuarioDAO = new UsuarioDAO(con);
+                    usuarioDAO.alterar(usuario);
+
                     taDetalhesPerfil.setText(usuario.detalhesPerfil());
                     String resultado = quizDAO.inserir(quiz);
                     JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
