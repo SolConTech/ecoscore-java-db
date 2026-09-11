@@ -32,7 +32,7 @@ public class GUIPrincipal extends JFrame {
     private Container contentPane;
     private JMenuBar mnBarra;
     private JMenu mnArquivo, mnUsuario,mnMissao,mnAcao,mnPost,mnQuiz,mnAjuda;
-    private JMenuItem miSair, miAjuda, miEditarExemplo,miLimparAtividades,miLimparSelos,miCriarUsuario,miLerUsuario,miAtualizarUsuario,miExcluirUsuario,miCriarMissao,miLerMissao,miAtualizarMissao,miExcluirMissao,miCriarAcao,miLerAcao,miAtualizarAcao,miExcluirAcao,miCriarPost,miLerPost,miAtualizarPost,miExcluirPost,miCriarQuiz,miLerQuiz,miAtualizarQuiz,miExcluirQuiz;
+    private JMenuItem miSair, miAjuda, miEditarExemplo,miTrocarUsuario,miLimparAtividades,miLimparSelos,miCriarUsuario,miLerUsuario,miAtualizarUsuario,miExcluirUsuario,miCriarMissao,miLerMissao,miAtualizarMissao,miExcluirMissao,miCriarAcao,miLerAcao,miAtualizarAcao,miExcluirAcao,miCriarPost,miLerPost,miAtualizarPost,miExcluirPost,miCriarQuiz,miLerQuiz,miAtualizarQuiz,miExcluirQuiz;
     private JPanel painel, painelBts, painelTxt;
     private JButton btRegistrarAcao, btRegistrarMissao, btRegistrarQuiz, btRegistrarPost, btRegistrarPenalidade, btRanking;
     private JPopupMenu teste;
@@ -91,6 +91,7 @@ public class GUIPrincipal extends JFrame {
         miLimparAtividades = new JMenuItem("Limpar atividades");
         miLimparSelos = new JMenuItem("Limpar selos");
         miAjuda = new JMenuItem("Tutorial");
+        miTrocarUsuario = new JMenuItem("Trocar usuário");
         miCriarUsuario = new JMenuItem("Criar usuário");
         miLerUsuario = new JMenuItem("Ler usuário");
         miAtualizarUsuario = new JMenuItem("Atualizar usuário");
@@ -145,6 +146,7 @@ public class GUIPrincipal extends JFrame {
         mnArquivo.add(miEditarExemplo);
         mnArquivo.add(miLimparAtividades);
         mnArquivo.add(miLimparSelos);
+        mnArquivo.add(miTrocarUsuario);
         mnArquivo.add(miSair);
         mnUsuario.add(miCriarUsuario);
         mnUsuario.add(miLerUsuario);
@@ -238,6 +240,37 @@ public class GUIPrincipal extends JFrame {
                 if (JOptionPane.showConfirmDialog(null, "Tem certa? Isso apagará todos os selos ganhos do perfil do usuário!","Confirme",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==0){
                     ArrayList<String> selosVazio = new ArrayList<>();
                     usuario.setSelosGanhos(selosVazio);
+                }
+                taDetalhesPerfil.setText(usuario.detalhesPerfil());
+            }
+        });
+        miTrocarUsuario.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                try (Connection con = ConnectionFactory.abrirConexao()){
+                    Usuario testarSeExiste = new Usuario();
+                    usuarioDAO = new UsuarioDAO(con);
+
+                    String novoId = JOptionPane.showInputDialog("Qual usuário você quer usar?: (dica: Liste os usuários pelo menu)");
+                    testarSeExiste = usuarioDAO.pegarUm(novoId);
+                    if (testarSeExiste != null) {
+                        if (JOptionPane.showConfirmDialog(null,
+                                                 "Usuário encontado, você tem certeza que quer mudar isso pode apagar algumas alterações!",
+                                                          "Confirme!",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==0) {
+                            usuario = new Usuario();
+                            usuario = usuarioDAO.pegarUm(novoId);
+                            JOptionPane.showMessageDialog(null,"Logado como " + usuario.getNmUsuario(),
+                                                          "Novo usuário!", JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            JOptionPane.showMessageDialog(null,"Troca cancelada",
+                                                     "Nada acontece", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Esse usuário não existe!",
+                                                      "Erro",JOptionPane.WARNING_MESSAGE);
+                    }
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 }
                 taDetalhesPerfil.setText(usuario.detalhesPerfil());
             }
