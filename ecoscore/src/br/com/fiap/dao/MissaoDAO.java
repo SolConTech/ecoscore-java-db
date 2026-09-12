@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class MissaoDAO {
+public class MissaoDAO implements IDAO{
     private Connection con;
 
     public MissaoDAO() {}
@@ -21,7 +21,8 @@ public class MissaoDAO {
         return con;
     }
 
-    public String inserir(Missao missao){
+    public String inserir(Object objeto){
+        Missao missao = (Missao) objeto;
         String sql = "insert into missao(ID_MISSAO,nm_missao, DS_MISSAO, SELO, qt_pontosGerados, dt_missao) values(?,?,?,?,?,?)";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
             ps.setInt(1,missao.getIdMissao());
@@ -40,7 +41,8 @@ public class MissaoDAO {
         }
     }
 
-    public String alterar(Missao missao){
+    public String alterar(Object objeto){
+        Missao missao = (Missao) objeto;
         String sql = "update missao set NM_MISSAO=?, DS_MISSAO=?, SELO=?, QT_PONTOSGERADOS=?, DT_MISSAO=? where ID_MISSAO=?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
             ps.setString(1, missao.getNmMissao());
@@ -59,7 +61,8 @@ public class MissaoDAO {
         }
     }
 
-    public String excluir(Missao missao){
+    public String excluir(Object objeto){
+        Missao missao = (Missao) objeto;
         String sql = "delete from missao where ID_MISSAO=?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
             ps.setInt(1, missao.getIdMissao());
@@ -73,9 +76,9 @@ public class MissaoDAO {
         }
     }
 
-    public ArrayList<Missao> listarTodos(){
+    public ArrayList<Object> listarTodos(){
         String sql = "select * from missao order by ID_MISSAO";
-        ArrayList<Missao> listaMissao = new ArrayList<>();
+        ArrayList<Object> listaMissao = new ArrayList<>();
         try (PreparedStatement ps = getCon().prepareStatement(sql);
              ResultSet rs = ps.executeQuery()){
             if (rs != null){
@@ -101,32 +104,10 @@ public class MissaoDAO {
         }
     }
 
-    public Integer criarId() {
-        String sql = "SELECT ID_MISSAO FROM MISSAO";
-        ArrayList<Integer> listaIds = new ArrayList<Integer>();
-        try (PreparedStatement ps = getCon().prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-            if (rs != null) {
-                while (rs.next()) {
-                    int id = rs.getInt(1);
-                    listaIds.add(id);
-                }
-                //o orElse serve para não retornar 0«nada se a lista estiver vazia, o max retorna Integer
-                Integer id = listaIds.stream().max(Comparator.naturalOrder()).orElse(null);
-                return id+1;
-            } else {
-                return null;
-            }
-        } catch (SQLException e) {
-            System.out.println("Erro de SQL: " + e.getMessage());
-            return null;
-        }
-    }
-
-    public Missao pegarUm(int idMissao){
+    public Object pegarUm(Object object){
         String sql = "SELECT * FROM MISSAO WHERE ID_MISSAO = ?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)){
-            ps.setInt(1,idMissao);
+            ps.setObject(1,object);
             try (ResultSet rs = ps.executeQuery()){
                 if (rs.next()){
                     Missao missao = new Missao();
@@ -148,4 +129,25 @@ public class MissaoDAO {
         }
     }
 
+    public Object criarId() {
+        String sql = "SELECT ID_MISSAO FROM MISSAO";
+        ArrayList<Integer> listaIds = new ArrayList<Integer>();
+        try (PreparedStatement ps = getCon().prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs != null) {
+                while (rs.next()) {
+                    int id = rs.getInt(1);
+                    listaIds.add(id);
+                }
+                //o orElse serve para não retornar 0«nada se a lista estiver vazia, o max retorna Integer
+                Integer id = listaIds.stream().max(Comparator.naturalOrder()).orElse(null);
+                return id+1;
+            } else {
+                return null;
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro de SQL: " + e.getMessage());
+            return null;
+        }
+    }
 }

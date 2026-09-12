@@ -7,8 +7,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Comparator;
 
-public class UsuarioDAO {
+public class UsuarioDAO implements IDAO{
     private Connection con;
 
     public UsuarioDAO() {}
@@ -21,7 +22,8 @@ public class UsuarioDAO {
         return con;
     }
 
-    public String inserir(Usuario usuario){
+    public String inserir(Object object){
+        Usuario usuario = (Usuario) object;
         String sql = "insert into usuario(ID_USUARIO,NM_USUARIO,VL_MERITO,QT_SOULCOINS) values(?,?,?,?)";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
             ps.setString(1, usuario.getIdUsuario());
@@ -39,7 +41,8 @@ public class UsuarioDAO {
         }
     }
 
-    public String alterar(Usuario usuario){
+    public String alterar(Object object){
+        Usuario usuario = (Usuario) object;
         String sql = "update usuario set NM_USUARIO=?, VL_MERITO=?, QT_SOULCOINS=? where ID_USUARIO=?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
             ps.setString(1, usuario.getNmUsuario());
@@ -57,7 +60,8 @@ public class UsuarioDAO {
         }
     }
 
-    public String excluir(Usuario usuario){
+    public String excluir(Object object){
+        Usuario usuario = (Usuario) object;
         String sql = "delete from usuario where ID_USUARIO=?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
             ps.setString(1, usuario.getIdUsuario());
@@ -72,9 +76,9 @@ public class UsuarioDAO {
         }
     }
 
-    public ArrayList<Usuario> listarTodos(){
+    public ArrayList<Object> listarTodos(){
         String sql = "select * from usuario order by ID_USUARIO";
-        ArrayList<Usuario> listaUsuario = new ArrayList<>();
+        ArrayList<Object> listaUsuario = new ArrayList<>();
 
         try (PreparedStatement ps = getCon().prepareStatement(sql);
              ResultSet rs = ps.executeQuery()){
@@ -102,10 +106,10 @@ public class UsuarioDAO {
         }
     }
 
-    public Usuario pegarUm(String idUsuario){
+    public Object pegarUm(Object object){
         String sql = "SELECT * FROM USUARIO WHERE ID_USUARIO = ?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)){
-            ps.setString(1,idUsuario);
+            ps.setObject(1,object);
             try (ResultSet rs = ps.executeQuery()){
                 if (rs.next()){
                     Usuario usuario = new Usuario();
@@ -118,6 +122,28 @@ public class UsuarioDAO {
                 } else {
                     return null;
                 }
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro de SQL: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public Object criarId() {
+        String sql = "SELECT ID_USUARIO FROM USUARIO";
+        ArrayList<Integer> listaIds = new ArrayList<Integer>();
+        try (PreparedStatement ps = getCon().prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs != null) {
+                while (rs.next()) {
+                    int id = rs.getInt(1);
+                    listaIds.add(id);
+                }
+                //o orElse serve para não retornar 0 nada se a lista estiver vazia, o max retorna Integer
+                Integer id = listaIds.stream().max(Comparator.naturalOrder()).orElse(null);
+                return id+1;
+            } else {
+                return null;
             }
         } catch (SQLException e) {
             System.out.println("Erro de SQL: " + e.getMessage());

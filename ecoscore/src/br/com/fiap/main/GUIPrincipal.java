@@ -61,7 +61,7 @@ public class GUIPrincipal extends JFrame {
             usuario = usuarioDAO.pegarUm("dragonborn123"); //como se fosse um login
             acao = acaoDAO.pegarUm(4);
             usuario.registrarAtividade(acao.detalhesAcao());
-            missao = missaoDAO.pegarUm(0);
+            missao = (Missao) missaoDAO.pegarUm(0);
             usuario.registrarAtividade(missao.detalhesMissao(),missao.getQtPontosGerados(),missao.getSelo());
             post = postDAO.pegarUm(0);
             usuario.registrarAtividade(post.detalhesPost());
@@ -581,10 +581,11 @@ public class GUIPrincipal extends JFrame {
             public void actionPerformed(ActionEvent actionEvent) {
                 try (Connection con = ConnectionFactory.abrirConexao()){
                     missaoDAO = new MissaoDAO(con);
-                    ArrayList<Missao> lista = missaoDAO.listarTodos();
+                    ArrayList<Object> lista = missaoDAO.listarTodos();
                     String todasMissoes = "";
                     if (lista != null) {
-                        for (Missao missao : lista) {
+                        for (Object object : lista) {
+                            missao = (Missao) object;
                             todasMissoes += String.format("ID: %d | Nome: %s | Selo: %s SoulPoints: %d\n",
                                                          missao.getIdMissao(), missao.getNmMissao(),
                                                          missao.getSelo(),missao.getQtPontosGerados());

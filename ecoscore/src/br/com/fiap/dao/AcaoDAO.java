@@ -6,7 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class AcaoDAO {
+public class AcaoDAO implements IDAO{
     private Connection con;
 
     public AcaoDAO() {}
@@ -18,7 +18,8 @@ public class AcaoDAO {
         return con;
     }
 
-    public String inserir(Acao acao) {
+    public String inserir(Object object) {
+        Acao acao = (Acao) object;
         String sql = "insert into acao(ID_ACAO,usuario_id_usuario, ds_acao, qt_pontosGerados, dt_acao) values(?,?,?,?,?)";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
             ps.setInt(1, acao.getIdAcao());
@@ -37,7 +38,8 @@ public class AcaoDAO {
         }
     }
 
-    public String alterar(Acao acao) {
+    public String alterar(Object object) {
+        Acao acao = (Acao) object;
         String sql = "update acao set USUARIO_ID_USUARIO=?, DS_ACAO=?, QT_PONTOSGERADOS=?, DT_ACAO=? where ID_ACAO=?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
             ps.setString(1, acao.getIdUsuario());
@@ -55,7 +57,8 @@ public class AcaoDAO {
         }
     }
 
-    public String excluir(Acao acao) {
+    public String excluir(Object object) {
+        Acao acao = (Acao) object;
         String sql = "delete from acao where ID_ACAO=?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
             ps.setInt(1, acao.getIdAcao());
@@ -69,9 +72,9 @@ public class AcaoDAO {
         }
     }
 
-    public ArrayList<Acao> listarTodos() {
+    public ArrayList<Object> listarTodos() {
         String sql = "select * from acao order by USUARIO_ID_USUARIO";
-        ArrayList<Acao> listaAcao = new ArrayList<>();
+        ArrayList<Object> listaAcao = new ArrayList<>();
         try (PreparedStatement ps = getCon().prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             if (rs != null) {
@@ -97,8 +100,7 @@ public class AcaoDAO {
         }
     }
 
-    //Pega todos os ids e usa srteam api para pegar o maior e adicionar um
-    public Integer criarId() {
+    public Object criarId() {
         String sql = "SELECT ID_ACAO FROM ACAO";
         ArrayList<Integer> listaIds = new ArrayList<Integer>();
         try (PreparedStatement ps = getCon().prepareStatement(sql);
@@ -120,10 +122,10 @@ public class AcaoDAO {
         }
     }
 
-    public Acao pegarUm(int idAcao){
+    public Acao pegarUm(Object object){
         String sql = "SELECT * FROM ACAO WHERE ID_ACAO = ?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)){
-            ps.setInt(1,idAcao);
+            ps.setObject(1,object);
             try (ResultSet rs = ps.executeQuery()){
                 if (rs.next()){
                     Acao acao = new Acao();
