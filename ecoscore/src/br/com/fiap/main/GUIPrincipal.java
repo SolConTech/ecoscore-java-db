@@ -825,7 +825,7 @@ public class GUIPrincipal extends JFrame {
                     post.setDtPost(LocalDateTime.now());
                     post.setNumUpVotes(upVotes);
                     post.setNumDownVotes(downVotes);
-                    post.setNumSaldoVotes(upVotes - downVotes);
+                    post.setNumSaldoVotes();
 
                     String resultado = postDAO.alterar(post);
                     JOptionPane.showMessageDialog(null, texto, "Posts", JOptionPane.INFORMATION_MESSAGE);

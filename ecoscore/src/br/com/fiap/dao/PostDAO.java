@@ -98,7 +98,7 @@ public class PostDAO implements IDAO{
                     post.setDtPost(data.toLocalDateTime());
                     post.setNumUpVotes(rs.getInt(4));
                     post.setNumDownVotes(rs.getInt(5));
-                    post.setNumSaldoVotes(rs.getInt(6));
+                    post.setNumSaldoVotes();
                     post.setIdUsuario(rs.getString(7));
 
                     listaPost.add(post);
@@ -150,7 +150,7 @@ public class PostDAO implements IDAO{
                     post.setDtPost(data.toLocalDateTime());
                     post.setNumUpVotes(rs.getInt(4));
                     post.setNumDownVotes(rs.getInt(5));
-                    post.setNumSaldoVotes(rs.getInt(6));
+                    post.setNumSaldoVotes();
                     post.setIdUsuario(rs.getString(7));
 
                     return post;

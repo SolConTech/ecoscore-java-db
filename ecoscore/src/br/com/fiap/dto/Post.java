@@ -27,20 +27,30 @@ public class Post {
         return idPost;
     }
     public void setIdPost(int idPost) {
+        if (idPost < 0) { //não pode ser negativo
+            throw new IllegalArgumentException("Valor do ID não pode ser negativo.");
+        }
         this.idPost = idPost;
     }
     public String getIdUsuario() {
         return idUsuario;
     }
-    public void setIdUsuario(String idUsuario) {
+    public void setIdUsuario(String idUsuario) throws IllegalArgumentException{
+        //máx 30 caracteres no banco
+        if (idUsuario.length() > 30) {
+            throw new IllegalArgumentException("Limite de caracteres é 30");
+        }
         this.idUsuario = idUsuario.toLowerCase();
     }
     public String getDsPost() {
         return dsPost;
     }
-    public void setDsPost(String dsPost) {
+    public void setDsPost(String dsPost) throws IllegalArgumentException{
         if (dsPost == null || dsPost.isBlank()) {
             throw new IllegalArgumentException("A descrição do post não pode ser vazia, a comunidade precisa entender ele!");
+        }
+        if (dsPost.length() > 200) {
+            throw new IllegalArgumentException("O post não pode ter uma descrição acima de 200 caracteres");
         }
         this.dsPost = dsPost;
     }
@@ -65,19 +75,8 @@ public class Post {
     public int getNumSaldoVotes() {
         return numSaldoVotes;
     }
-    public void setNumSaldoVotes(int numSaldoVotes) {
-        this.numSaldoVotes = numSaldoVotes;
-    }
-
-    /**
-     * Será executada a cada voto adicionado, recalcula o saldo de votos com base no up e no down votes
-     */
-    private void updtSaldoVotes() {
-        /*Ela é privada, pois só vai mexer com e nos valores da própria classe,
-        sendo usada toda vez que um novo voto for adicionado,
-        mas se fosse pública não daria nenhum erro, mas seria inútil
-        */
-        numSaldoVotes = numUpVotes - numDownVotes;
+    public void setNumSaldoVotes() {
+        this.numSaldoVotes = numUpVotes - numDownVotes;
     }
 
     /**
@@ -98,7 +97,7 @@ public class Post {
             throw new IllegalArgumentException("Número de votos precisa ser maior que zero");
         }
         numUpVotes += qtUpVotes;
-        updtSaldoVotes();
+        setNumSaldoVotes();
     }
 
     /**
@@ -110,7 +109,7 @@ public class Post {
             throw new IllegalArgumentException("Número de votos precisa ser maior que zero");
         }
         numDownVotes += qtDownVotes;
-        updtSaldoVotes();
+        setNumSaldoVotes();
     }
 
     /**

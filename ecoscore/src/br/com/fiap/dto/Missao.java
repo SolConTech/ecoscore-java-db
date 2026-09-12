@@ -28,31 +28,50 @@ public class Missao {
     public int getIdMissao() {
         return idMissao;
     }
-    public void setIdMissao(int idMissao) {
+    public void setIdMissao(int idMissao) throws IllegalArgumentException{
+        if (idMissao < 0) { //não pode ser negativo
+            throw new IllegalArgumentException("Valor do ID não pode ser negativo.");
+        }
         this.idMissao = idMissao;
     }
     public String getNmMissao() {
         return nmMissao;
     }
-    public void setNmMissao(String nmMissao) {
+    public void setNmMissao(String nmMissao) throws IllegalArgumentException{
+        if (nmMissao == null || nmMissao.isBlank()) {
+            throw new IllegalArgumentException("A nome da missão não pode ser vazio.");
+        }
+        // varchar(25) no banco
+        if (nmMissao.length() > 25) {
+            throw new IllegalArgumentException("Nome da missão deve ter no máximo 25 caracteres.");
+        }
         this.nmMissao = nmMissao;
     }
     public String getDsMissao() {
         return dsMissao;
     }
-    public void setDsMissao(String dsMissao) {
+    public void setDsMissao(String dsMissao) throws IllegalArgumentException{
+        if (dsMissao.length() > 200) { //dificl acontecer, mas validação é importante
+            throw new IllegalArgumentException("Descrição da missão tem limite de 200 caracteres.");
+        }
         this.dsMissao = dsMissao;
     }
     public String getSelo() {
         return selo;
     }
-    public void setSelo(String selo) {
+    public void setSelo(String selo) throws IllegalArgumentException{
+        if (selo.length() > 30) {//banco varchar (30)
+            throw new IllegalArgumentException("O nome do selo tem limite de 30 caracteres.");
+        }
         this.selo = selo;
     }
     public int getQtPontosGerados() {
         return qtPontosGerados;
     }
-    public void setQtPontosGerados(int qtPontosGerados) {
+    public void setQtPontosGerados(int qtPontosGerados) throws IllegalArgumentException{
+        if (qtPontosGerados <= 0) {
+            throw new IllegalArgumentException("Pontos da missão não podem ser negativos.");
+        }
         this.qtPontosGerados = qtPontosGerados;
     }
     public LocalDateTime getDtMissao() {
@@ -67,6 +86,9 @@ public class Missao {
      * @return o número de pontos gerados
      */
     public int registrarPontos() {
+        if (dtMissao == null) { //Se uma data não tiver sido regisrtada
+            dtMissao = LocalDateTime.now();
+        }
         return qtPontosGerados;
     }
 

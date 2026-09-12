@@ -20,9 +20,13 @@ public class RankingUsuario {
     public int getIdRanking() {
         return idRanking;
     }
-    public void setIdRanking(int idRanking) {
+    public void setIdRanking(int idRanking) throws IllegalArgumentException{
+        if (idRanking < 0) { //não pode ser negativo
+            throw new IllegalArgumentException("Valor do ID não pode ser negativo.");
+        }
         this.idRanking = idRanking;
     }
+
     public String getIdUsuario() {
         return idUsuario;
     }

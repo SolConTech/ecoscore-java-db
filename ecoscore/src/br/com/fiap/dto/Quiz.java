@@ -92,6 +92,9 @@ public class Quiz {
      * @return a quantidade de acertos vezes o quanto cada ponto vale
      */
     public int registrarPontos() {
+        if (dtQuiz == null) {
+            dtQuiz = LocalDateTime.now();
+        }
         setQtPontosGerados(); //se o objeto não for criado com construtor com passagem.
         return qtPontosGerados;
     }
