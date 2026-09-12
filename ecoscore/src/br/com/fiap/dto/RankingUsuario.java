@@ -26,8 +26,12 @@ public class RankingUsuario {
     public String getIdUsuario() {
         return idUsuario;
     }
-    public void setIdUsuario(String idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setIdUsuario(String idUsuario) throws IllegalArgumentException{
+        //máx 30 caracteres no banco
+        if (idUsuario.length() > 30) {
+            throw new IllegalArgumentException("Limite de caracteres é 30");
+        }
+        this.idUsuario = idUsuario.toLowerCase();
     }
     public int getQtVotos() {
         return qtVotos;

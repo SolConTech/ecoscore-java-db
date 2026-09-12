@@ -30,15 +30,21 @@ public class Quiz {
     public int getIdQuiz() {
         return idQuiz;
     }
-    public void setIdQuiz(int idQuiz) {
+    public void setIdQuiz(int idQuiz) throws IllegalArgumentException{
+        if (idQuiz < 0) { //não pode ser negativo
+            throw new IllegalArgumentException("Valor do ID não pode ser negativo.");
+        }
         this.idQuiz = idQuiz;
     }
     public String getIdUsuario() {
         return idUsuario;
     }
-    public void setIdUsuario(String idUsuario) {
+    public void setIdUsuario(String idUsuario) throws IllegalArgumentException{
+        //máx 30 caracteres no banco
+        if (idUsuario.length() > 30) {
+            throw new IllegalArgumentException("Limite de caracteres é 30");
+        }
         this.idUsuario = idUsuario.toLowerCase();
-        ;
     }
     public int getNumQuestoes() {
         return numQuestoes;
