@@ -1,4 +1,4 @@
-package br.com.fiap.dto;
+package br.com.fiap.model.dto;
 
 import javax.swing.*;
 import java.util.ArrayList;

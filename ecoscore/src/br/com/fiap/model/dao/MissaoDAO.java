@@ -1,6 +1,6 @@
-package br.com.fiap.dao;
+package br.com.fiap.model.dao;
 
-import br.com.fiap.dto.Missao;
+import br.com.fiap.model.dto.Missao;
 
 import java.sql.*;
 import java.util.ArrayList;

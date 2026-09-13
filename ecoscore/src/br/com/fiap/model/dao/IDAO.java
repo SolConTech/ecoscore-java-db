@@ -1,16 +1,10 @@
-package br.com.fiap.dao;
+package br.com.fiap.model.dao;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public interface IDAO {
-
-    /**
-     * Usa a conexão
-     * @return a conexão do objeto DAO
-     */
-    public Connection getCon();
 
     /**
      * Inseri um registro na tabela do banco de dados

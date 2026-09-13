@@ -1,35 +1,30 @@
-package br.com.fiap.dao;
+package br.com.fiap.model.dao;
 
-import br.com.fiap.dto.Usuario;
+import br.com.fiap.model.dto.RankingUsuario;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class UsuarioDAO implements IDAO{
+public class RankingUsuarioDAO implements IDAO{
     private Connection con;
 
-    public UsuarioDAO() {}
-    public UsuarioDAO(Connection con) {
+    public RankingUsuarioDAO() {}
+    public RankingUsuarioDAO(Connection con) {
         this.con = con;
     }
 
     public Connection getCon() {
-
         return con;
     }
 
     public String inserir(Object object) throws SQLException {
-        Usuario usuario = (Usuario) object;
-        String sql = "insert into usuario(ID_USUARIO,NM_USUARIO,VL_MERITO,QT_SOULCOINS) values(?,?,?,?)";
+        RankingUsuario rankingUsuario = (RankingUsuario) object;
+        String sql = "insert into ranking_usuario(ID_RANKING,ID_USUARIO,QT_VOTOS) values(?,?,?)";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
-            ps.setString(1, usuario.getIdUsuario());
-            ps.setString(2, usuario.getNmUsuario());
-            ps.setFloat(3, usuario.getVlMerito());
-            ps.setInt(4, usuario.getQtSoulCoins());
+            ps.setInt(1, rankingUsuario.getIdRanking());
+            ps.setString(2, rankingUsuario.getIdUsuario());
+            ps.setInt(3, rankingUsuario.getQtVotos());
 
             if (ps.executeUpdate() > 0) {
                 return "Inserido com sucesso";
@@ -42,13 +37,12 @@ public class UsuarioDAO implements IDAO{
     }
 
     public String alterar(Object object) throws SQLException {
-        Usuario usuario = (Usuario) object;
-        String sql = "update usuario set NM_USUARIO=?, VL_MERITO=?, QT_SOULCOINS=? where ID_USUARIO=?";
+        RankingUsuario rankingUsuario = (RankingUsuario) object;
+        String sql = "update ranking_usuario set ID_USUARIO=?, QT_VOTOS=? where ID_RANKING=?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
-            ps.setString(1, usuario.getNmUsuario());
-            ps.setFloat(2, usuario.getVlMerito());
-            ps.setInt(3, usuario.getQtSoulCoins());
-            ps.setString(4,usuario.getIdUsuario());
+            ps.setString(1, rankingUsuario.getIdUsuario());
+            ps.setInt(2, rankingUsuario.getQtVotos());
+            ps.setInt(3, rankingUsuario.getIdRanking());
 
             if (ps.executeUpdate() > 0) {
                 return "Alterado com sucesso";
@@ -61,10 +55,10 @@ public class UsuarioDAO implements IDAO{
     }
 
     public String excluir(Object object) throws SQLException {
-        Usuario usuario = (Usuario) object;
-        String sql = "delete from usuario where ID_USUARIO=?";
+        RankingUsuario rankingUsuario = (RankingUsuario) object;
+        String sql = "delete from ranking_usuario where ID_RANKING=?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
-            ps.setString(1, usuario.getIdUsuario());
+            ps.setInt(1, rankingUsuario.getIdRanking());
 
             if (ps.executeUpdate() > 0) {
                 return "Excluido com sucesso";
@@ -77,25 +71,24 @@ public class UsuarioDAO implements IDAO{
     }
 
     public ArrayList<Object> listarTodos() throws SQLException {
-        String sql = "select * from usuario order by ID_USUARIO";
-        ArrayList<Object> listaUsuario = new ArrayList<>();
+        String sql = "select * from ranking_usuario order by QT_VOTOS DESC";
+        ArrayList<Object> listaRankingUsuario = new ArrayList<>();
 
         try (PreparedStatement ps = getCon().prepareStatement(sql);
              ResultSet rs = ps.executeQuery()){
 
             if (rs != null){
                 while (rs.next()){
-                    Usuario usuario = new Usuario();
+                    RankingUsuario rankingUsuario = new RankingUsuario();
 
-                    usuario.setIdUsuario(rs.getString(1));
-                    usuario.setNmUsuario(rs.getString(2));
-                    usuario.setVlMerito(rs.getFloat(3));
-                    usuario.setQtSoulCoins(rs.getInt(4));
+                    rankingUsuario.setIdRanking(rs.getInt(1));
+                    rankingUsuario.setIdUsuario(rs.getString(3));
+                    rankingUsuario.setQtVotos(rs.getInt(2));
 
-                    listaUsuario.add(usuario);
+                    listaRankingUsuario.add(rankingUsuario);
                 }
 
-                return listaUsuario;
+                return listaRankingUsuario;
             } else {
                 return null;
             }
@@ -105,20 +98,17 @@ public class UsuarioDAO implements IDAO{
         }
     }
 
-    public Object pegarUm(Object object) throws SQLException {
-        Usuario usuario = (Usuario) object;
-        String sql = "SELECT * FROM USUARIO WHERE ID_USUARIO = ?";
+    public RankingUsuario pegarUm(Object object) throws SQLException {
+        String sql = "SELECT * FROM RANKING_USUARIO WHERE ID_USUARIO = ?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)){
-            ps.setObject(1,usuario.getIdUsuario());
+            ps.setObject(1,object);
             try (ResultSet rs = ps.executeQuery()){
                 if (rs.next()){
-                    usuario = new Usuario();
-                    usuario.setIdUsuario(rs.getString(1));
-                    usuario.setNmUsuario(rs.getString(2));
-                    usuario.setVlMerito(rs.getFloat(3));
-                    usuario.setQtSoulCoins(rs.getInt(4));
-
-                    return usuario;
+                    RankingUsuario ranking = new RankingUsuario();
+                    ranking.setIdRanking(rs.getInt(1));
+                    ranking.setQtVotos(rs.getInt(2));
+                    ranking.setIdUsuario(rs.getString(3));
+                    return ranking;
                 } else {
                     return null;
                 }
@@ -128,8 +118,8 @@ public class UsuarioDAO implements IDAO{
         }
     }
 
-    public Object criarId()throws SQLException{
-        String sql = "SELECT ID_USUARIO FROM USUARIO";
+    public Object criarId() throws SQLException{
+        String sql = "SELECT ID_RANKING FROM RANKING_USUARIO";
         ArrayList<Integer> listaIds = new ArrayList<Integer>();
         try (PreparedStatement ps = getCon().prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
@@ -148,4 +138,5 @@ public class UsuarioDAO implements IDAO{
             throw new SQLException("Erro de SQL: " + e.getMessage());
         }
     }
+    
 }
