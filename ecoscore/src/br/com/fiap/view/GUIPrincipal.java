@@ -231,8 +231,7 @@ public class GUIPrincipal extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if (JOptionPane.showConfirmDialog(null, "Tem certa? Isso apagará toda a Atividade Recente (não do banco)","Confirme",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==0){
-                    ArrayList<String> atividadesVazio = new ArrayList<>();
-                    usuario.setDsAtividadeRecente(atividadesVazio);
+                    usuario.setDsAtividadeRecente("");
                 }
                 taDetalhesPerfil.setText(usuario.detalhesPerfil());
             }
@@ -241,8 +240,7 @@ public class GUIPrincipal extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if (JOptionPane.showConfirmDialog(null, "Tem certa? Isso apagará todos os selos (não do banco)","Confirme",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==0){
-                    ArrayList<String> selosVazio = new ArrayList<>();
-                    usuario.setSelosGanhos(selosVazio);
+                    usuario.setSelosGanhos("");
                 }
                 taDetalhesPerfil.setText(usuario.detalhesPerfil());
             }
@@ -315,7 +313,7 @@ public class GUIPrincipal extends JFrame {
                         default:
                             throw new Exception("Opção inválida (0-4)");
                     }
-                    if (escolha != 0){
+                    if (escolha != 4){
                         String descricao = JOptionPane.showInputDialog("Digite a descrição da ação: ");
                         acao.setIdAcao(acaoController.criarIdAcao());
                         acao.setIdUsuario(usuario.getIdUsuario());
@@ -501,7 +499,7 @@ public class GUIPrincipal extends JFrame {
                     usuario.setVlMerito(merito);
                     usuario.setQtSoulCoins(soulCoins);
 
-                    String resultado = usuarioController.inserirUsuario(usuario.getIdUsuario(), usuario.getNmUsuario(), usuario.getVlMerito(), usuario.getQtSoulCoins());
+                    String resultado = usuarioController.inserirUsuario(usuario.getIdUsuario(), usuario.getNmUsuario(), usuario.getVlMerito(), usuario.getQtSoulCoins(), usuario.getDsAtividadeRecente(), usuario.getSelosGanhos());
                     JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
                 } catch (SQLException e) {
                     JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
@@ -552,11 +550,7 @@ public class GUIPrincipal extends JFrame {
                     String resultado = usuarioController.alterarUsuario(novoUsuario.getIdUsuario(), novoUsuario.getNmUsuario(), novoUsuario.getVlMerito(), novoUsuario.getQtSoulCoins());
                     JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
                     //Se atualizar o usuário atual
-                    ArrayList<String> arAntiga = usuario.getDsAtividadeRecente();
-                    ArrayList<String> sgAntiga = usuario.getSelosGanhos();
                     usuario = usuarioController.pegarUmUsuario(usuario.getIdUsuario());
-                    usuario.setDsAtividadeRecente(arAntiga);
-                    usuario.setSelosGanhos(sgAntiga);
                     taDetalhesPerfil.setText(usuario.detalhesPerfil());
                 } catch (SQLException e) {
                     JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
@@ -732,7 +726,7 @@ public class GUIPrincipal extends JFrame {
                         default:
                             throw new Exception("Opção inválida (0-4)");
                     }
-                    if (escolha != 0){
+                    if (escolha != 4){
                         String descricao = JOptionPane.showInputDialog("Digite a descrição da ação: ");
                         acao.setIdAcao(acaoController.criarIdAcao());
                         acao.setIdUsuario(usuario.getIdUsuario());
