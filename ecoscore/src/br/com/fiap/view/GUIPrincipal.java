@@ -288,25 +288,29 @@ public class GUIPrincipal extends JFrame {
                     acaoController = new AcaoController();
                     acao = new Acao();
 
-                    int escolha = Integer.parseInt(JOptionPane.showInputDialog("Digite o tipo de ação:\n1. Natureza\n2. Carbono\n3. Água\n4. Reciclagem\n0. cancelar ação"));
+                    String[] tipos = {"Natureza", "Carbono", "Água", "Reciclagem", "Cancelar"};
+
+                    int escolha = JOptionPane.showOptionDialog(null,"Digite o tipo de ação",
+                                                               "Escolha",JOptionPane.DEFAULT_OPTION,
+                                                               JOptionPane.QUESTION_MESSAGE,null,tipos,tipos[0]);
                     switch (escolha) {
-                        case 1:
+                        case 0:
                             int dificuldade = Integer.parseInt(JOptionPane.showInputDialog("Qual é a dificuldade da ação realizada? Digite (entre 1 a 5): "));
                             acao.registrarPontos(calculadora.pontosNatureza(dificuldade));
                             break;
-                        case 2:
+                        case 1:
                             float kgCarbono = Float.parseFloat(JOptionPane.showInputDialog("Qual é a qtde. de carbono? Digite (um número): "));
                             acao.registrarPontos(calculadora.pontosCarbono(kgCarbono));
                             break;
-                        case 3:
+                        case 2:
                             float litros = Float.parseFloat(JOptionPane.showInputDialog("Qual é a qtde. de litros economizados? Digite (um número): "));
                             acao.registrarPontos(calculadora.pontosAgua(litros));
                             break;
-                        case 4:
+                        case 3:
                             float kgReciclados = Float.parseFloat(JOptionPane.showInputDialog("Qual é a qtde. de KG reciclados? Digite (um número): "));
                             acao.registrarPontos(calculadora.pontosReciclagem(kgReciclados));
                             break;
-                        case 0:
+                        case 4:
                             break;
                         default:
                             throw new Exception("Opção inválida (0-4)");
@@ -701,25 +705,29 @@ public class GUIPrincipal extends JFrame {
                     acaoController = new AcaoController();
                     acao = new Acao();
 
-                    int escolha = Integer.parseInt(JOptionPane.showInputDialog("Digite o tipo de ação:\n1. Natureza\n2. Carbono\n3. Água\n4. Reciclagem\n0. cancelar ação"));
+                    String[] tipos = {"Natureza", "Carbono", "Água", "Reciclagem", "Cancelar"};
+
+                    int escolha = JOptionPane.showOptionDialog(null,"Digite o tipo de ação",
+                            "Escolha",JOptionPane.DEFAULT_OPTION,
+                            JOptionPane.QUESTION_MESSAGE,null,tipos,tipos[0]);
                     switch (escolha) {
-                        case 1:
+                        case 0:
                             int dificuldade = Integer.parseInt(JOptionPane.showInputDialog("Qual é a dificuldade da ação realizada? Digite (entre 1 a 5): "));
                             acao.registrarPontos(calculadora.pontosNatureza(dificuldade));
                             break;
-                        case 2:
+                        case 1:
                             float kgCarbono = Float.parseFloat(JOptionPane.showInputDialog("Qual é a qtde. de carbono? Digite (um número): "));
                             acao.registrarPontos(calculadora.pontosCarbono(kgCarbono));
                             break;
-                        case 3:
+                        case 2:
                             float litros = Float.parseFloat(JOptionPane.showInputDialog("Qual é a qtde. de litros economizados? Digite (um número): "));
                             acao.registrarPontos(calculadora.pontosAgua(litros));
                             break;
-                        case 4:
+                        case 3:
                             float kgReciclados = Float.parseFloat(JOptionPane.showInputDialog("Qual é a qtde. de KG reciclados? Digite (um número): "));
                             acao.registrarPontos(calculadora.pontosReciclagem(kgReciclados));
                             break;
-                        case 0:
+                        case 4:
                             break;
                         default:
                             throw new Exception("Opção inválida (0-4)");
