@@ -93,4 +93,13 @@ public class PostController {
         ConnectionFactory.fecharConexao(con);
         return resultado;
     }
+
+    public int criarIdPost() throws ClassNotFoundException, SQLException {
+        int resultado;
+        Connection con = ConnectionFactory.abrirConexao();
+        PostDAO postDAO = new PostDAO(con);
+        resultado = postDAO.criarId();
+        ConnectionFactory.fecharConexao(con);
+        return resultado;
+    }
 }

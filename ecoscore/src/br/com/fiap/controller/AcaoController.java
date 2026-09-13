@@ -90,4 +90,13 @@ public class AcaoController {
         ConnectionFactory.fecharConexao(con);
         return resultado;
     }
+
+    public int criarIdAcao() throws ClassNotFoundException, SQLException {
+        int resultado;
+        Connection con = ConnectionFactory.abrirConexao();
+        AcaoDAO acaoDAO = new AcaoDAO(con);
+        resultado = (int) acaoDAO.criarId();
+        ConnectionFactory.fecharConexao(con);
+        return resultado;
+    }
 }

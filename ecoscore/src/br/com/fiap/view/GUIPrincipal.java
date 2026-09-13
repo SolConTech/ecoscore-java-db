@@ -1,13 +1,12 @@
 package br.com.fiap.view;
 
-import br.com.fiap.model.dao.*;
+import br.com.fiap.controller.*;
 import br.com.fiap.model.dto.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -22,12 +21,12 @@ public class GUIPrincipal extends JFrame {
     private Quiz quiz;
     private CalculadoraPontos calculadora = new CalculadoraPontos();
     private RankingUsuario ranking;
-    private UsuarioDAO usuarioDAO;
-    private AcaoDAO acaoDAO;
-    private MissaoDAO missaoDAO;
-    private QuizDAO quizDAO;
-    private PostDAO postDAO;
-    private RankingUsuarioDAO rankingUsuarioDAO;
+    private UsuarioController usuarioController;
+    private AcaoController acaoController;
+    private MissaoController missaoController;
+    private QuizController quizController;
+    private PostController postController;
+    private RankingUsuarioController rankingUsuarioController;
     private Container contentPane;
     private JMenuBar mnBarra;
     private JMenu mnArquivo, mnUsuario,mnMissao,mnAcao,mnPost,mnQuiz,mnAjuda;
@@ -45,27 +44,27 @@ public class GUIPrincipal extends JFrame {
     }
 
     public void iniciarValores(){
-        try (Connection con = ConnectionFactory.abrirConexao()){
-            usuarioDAO = new UsuarioDAO(con);
+        try {
+            usuarioController = new UsuarioController();
 
             acao = new Acao();
             missao = new Missao();
             post = new Post();
             quiz = new Quiz();
-            acaoDAO = new AcaoDAO(con);
-            missaoDAO = new MissaoDAO(con);
-            postDAO = new PostDAO(con);
-            quizDAO = new QuizDAO(con);
+            acaoController = new AcaoController();
+            missaoController = new MissaoController();
+            postController = new PostController();
+            quizController = new QuizController();
 
             usuario.setIdUsuario("dragonborn123");
-            usuario = (Usuario) usuarioDAO.pegarUm(usuario); //como se fosse um login
-            acao = acaoDAO.pegarUm(4);
+            usuario = usuarioController.pegarUmUsuario(usuario.getIdUsuario()); //como se fosse um login
+            acao = acaoController.pegarUmAcao(4);
             usuario.registrarAtividade(acao.detalhesAcao());
-            missao = (Missao) missaoDAO.pegarUm(0);
+            missao = missaoController.pegarUmMissao(0);
             usuario.registrarAtividade(missao.detalhesMissao(),missao.getQtPontosGerados(),missao.getSelo());
-            post = postDAO.pegarUm(0);
+            post = postController.pegarUmPost(0);
             usuario.registrarAtividade(post.detalhesPost());
-            quiz = quizDAO.pegarUm(0);
+            quiz = quizController.pegarUmQuiz(0);
             usuario.registrarAtividade(quiz.detalhesQuiz());
 
         } catch (ClassNotFoundException e) {
@@ -204,21 +203,21 @@ public class GUIPrincipal extends JFrame {
         miEditarExemplo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                try (Connection con = ConnectionFactory.abrirConexao()){
+                try {
                     String nome = JOptionPane.showInputDialog("Digite o novo nome do usuário:");
                     float confiabilidade = Float.parseFloat(JOptionPane.showInputDialog("Digite a nova confiabilidade desse usuário (0-100):"));
 
                     int soulCoins = Integer.parseInt(JOptionPane.showInputDialog("Quantos Soul Coins ele terá agora?"));
 
                     if (JOptionPane.showConfirmDialog(null,
-                                             "Isso editará o exemplo na tela e atualizará o mesmo usuário no banco, você tem certeza disso?",
-                                                 "Confirme",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==0){
-                        usuarioDAO = new UsuarioDAO(con);
+                            "Isso editará o exemplo na tela e atualizará o mesmo usuário no banco, você tem certeza disso?",
+                            "Confirme",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==0){
+                        usuarioController = new UsuarioController();
                         usuario.setNmUsuario(nome);
                         usuario.setVlMerito(confiabilidade);
                         usuario.setQtSoulCoins(soulCoins);
 
-                        JOptionPane.showMessageDialog(null,usuarioDAO.alterar(usuario));
+                        JOptionPane.showMessageDialog(null,usuarioController.alterarUsuario(usuario.getIdUsuario(), usuario.getNmUsuario(), usuario.getVlMerito(), usuario.getQtSoulCoins()));
                     }
                 } catch (NumberFormatException e) {
                     JOptionPane.showMessageDialog(null, "Erro numérico: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
@@ -251,27 +250,27 @@ public class GUIPrincipal extends JFrame {
         miTrocarUsuario.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                try (Connection con = ConnectionFactory.abrirConexao()){
+                try {
                     Usuario testarSeExiste = new Usuario();
-                    usuarioDAO = new UsuarioDAO(con);
+                    usuarioController = new UsuarioController();
 
                     String novoId = JOptionPane.showInputDialog("Qual usuário você quer usar?: (dica: Liste os usuários pelo menu)");
-                    testarSeExiste = (Usuario) usuarioDAO.pegarUm(novoId);
+                    testarSeExiste = usuarioController.pegarUmUsuario(novoId);
                     if (testarSeExiste != null) {
                         if (JOptionPane.showConfirmDialog(null,
-                                                 "Usuário encontado, você tem certeza que quer mudar isso pode apagar algumas alterações!",
-                                                          "Confirme!",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==0) {
+                                "Usuário encontado, você tem certeza que quer mudar isso pode apagar algumas alterações!",
+                                "Confirme!",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==0) {
                             usuario = new Usuario();
-                            usuario = (Usuario) usuarioDAO.pegarUm(novoId);
+                            usuario = usuarioController.pegarUmUsuario(novoId);
                             JOptionPane.showMessageDialog(null,"Logado como " + usuario.getNmUsuario(),
-                                                          "Novo usuário!", JOptionPane.INFORMATION_MESSAGE);
+                                    "Novo usuário!", JOptionPane.INFORMATION_MESSAGE);
                         } else {
                             JOptionPane.showMessageDialog(null,"Troca cancelada",
-                                                     "Nada acontece", JOptionPane.INFORMATION_MESSAGE);
+                                    "Nada acontece", JOptionPane.INFORMATION_MESSAGE);
                         }
                     } else {
                         JOptionPane.showMessageDialog(null, "Esse usuário não existe!",
-                                                      "Erro",JOptionPane.WARNING_MESSAGE);
+                                "Erro",JOptionPane.WARNING_MESSAGE);
                     }
                 }  catch (SQLException e) {
                     JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
@@ -285,8 +284,8 @@ public class GUIPrincipal extends JFrame {
         btRegistrarAcao.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                try (Connection con = ConnectionFactory.abrirConexao()) {
-                    acaoDAO = new AcaoDAO(con);
+                try {
+                    acaoController = new AcaoController();
                     acao = new Acao();
 
                     int escolha = Integer.parseInt(JOptionPane.showInputDialog("Digite o tipo de ação:\n1. Natureza\n2. Carbono\n3. Água\n4. Reciclagem\n0. cancelar ação"));
@@ -314,16 +313,16 @@ public class GUIPrincipal extends JFrame {
                     }
                     if (escolha != 0){
                         String descricao = JOptionPane.showInputDialog("Digite a descrição da ação: ");
-                        acao.setIdAcao((int) acaoDAO.criarId());
+                        acao.setIdAcao(acaoController.criarIdAcao());
                         acao.setIdUsuario(usuario.getIdUsuario());
                         acao.setDsAcao(descricao);
                         acao.setDtAcao(LocalDateTime.now());
 
                         usuario.registrarAtividade(acao.detalhesAcao(),acao.getQtPontosGerados());
-                        String resultado = acaoDAO.inserir(acao);
+                        String resultado = acaoController.inserirAcao(acao.getIdAcao(), acao.getIdUsuario(), acao.getDsAcao(), acao.getQtPontosGerados(), acao.getDtAcao());
 
-                        usuarioDAO = new UsuarioDAO(con);
-                        usuarioDAO.alterar(usuario);
+                        usuarioController = new UsuarioController();
+                        usuarioController.alterarUsuario(usuario.getIdUsuario(), usuario.getNmUsuario(), usuario.getVlMerito(), usuario.getQtSoulCoins());
 
                         taDetalhesPerfil.setText(usuario.detalhesPerfil());
                         JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
@@ -341,15 +340,15 @@ public class GUIPrincipal extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 Missao missao;
-                try (Connection con = ConnectionFactory.abrirConexao()){
+                try {
                     missao = new Missao();
-                    missaoDAO = new MissaoDAO(con);
+                    missaoController = new MissaoController();
                     String nome = JOptionPane.showInputDialog("Digite o nome da missão: ");
                     String descricao = JOptionPane.showInputDialog("Digite a descrição da missão: ");
                     String selo = JOptionPane.showInputDialog("Digite o selo da missão: ");
                     int pontos = Integer.parseInt(JOptionPane.showInputDialog("Digite a qtde. de pontos gerados: "));
 
-                    missao.setIdMissao((int) missaoDAO.criarId());
+                    missao.setIdMissao(missaoController.criarIdMissao());
                     missao.setNmMissao(nome);
                     missao.setDsMissao(descricao);
                     missao.setSelo(selo);
@@ -360,10 +359,10 @@ public class GUIPrincipal extends JFrame {
                             missao.getQtPontosGerados(),
                             missao.getSelo());
 
-                    usuarioDAO = new UsuarioDAO(con);
-                    usuarioDAO.alterar(usuario);
+                    usuarioController = new UsuarioController();
+                    usuarioController.alterarUsuario(usuario.getIdUsuario(), usuario.getNmUsuario(), usuario.getVlMerito(), usuario.getQtSoulCoins());
 
-                    String resultado = missaoDAO.inserir(missao);
+                    String resultado = missaoController.inserirMissao(missao.getIdMissao(), missao.getNmMissao(), missao.getDsMissao(), missao.getSelo(), missao.getQtPontosGerados(), missao.getDtMissao());
                     taDetalhesPerfil.setText(usuario.detalhesPerfil());
                     JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
                 }  catch (SQLException e) {
@@ -379,15 +378,15 @@ public class GUIPrincipal extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 Quiz quiz;
-                try (Connection con = ConnectionFactory.abrirConexao()) {
-                    quizDAO = new QuizDAO(con);
+                try {
+                    quizController = new QuizController();
                     quiz = new Quiz();
 
                     int numQuestoes = Integer.parseInt(JOptionPane.showInputDialog("Digite o número de questões: "));
                     int numAcertos = Integer.parseInt(JOptionPane.showInputDialog("Digite o número de acertos: "));
                     int pontosPorQuestao = Integer.parseInt(JOptionPane.showInputDialog("Digite os pontos por questão: "));
 
-                    quiz.setIdQuiz(quizDAO.criarId());
+                    quiz.setIdQuiz(quizController.criarIdQuiz());
                     quiz.setIdUsuario(usuario.getIdUsuario());
                     quiz.setNumQuestoes(numQuestoes);
                     quiz.setNumAcertos(numAcertos);
@@ -398,11 +397,11 @@ public class GUIPrincipal extends JFrame {
                     usuario.registrarAtividade(quiz.detalhesQuiz(),
                             quiz.getQtPontosGerados());
 
-                    usuarioDAO = new UsuarioDAO(con);
-                    usuarioDAO.alterar(usuario);
+                    usuarioController = new UsuarioController();
+                    usuarioController.alterarUsuario(usuario.getIdUsuario(), usuario.getNmUsuario(), usuario.getVlMerito(), usuario.getQtSoulCoins());
 
                     taDetalhesPerfil.setText(usuario.detalhesPerfil());
-                    String resultado = quizDAO.inserir(quiz);
+                    String resultado = quizController.inserirQuiz(quiz.getIdQuiz(), quiz.getIdUsuario(), quiz.getNumQuestoes(), quiz.getNumAcertos(), quiz.getQtPontosPorQuestao(), quiz.getDtQuiz());
                     JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
                 }  catch (SQLException e) {
                     JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
@@ -417,31 +416,31 @@ public class GUIPrincipal extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 Post post;
-                try (Connection con = ConnectionFactory.abrirConexao()) {
-                    postDAO = new PostDAO(con);
+                try {
+                    postController = new PostController();
                     post = new Post();
                     ranking = new RankingUsuario();
-                    rankingUsuarioDAO = new RankingUsuarioDAO(con);
+                    rankingUsuarioController = new RankingUsuarioController();
 
                     String texto = JOptionPane.showInputDialog("Digite o texto do post: (máx. 200 caracteres)");
                     int upVotes = Integer.parseInt(JOptionPane.showInputDialog("Quantos votos UP recebeu?"));
                     int downVotes = Integer.parseInt(JOptionPane.showInputDialog("Quantos votos DOWN recebeu?"));
-                    post.setIdPost(postDAO.criarId());
+                    post.setIdPost(postController.criarIdPost());
                     post.setIdUsuario(usuario.getIdUsuario());
                     post.setDsPost(texto);
                     post.setDtPost(LocalDateTime.now());
                     post.addUpVote(upVotes);
                     post.addDownVote(downVotes);
 
-                    String resultado = postDAO.inserir(post);
-                    ranking = rankingUsuarioDAO.pegarUm(usuario.getIdUsuario());
+                    String resultado = postController.inserirPost(post.getIdPost(), post.getIdUsuario(), post.getDsPost(), post.getDtPost(), post.getNumUpVotes(), post.getNumDownVotes());
+                    ranking = rankingUsuarioController.pegarUmRankingUsuario(usuario.getIdUsuario());
                     if (ranking != null) {
                         ranking.addQtVotos(post.getNumSaldoVotes());
-                        rankingUsuarioDAO.alterar(ranking);
+                        rankingUsuarioController.alterarRankingUsuario(ranking.getIdRanking(), ranking.getIdUsuario(), ranking.getQtVotos());
                     } else {
-                        ranking = new RankingUsuario((int) rankingUsuarioDAO.criarId(),usuario.getIdUsuario(),
-                                                     post.getNumSaldoVotes());
-                        rankingUsuarioDAO.inserir(ranking);
+                        ranking = new RankingUsuario(rankingUsuarioController.criarIdRanking(),usuario.getIdUsuario(),
+                                post.getNumSaldoVotes());
+                        rankingUsuarioController.inserirRankingUsuario(ranking.getIdRanking(), ranking.getIdUsuario(), ranking.getQtVotos());
                     }
                     usuario.registrarAtividade(post.detalhesPost());
                     taDetalhesPerfil.setText(usuario.detalhesPerfil());
@@ -458,16 +457,16 @@ public class GUIPrincipal extends JFrame {
         btRegistrarPenalidade.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                try (Connection con = ConnectionFactory.abrirConexao()){
+                try {
                     int valorPenalidade = Integer.parseInt(JOptionPane.showInputDialog("Digite o valor da penalidade de confiabilidade (0-100, a confiabilidade não cairá abaixo de 0): "));
                     String descOcorrido = JOptionPane.showInputDialog("Descreva o ocorrido: ");
                     //Mensagem de confirmação mostrando o texto e confiabilidade que será tirada.
                     if (JOptionPane.showConfirmDialog(null,
                             String.format("Tem certeza que quer retirar %d de confiabilidade do usuário %s com a descrição:\n%s", valorPenalidade, usuario.getNmUsuario(), descOcorrido), "Confirme",
                             JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == 0) {
-                        usuarioDAO = new UsuarioDAO(con);
+                        usuarioController = new UsuarioController();
                         usuario.registrarPenalidade(valorPenalidade, descOcorrido);
-                        usuarioDAO.alterar(usuario);
+                        usuarioController.alterarUsuario(usuario.getIdUsuario(), usuario.getNmUsuario(), usuario.getVlMerito(), usuario.getQtSoulCoins());
                     }
                 } catch (SQLException e) {
                     JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
@@ -484,9 +483,9 @@ public class GUIPrincipal extends JFrame {
         miCriarUsuario.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                try (Connection con = ConnectionFactory.abrirConexao()){
+                try {
                     usuario = new Usuario();
-                    usuarioDAO = new UsuarioDAO(con);
+                    usuarioController = new UsuarioController();
 
                     String id = JOptionPane.showInputDialog("Digite o ID do usuário: ");
                     String nome = JOptionPane.showInputDialog("Digite o nome do usuário: ");
@@ -498,7 +497,7 @@ public class GUIPrincipal extends JFrame {
                     usuario.setVlMerito(merito);
                     usuario.setQtSoulCoins(soulCoins);
 
-                    String resultado = usuarioDAO.inserir(usuario);
+                    String resultado = usuarioController.inserirUsuario(usuario.getIdUsuario(), usuario.getNmUsuario(), usuario.getVlMerito(), usuario.getQtSoulCoins());
                     JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
                 } catch (SQLException e) {
                     JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
@@ -512,16 +511,16 @@ public class GUIPrincipal extends JFrame {
         miLerUsuario.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                try (Connection con = ConnectionFactory.abrirConexao()){
-                    usuarioDAO = new UsuarioDAO(con);
-                    ArrayList<Object> listaUsuarios = usuarioDAO.listarTodos();
+                try {
+                    usuarioController = new UsuarioController();
+                    ArrayList<Object> listaUsuarios = usuarioController.listarTodosUsuario();
                     String allUsuarios = "";
                     if (listaUsuarios != null) {
                         for (Object object : listaUsuarios) {
                             usuario = (Usuario) object;
                             allUsuarios += String.format("ID: %s | Nome: %s | Mérito: %.1f | SoulCoins: %d\n",
-                                                         usuario.getIdUsuario(), usuario.getNmUsuario(),
-                                                         usuario.getVlMerito(), usuario.getQtSoulCoins());
+                                    usuario.getIdUsuario(), usuario.getNmUsuario(),
+                                    usuario.getVlMerito(), usuario.getQtSoulCoins());
                         }
                     }
                     JOptionPane.showMessageDialog(null, allUsuarios, "Usuários", JOptionPane.INFORMATION_MESSAGE);
@@ -535,8 +534,8 @@ public class GUIPrincipal extends JFrame {
         miAtualizarUsuario.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                try (Connection con = ConnectionFactory.abrirConexao()){
-                    usuarioDAO = new UsuarioDAO(con);
+                try {
+                    usuarioController = new UsuarioController();
                     Usuario novoUsuario = new Usuario();
                     String id = JOptionPane.showInputDialog("Digite o ID do usuário a atualizar: ");
                     String nome = JOptionPane.showInputDialog("Novo nome: ");
@@ -546,12 +545,12 @@ public class GUIPrincipal extends JFrame {
                     novoUsuario.setNmUsuario(nome);
                     novoUsuario.setVlMerito(merito);
                     novoUsuario.setQtSoulCoins(soulCoins);
-                    String resultado = usuarioDAO.alterar(novoUsuario);
+                    String resultado = usuarioController.alterarUsuario(novoUsuario.getIdUsuario(), novoUsuario.getNmUsuario(), novoUsuario.getVlMerito(), novoUsuario.getQtSoulCoins());
                     JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
                     //Se atualizar o usuário atual
                     ArrayList<String> arAntiga = usuario.getDsAtividadeRecente();
                     ArrayList<String> sgAntiga = usuario.getSelosGanhos();
-                    usuario = (Usuario) usuarioDAO.pegarUm(usuario.getIdUsuario());
+                    usuario = usuarioController.pegarUmUsuario(usuario.getIdUsuario());
                     usuario.setDsAtividadeRecente(arAntiga);
                     usuario.setSelosGanhos(sgAntiga);
                     taDetalhesPerfil.setText(usuario.detalhesPerfil());
@@ -567,13 +566,13 @@ public class GUIPrincipal extends JFrame {
         miExcluirUsuario.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                try (Connection con = ConnectionFactory.abrirConexao()){
-                    usuarioDAO = new UsuarioDAO(con);
+                try {
+                    usuarioController = new UsuarioController();
                     usuario = new Usuario();
                     String id = JOptionPane.showInputDialog("Digite o ID do usuário a excluir: ");
                     usuario.setIdUsuario(id);
 
-                    String resultado = usuarioDAO.excluir(usuario);
+                    String resultado = usuarioController.excluirUsuario(usuario.getIdUsuario());
                     JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
                 } catch (SQLException e) {
                     JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
@@ -586,15 +585,15 @@ public class GUIPrincipal extends JFrame {
         miCriarMissao.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                try (Connection con = ConnectionFactory.abrirConexao()){
+                try {
                     missao = new Missao();
-                    missaoDAO = new MissaoDAO(con);
+                    missaoController = new MissaoController();
                     String nome = JOptionPane.showInputDialog("Digite o nome da missão: ");
                     String descricao = JOptionPane.showInputDialog("Digite a descrição da missão: ");
                     String selo = JOptionPane.showInputDialog("Digite o selo da missão: ");
                     int pontos = Integer.parseInt(JOptionPane.showInputDialog("Digite a qtde. de pontos gerados: "));
 
-                    missao.setIdMissao((int) missaoDAO.criarId());
+                    missao.setIdMissao(missaoController.criarIdMissao());
                     missao.setNmMissao(nome);
                     missao.setDsMissao(descricao);
                     missao.setSelo(selo);
@@ -602,13 +601,13 @@ public class GUIPrincipal extends JFrame {
                     missao.setDtMissao(LocalDateTime.now());
 
                     usuario.registrarAtividade(missao.detalhesMissao(),
-                                               missao.getQtPontosGerados(),
-                                               missao.getSelo());
+                            missao.getQtPontosGerados(),
+                            missao.getSelo());
 
-                    usuarioDAO = new UsuarioDAO(con);
-                    usuarioDAO.alterar(usuario);
+                    usuarioController = new UsuarioController();
+                    usuarioController.alterarUsuario(usuario.getIdUsuario(), usuario.getNmUsuario(), usuario.getVlMerito(), usuario.getQtSoulCoins());
 
-                    String resultado = missaoDAO.inserir(missao);
+                    String resultado = missaoController.inserirMissao(missao.getIdMissao(), missao.getNmMissao(), missao.getDsMissao(), missao.getSelo(), missao.getQtPontosGerados(), missao.getDtMissao());
                     taDetalhesPerfil.setText(usuario.detalhesPerfil());
                     JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
                 } catch (SQLException e) {
@@ -623,16 +622,16 @@ public class GUIPrincipal extends JFrame {
         miLerMissao.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                try (Connection con = ConnectionFactory.abrirConexao()){
-                    missaoDAO = new MissaoDAO(con);
-                    ArrayList<Object> lista = missaoDAO.listarTodos();
+                try {
+                    missaoController = new MissaoController();
+                    ArrayList<Object> lista = missaoController.listarTodosMissao();
                     String todasMissoes = "";
                     if (lista != null) {
                         for (Object object : lista) {
                             missao = (Missao) object;
                             todasMissoes += String.format("ID: %d | Nome: %s | Selo: %s SoulPoints: %d\n",
-                                                         missao.getIdMissao(), missao.getNmMissao(),
-                                                         missao.getSelo(),missao.getQtPontosGerados());
+                                    missao.getIdMissao(), missao.getNmMissao(),
+                                    missao.getSelo(),missao.getQtPontosGerados());
                         }
                     } else {
                         todasMissoes += "Nenhuma missão encontrada!";
@@ -648,9 +647,9 @@ public class GUIPrincipal extends JFrame {
         miAtualizarMissao.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                try (Connection con = ConnectionFactory.abrirConexao()){
+                try {
                     missao = new Missao();
-                    missaoDAO = new MissaoDAO(con);
+                    missaoController = new MissaoController();
                     int id = Integer.parseInt(JOptionPane.showInputDialog("Digite o ID da missão a atualizar: "));
                     String nome = JOptionPane.showInputDialog("Novo nome: ");
                     String descricao = JOptionPane.showInputDialog("Nova descrição: ");
@@ -664,7 +663,7 @@ public class GUIPrincipal extends JFrame {
                     missao.setQtPontosGerados(pontos);
                     missao.setDtMissao(LocalDateTime.now());
 
-                    String resultado = missaoDAO.alterar(missao);
+                    String resultado = missaoController.alterarMissao(missao.getIdMissao(), missao.getNmMissao(), missao.getDsMissao(), missao.getSelo(), missao.getQtPontosGerados(), missao.getDtMissao());
                     JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
                 } catch (SQLException e) {
                     JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
@@ -678,12 +677,12 @@ public class GUIPrincipal extends JFrame {
         miExcluirMissao.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                try (Connection con = ConnectionFactory.abrirConexao()){
+                try {
                     missao = new Missao();
-                    missaoDAO = new MissaoDAO(con);
+                    missaoController = new MissaoController();
                     int id = Integer.parseInt(JOptionPane.showInputDialog("Digite o ID da missão a excluir: "));
                     missao.setIdMissao(id);
-                    String resultado = missaoDAO.excluir(missao);
+                    String resultado = missaoController.excluirMissao(missao.getIdMissao());
                     JOptionPane.showMessageDialog(null, resultado, "Missão", JOptionPane.INFORMATION_MESSAGE);
                 } catch (SQLException e) {
                     JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
@@ -698,8 +697,8 @@ public class GUIPrincipal extends JFrame {
         miCriarAcao.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                try (Connection con = ConnectionFactory.abrirConexao()) {
-                    acaoDAO = new AcaoDAO(con);
+                try {
+                    acaoController = new AcaoController();
                     acao = new Acao();
 
                     int escolha = Integer.parseInt(JOptionPane.showInputDialog("Digite o tipo de ação:\n1. Natureza\n2. Carbono\n3. Água\n4. Reciclagem\n0. cancelar ação"));
@@ -727,17 +726,17 @@ public class GUIPrincipal extends JFrame {
                     }
                     if (escolha != 0){
                         String descricao = JOptionPane.showInputDialog("Digite a descrição da ação: ");
-                        acao.setIdAcao((int) acaoDAO.criarId());
+                        acao.setIdAcao(acaoController.criarIdAcao());
                         acao.setIdUsuario(usuario.getIdUsuario());
                         acao.setDsAcao(descricao);
                         acao.setDtAcao(LocalDateTime.now());
 
                         usuario.registrarAtividade(acao.detalhesAcao(),
-                                                   acao.getQtPontosGerados());
-                        String resultado = acaoDAO.inserir(acao);
+                                acao.getQtPontosGerados());
+                        String resultado = acaoController.inserirAcao(acao.getIdAcao(), acao.getIdUsuario(), acao.getDsAcao(), acao.getQtPontosGerados(), acao.getDtAcao());
 
-                        usuarioDAO = new UsuarioDAO(con);
-                        usuarioDAO.alterar(usuario);
+                        usuarioController = new UsuarioController();
+                        usuarioController.alterarUsuario(usuario.getIdUsuario(), usuario.getNmUsuario(), usuario.getVlMerito(), usuario.getQtSoulCoins());
 
                         taDetalhesPerfil.setText(usuario.detalhesPerfil());
                         JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
@@ -754,16 +753,16 @@ public class GUIPrincipal extends JFrame {
         miLerAcao.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                try (Connection con = ConnectionFactory.abrirConexao()) {
-                    acaoDAO = new AcaoDAO(con);
-                    ArrayList<Object> lista = acaoDAO.listarTodos();
+                try {
+                    acaoController = new AcaoController();
+                    ArrayList<Object> lista = acaoController.listarTodosAcao();
                     String texto = "";
                     if (lista != null) {
                         for (Object object : lista) {
                             acao = (Acao) object;
                             texto += String.format("ID: %d | Usuário: %s | Descrição: %s | Pontos: %d\n",
-                                                   acao.getIdAcao(),acao.getIdUsuario(),
-                                                   acao.getDsAcao(), acao.getQtPontosGerados());
+                                    acao.getIdAcao(),acao.getIdUsuario(),
+                                    acao.getDsAcao(), acao.getQtPontosGerados());
                         }
                     }
                     JOptionPane.showMessageDialog(null, texto, "Ações", JOptionPane.INFORMATION_MESSAGE);
@@ -777,8 +776,8 @@ public class GUIPrincipal extends JFrame {
         miAtualizarAcao.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                try (Connection con = ConnectionFactory.abrirConexao()) {
-                    acaoDAO = new AcaoDAO(con);
+                try {
+                    acaoController = new AcaoController();
                     acao = new Acao();
 
                     int id = Integer.parseInt(JOptionPane.showInputDialog("Digite o ID da ação a atualizar: "));
@@ -791,7 +790,7 @@ public class GUIPrincipal extends JFrame {
                     acao.setQtPontosGerados(pontos);
                     acao.setDtAcao(LocalDateTime.now());
 
-                    String resultado = acaoDAO.alterar(acao);
+                    String resultado = acaoController.alterarAcao(acao.getIdAcao(), acao.getIdUsuario(), acao.getDsAcao(), acao.getQtPontosGerados(), acao.getDtAcao());
                     JOptionPane.showMessageDialog(null, resultado, "Ação", JOptionPane.INFORMATION_MESSAGE);
                 } catch (SQLException e) {
                     JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
@@ -805,14 +804,14 @@ public class GUIPrincipal extends JFrame {
         miExcluirAcao.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                try (Connection con = ConnectionFactory.abrirConexao()) {
-                    acaoDAO = new AcaoDAO(con);
+                try {
+                    acaoController = new AcaoController();
                     acao = new Acao();
 
                     int id = Integer.parseInt(JOptionPane.showInputDialog("Digite o ID da ação a excluir: "));
                     acao.setIdAcao(id);
 
-                    String resultado = acaoDAO.excluir(acao);
+                    String resultado = acaoController.excluirAcao(acao.getIdAcao());
                     JOptionPane.showMessageDialog(null, resultado, "Ação", JOptionPane.INFORMATION_MESSAGE);
                 } catch (SQLException e) {
                     JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
@@ -827,26 +826,26 @@ public class GUIPrincipal extends JFrame {
         miCriarPost.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                try (Connection con = ConnectionFactory.abrirConexao()) {
-                    postDAO = new PostDAO(con);
+                try {
+                    postController = new PostController();
                     post = new Post();
-                    rankingUsuarioDAO = new RankingUsuarioDAO(con);
+                    rankingUsuarioController = new RankingUsuarioController();
                     ranking = new RankingUsuario();
 
                     String texto = JOptionPane.showInputDialog("Digite o texto do post: (máx. 200 caracteres)");
                     int upVotes = Integer.parseInt(JOptionPane.showInputDialog("Quantos votos UP recebeu?"));
                     int downVotes = Integer.parseInt(JOptionPane.showInputDialog("Quantos votos DOWN recebeu?"));
-                    post.setIdPost(postDAO.criarId());
+                    post.setIdPost(postController.criarIdPost());
                     post.setIdUsuario(usuario.getIdUsuario());
                     post.setDsPost(texto);
                     post.setDtPost(LocalDateTime.now());
                     post.setNumUpVotes(upVotes);
                     post.setNumDownVotes(downVotes);
 
-                    String resultado = postDAO.inserir(post);
-                    ranking = rankingUsuarioDAO.pegarUm(usuario.getIdUsuario());
+                    String resultado = postController.inserirPost(post.getIdPost(), post.getIdUsuario(), post.getDsPost(), post.getDtPost(), post.getNumUpVotes(), post.getNumDownVotes());
+                    ranking = rankingUsuarioController.pegarUmRankingUsuario(usuario.getIdUsuario());
                     ranking.addQtVotos(post.getNumSaldoVotes());
-                    rankingUsuarioDAO.alterar(ranking);
+                    rankingUsuarioController.alterarRankingUsuario(ranking.getIdRanking(), ranking.getIdUsuario(), ranking.getQtVotos());
                     usuario.registrarAtividade(post.detalhesPost());
                     taDetalhesPerfil.setText(usuario.detalhesPerfil());
                     JOptionPane.showMessageDialog(null, resultado, "Posts", JOptionPane.INFORMATION_MESSAGE);
@@ -862,17 +861,17 @@ public class GUIPrincipal extends JFrame {
         miLerPost.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                try (Connection con = ConnectionFactory.abrirConexao()) {
-                    postDAO = new PostDAO(con);
-                    ArrayList<Object> lista = postDAO.listarTodos();
+                try {
+                    postController = new PostController();
+                    ArrayList<Object> lista = postController.listarTodosPost();
                     String texto = "";
                     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy - hh:mm");
                     if (lista != null) {
                         for (Object object : lista) {
                             post = (Post) object;
                             texto += String.format("ID: %d | Usuário: %s | Votos: +%d-%d=%d | Data: %s\n",
-                                                   post.getIdPost(),post.getIdUsuario(),post.getNumUpVotes(),
-                                                   post.getNumDownVotes(),post.getNumSaldoVotes(),post.getDtPost().format(dtf)); 
+                                    post.getIdPost(),post.getIdUsuario(),post.getNumUpVotes(),
+                                    post.getNumDownVotes(),post.getNumSaldoVotes(),post.getDtPost().format(dtf));
                         }
                     }
                     JOptionPane.showMessageDialog(null, texto, "Posts", JOptionPane.INFORMATION_MESSAGE);
@@ -886,8 +885,8 @@ public class GUIPrincipal extends JFrame {
         miAtualizarPost.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                try (Connection con = ConnectionFactory.abrirConexao()) {
-                    postDAO = new PostDAO(con);
+                try {
+                    postController = new PostController();
                     post = new Post();
 
                     int id = Integer.parseInt(JOptionPane.showInputDialog("Digite o ID do post a atualizar: "));
@@ -903,7 +902,7 @@ public class GUIPrincipal extends JFrame {
                     post.setNumDownVotes(downVotes);
                     post.setNumSaldoVotes();
 
-                    String resultado = postDAO.alterar(post);
+                    String resultado = postController.alterarPost(post.getIdPost(), post.getIdUsuario(), post.getDsPost(), post.getDtPost(), post.getNumUpVotes(), post.getNumDownVotes());
                     JOptionPane.showMessageDialog(null, texto, "Posts", JOptionPane.INFORMATION_MESSAGE);
                 } catch (SQLException e) {
                     JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
@@ -917,14 +916,14 @@ public class GUIPrincipal extends JFrame {
         miExcluirPost.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                try (Connection con = ConnectionFactory.abrirConexao()) {
-                    postDAO = new PostDAO(con);
+                try {
+                    postController = new PostController();
                     post = new Post();
 
                     int id = Integer.parseInt(JOptionPane.showInputDialog("Digite o ID do post a excluir: "));
                     post.setIdPost(id);
 
-                    String resultado = postDAO.excluir(post);
+                    String resultado = postController.excluirPost(post.getIdPost());
                     JOptionPane.showMessageDialog(null, resultado, "Posts", JOptionPane.INFORMATION_MESSAGE);
                 } catch (SQLException e) {
                     JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
@@ -939,15 +938,15 @@ public class GUIPrincipal extends JFrame {
         miCriarQuiz.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                try (Connection con = ConnectionFactory.abrirConexao()) {
-                    quizDAO = new QuizDAO(con);
+                try {
+                    quizController = new QuizController();
                     quiz = new Quiz();
 
                     int numQuestoes = Integer.parseInt(JOptionPane.showInputDialog("Digite o número de questões: "));
                     int numAcertos = Integer.parseInt(JOptionPane.showInputDialog("Digite o número de acertos: "));
                     int pontosPorQuestao = Integer.parseInt(JOptionPane.showInputDialog("Digite os pontos por questão: "));
 
-                    quiz.setIdQuiz(quizDAO.criarId());
+                    quiz.setIdQuiz(quizController.criarIdQuiz());
                     quiz.setIdUsuario(usuario.getIdUsuario());
                     quiz.setNumQuestoes(numQuestoes);
                     quiz.setNumAcertos(numAcertos);
@@ -956,13 +955,13 @@ public class GUIPrincipal extends JFrame {
                     quiz.setDtQuiz(LocalDateTime.now());
 
                     usuario.registrarAtividade(quiz.detalhesQuiz(),
-                                               quiz.getQtPontosGerados());
+                            quiz.getQtPontosGerados());
 
-                    usuarioDAO = new UsuarioDAO(con);
-                    usuarioDAO.alterar(usuario);
+                    usuarioController = new UsuarioController();
+                    usuarioController.alterarUsuario(usuario.getIdUsuario(), usuario.getNmUsuario(), usuario.getVlMerito(), usuario.getQtSoulCoins());
 
                     taDetalhesPerfil.setText(usuario.detalhesPerfil());
-                    String resultado = quizDAO.inserir(quiz);
+                    String resultado = quizController.inserirQuiz(quiz.getIdQuiz(), quiz.getIdUsuario(), quiz.getNumQuestoes(), quiz.getNumAcertos(), quiz.getQtPontosPorQuestao(), quiz.getDtQuiz());
                     JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
                 } catch (SQLException e) {
                     JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
@@ -976,17 +975,17 @@ public class GUIPrincipal extends JFrame {
         miLerQuiz.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                try (Connection con = ConnectionFactory.abrirConexao()) {
-                    quizDAO = new QuizDAO(con);
-                    ArrayList<Object> lista = quizDAO.listarTodos();
+                try {
+                    quizController = new QuizController();
+                    ArrayList<Object> lista = quizController.listarTodosQuiz();
                     String texto = "";
                     if (lista != null) {
                         for (Object object : lista) {
                             quiz = (Quiz) object;
                             texto += String.format("ID: %d | Usuário: %s | Acertos: %d/%d | Pontos: %d\n",
-                                                   quiz.getIdQuiz(),quiz.getIdUsuario(),
-                                                   quiz.getNumAcertos(),quiz.getNumQuestoes(),
-                                                   quiz.getQtPontosGerados());
+                                    quiz.getIdQuiz(),quiz.getIdUsuario(),
+                                    quiz.getNumAcertos(),quiz.getNumQuestoes(),
+                                    quiz.getQtPontosGerados());
                         }
                     }
                     JOptionPane.showMessageDialog(null, texto, "Quizzes", JOptionPane.INFORMATION_MESSAGE);
@@ -1000,8 +999,8 @@ public class GUIPrincipal extends JFrame {
         miAtualizarQuiz.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                try (Connection con = ConnectionFactory.abrirConexao()) {
-                    quizDAO = new QuizDAO(con);
+                try {
+                    quizController = new QuizController();
                     quiz = new Quiz();
 
                     int id = Integer.parseInt(JOptionPane.showInputDialog("Digite o ID do quiz a atualizar: "));
@@ -1017,7 +1016,7 @@ public class GUIPrincipal extends JFrame {
                     quiz.setQtPontosGerados();
                     quiz.setDtQuiz(LocalDateTime.now());
 
-                    String resultado = quizDAO.alterar(quiz);
+                    String resultado = quizController.alterarQuiz(quiz.getIdQuiz(), quiz.getIdUsuario(), quiz.getNumQuestoes(), quiz.getNumAcertos(), quiz.getQtPontosPorQuestao(), quiz.getDtQuiz());
                     JOptionPane.showMessageDialog(null, resultado, "Quiz", JOptionPane.INFORMATION_MESSAGE);
                 } catch (SQLException e) {
                     JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
@@ -1031,14 +1030,14 @@ public class GUIPrincipal extends JFrame {
         miExcluirQuiz.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                try (Connection con = ConnectionFactory.abrirConexao()) {
-                    quizDAO = new QuizDAO(con);
+                try {
+                    quizController = new QuizController();
                     quiz = new Quiz();
 
                     int id = Integer.parseInt(JOptionPane.showInputDialog("Digite o ID do quiz a excluir: "));
                     quiz.setIdQuiz(id);
 
-                    String resultado = quizDAO.excluir(quiz);
+                    String resultado = quizController.excluirQuiz(quiz.getIdQuiz());
                     JOptionPane.showMessageDialog(null, resultado, "Quiz", JOptionPane.INFORMATION_MESSAGE);
                 } catch (SQLException e) {
                     JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
@@ -1053,16 +1052,16 @@ public class GUIPrincipal extends JFrame {
         btRanking.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                try (Connection con = ConnectionFactory.abrirConexao()){
+                try {
                     ranking = new RankingUsuario();
-                    rankingUsuarioDAO = new RankingUsuarioDAO(con);
-                    ArrayList<Object> listaRanking = rankingUsuarioDAO.listarTodos();
+                    rankingUsuarioController = new RankingUsuarioController();
+                    ArrayList<Object> listaRanking = rankingUsuarioController.listarTodosRankingUsuario();
                     String texto = "";
                     int posicao = 1;
                     for (Object object : listaRanking) {
                         ranking = (RankingUsuario) object;
                         texto += String.format("POS.: %dº | Nome: %s | Votos: %d\n",
-                                               posicao,ranking.getIdUsuario(),ranking.getQtVotos());
+                                posicao,ranking.getIdUsuario(),ranking.getQtVotos());
                         posicao++;
                     }
                     JOptionPane.showMessageDialog(null,texto,"Ranking",JOptionPane.INFORMATION_MESSAGE);
