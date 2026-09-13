@@ -1,15 +1,12 @@
 package br.com.fiap.dao;
 
-import br.com.fiap.dto.Acao;
-import br.com.fiap.dto.Missao;
 import br.com.fiap.dto.Post;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class PostDAO {
+public class PostDAO implements IDAO{
     private Connection con;
 
     public PostDAO() {}
@@ -22,7 +19,8 @@ public class PostDAO {
         return con;
     }
 
-    public String inserir(Post post){
+    public String inserir(Object object) throws SQLException {
+        Post post = (Post) object;
         String sql = "insert into post(ID_POST,USUARIO_ID_USUARIO,DS_POST,DT_POST,NUM_UPVOTES,NUM_DOWNVOTES,NUM_SALDOVOTES) values(?,?,?,?,?,?,?)";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
             ps.setInt(1, post.getIdPost());
@@ -43,7 +41,8 @@ public class PostDAO {
         }
     }
 
-    public String alterar(Post post){
+    public String alterar(Object object) throws SQLException {
+        Post post = (Post) object;
         String sql = "update post set USUARIO_ID_USUARIO=?, DS_POST=?, DT_POST=?, NUM_UPVOTES=?, NUM_DOWNVOTES=?, NUM_SALDOVOTES=? where ID_POST=?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
             ps.setString(1, post.getIdUsuario());
@@ -60,11 +59,12 @@ public class PostDAO {
                 return "Erro ao alterar";
             }
         } catch (SQLException e) {
-            return "Erro de SQL: " + e.getMessage();
+            throw new SQLException("Erro de SQL: " + e.getMessage());
         }
     }
 
-    public String excluir(Post post){
+    public String excluir(Object object) throws SQLException {
+        Post post = (Post) object;
         String sql = "delete from post where ID_POST=?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
             ps.setInt(1, post.getIdPost());
@@ -75,13 +75,13 @@ public class PostDAO {
                 return "Erro ao excluir";
             }
         } catch (SQLException e) {
-            return "Erro de SQL: " + e.getMessage();
+            throw new SQLException("Erro de SQL: " + e.getMessage());
         }
     }
 
-    public ArrayList<Post> listarTodos(){
+    public ArrayList<Object> listarTodos() throws SQLException {
         String sql = "select * from post order by ID_POST";
-        ArrayList<Post> listaPost = new ArrayList<>();
+        ArrayList<Object> listaPost = new ArrayList<>();
 
         try (PreparedStatement ps = getCon().prepareStatement(sql);
              ResultSet rs = ps.executeQuery()){
@@ -95,7 +95,7 @@ public class PostDAO {
                     post.setDtPost(data.toLocalDateTime());
                     post.setNumUpVotes(rs.getInt(4));
                     post.setNumDownVotes(rs.getInt(5));
-                    post.setNumSaldoVotes(rs.getInt(6));
+                    post.setNumSaldoVotes();
                     post.setIdUsuario(rs.getString(7));
 
                     listaPost.add(post);
@@ -107,12 +107,11 @@ public class PostDAO {
             }
 
         } catch (SQLException e) {
-            System.out.println("Erro de SQL: " + e.getMessage());
-            return null;
+            throw new SQLException("Erro de SQL: " + e.getMessage());
         }
     }
 
-    public Integer criarId() {
+    public Integer criarId() throws SQLException {
         String sql = "SELECT ID_post FROM POST";
         ArrayList<Integer> listaIds = new ArrayList<Integer>();
         try (PreparedStatement ps = getCon().prepareStatement(sql);
@@ -129,15 +128,14 @@ public class PostDAO {
                 return null;
             }
         } catch (SQLException e) {
-            System.out.println("Erro de SQL: " + e.getMessage());
-            return null;
+            throw new SQLException("Erro de SQL: " + e.getMessage());
         }
     }
 
-    public Post pegarUm(int idPost){
+    public Post pegarUm(Object object) throws SQLException {
         String sql = "SELECT * FROM POST WHERE ID_POST = ?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)){
-            ps.setInt(1,idPost);
+            ps.setObject(1,object);
             try (ResultSet rs = ps.executeQuery()){
                 if (rs.next()){
                     Post post = new Post();
@@ -147,7 +145,7 @@ public class PostDAO {
                     post.setDtPost(data.toLocalDateTime());
                     post.setNumUpVotes(rs.getInt(4));
                     post.setNumDownVotes(rs.getInt(5));
-                    post.setNumSaldoVotes(rs.getInt(6));
+                    post.setNumSaldoVotes();
                     post.setIdUsuario(rs.getString(7));
 
                     return post;
@@ -156,8 +154,7 @@ public class PostDAO {
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Erro de SQL: " + e.getMessage());
-            return null;
+            throw new SQLException("Erro de SQL: " + e.getMessage());
         }
     }
 }

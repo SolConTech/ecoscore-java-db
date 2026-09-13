@@ -20,14 +20,22 @@ public class RankingUsuario {
     public int getIdRanking() {
         return idRanking;
     }
-    public void setIdRanking(int idRanking) {
+    public void setIdRanking(int idRanking) throws IllegalArgumentException{
+        if (idRanking < 0) { //não pode ser negativo
+            throw new IllegalArgumentException("Valor do ID não pode ser negativo.");
+        }
         this.idRanking = idRanking;
     }
+
     public String getIdUsuario() {
         return idUsuario;
     }
-    public void setIdUsuario(String idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setIdUsuario(String idUsuario) throws IllegalArgumentException{
+        //máx 30 caracteres no banco
+        if (idUsuario.length() > 30) {
+            throw new IllegalArgumentException("Limite de caracteres é 30");
+        }
+        this.idUsuario = idUsuario.toLowerCase();
     }
     public int getQtVotos() {
         return qtVotos;

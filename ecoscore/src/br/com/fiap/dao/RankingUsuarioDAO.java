@@ -1,12 +1,12 @@
 package br.com.fiap.dao;
 
-import br.com.fiap.dto.Missao;
 import br.com.fiap.dto.RankingUsuario;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 
-public class RankingUsuarioDAO {
+public class RankingUsuarioDAO implements IDAO{
     private Connection con;
 
     public RankingUsuarioDAO() {}
@@ -18,7 +18,8 @@ public class RankingUsuarioDAO {
         return con;
     }
 
-    public String inserir(RankingUsuario rankingUsuario){
+    public String inserir(Object object) throws SQLException {
+        RankingUsuario rankingUsuario = (RankingUsuario) object;
         String sql = "insert into ranking_usuario(ID_RANKING,ID_USUARIO,QT_VOTOS) values(?,?,?)";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
             ps.setInt(1, rankingUsuario.getIdRanking());
@@ -31,11 +32,12 @@ public class RankingUsuarioDAO {
                 return "Erro ao inserir";
             }
         } catch (SQLException e) {
-            return "Erro de SQL: " + e.getMessage();
+            throw new SQLException("Erro de SQL: " + e.getMessage());
         }
     }
 
-    public String alterar(RankingUsuario rankingUsuario){
+    public String alterar(Object object) throws SQLException {
+        RankingUsuario rankingUsuario = (RankingUsuario) object;
         String sql = "update ranking_usuario set ID_USUARIO=?, QT_VOTOS=? where ID_RANKING=?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
             ps.setString(1, rankingUsuario.getIdUsuario());
@@ -48,11 +50,12 @@ public class RankingUsuarioDAO {
                 return "Erro ao alterar";
             }
         } catch (SQLException e) {
-            return "Erro de SQL: " + e.getMessage();
+            throw new SQLException("Erro de SQL: " + e.getMessage());
         }
     }
 
-    public String excluir(RankingUsuario rankingUsuario){
+    public String excluir(Object object) throws SQLException {
+        RankingUsuario rankingUsuario = (RankingUsuario) object;
         String sql = "delete from ranking_usuario where ID_RANKING=?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
             ps.setInt(1, rankingUsuario.getIdRanking());
@@ -63,13 +66,13 @@ public class RankingUsuarioDAO {
                 return "Erro ao excluir";
             }
         } catch (SQLException e) {
-            return "Erro de SQL: " + e.getMessage();
+            throw new SQLException("Erro de SQL: " + e.getMessage());
         }
     }
 
-    public ArrayList<RankingUsuario> listarTodos(){
+    public ArrayList<Object> listarTodos() throws SQLException {
         String sql = "select * from ranking_usuario order by QT_VOTOS DESC";
-        ArrayList<RankingUsuario> listaRankingUsuario = new ArrayList<>();
+        ArrayList<Object> listaRankingUsuario = new ArrayList<>();
 
         try (PreparedStatement ps = getCon().prepareStatement(sql);
              ResultSet rs = ps.executeQuery()){
@@ -91,15 +94,14 @@ public class RankingUsuarioDAO {
             }
 
         } catch (SQLException e) {
-            System.out.println("Erro de SQL: " + e.getMessage());
-            return null;
+            throw new SQLException("Erro de SQL: " + e.getMessage());
         }
     }
 
-    public RankingUsuario pegarUm(String idUsuario){
+    public RankingUsuario pegarUm(Object object) throws SQLException {
         String sql = "SELECT * FROM RANKING_USUARIO WHERE ID_USUARIO = ?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)){
-            ps.setString(1,idUsuario);
+            ps.setObject(1,object);
             try (ResultSet rs = ps.executeQuery()){
                 if (rs.next()){
                     RankingUsuario ranking = new RankingUsuario();
@@ -112,8 +114,29 @@ public class RankingUsuarioDAO {
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Erro de SQL: " + e.getMessage());
-            return null;
+            throw new SQLException("Erro de SQL: " + e.getMessage());
         }
     }
+
+    public Object criarId() throws SQLException{
+        String sql = "SELECT ID_RANKING FROM RANKING_USUARIO";
+        ArrayList<Integer> listaIds = new ArrayList<Integer>();
+        try (PreparedStatement ps = getCon().prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs != null) {
+                while (rs.next()) {
+                    int id = rs.getInt(1);
+                    listaIds.add(id);
+                }
+                //o orElse serve para não retornar 0 nada se a lista estiver vazia, o max retorna Integer
+                Integer id = listaIds.stream().max(Comparator.naturalOrder()).orElse(null);
+                return id+1;
+            } else {
+                return null;
+            }
+        } catch (SQLException e) {
+            throw new SQLException("Erro de SQL: " + e.getMessage());
+        }
+    }
+    
 }

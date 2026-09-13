@@ -1,14 +1,12 @@
 package br.com.fiap.dao;
 
-import br.com.fiap.dto.Post;
 import br.com.fiap.dto.Quiz;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class QuizDAO {
+public class QuizDAO implements IDAO{
     private Connection con;
 
     public QuizDAO() {}
@@ -21,7 +19,8 @@ public class QuizDAO {
         return con;
     }
 
-    public String inserir(Quiz quiz){
+    public String inserir(Object object) throws SQLException {
+        Quiz quiz = (Quiz) object;
         String sql = "insert into quiz(ID_QUIZ,USUARIO_ID_USUARIO,NUM_QUESTOES,NUM_ACERTOS,QT_PONTOSPORQUESTAO,QT_PONTOSGERADOS,DT_QUIZ) values(?,?,?,?,?,?,?)";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
             ps.setInt(1, quiz.getIdQuiz());
@@ -42,7 +41,8 @@ public class QuizDAO {
         }
     }
 
-    public String alterar(Quiz quiz){
+    public String alterar(Object object) throws SQLException {
+        Quiz quiz = (Quiz) object;
         String sql = "update quiz set USUARIO_ID_USUARIO=?, NUM_QUESTOES=?, NUM_ACERTOS=?, QT_PONTOSPORQUESTAO=?, QT_PONTOSGERADOS=?, DT_QUIZ=? where ID_QUIZ=?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
             ps.setString(1, quiz.getIdUsuario());
@@ -59,11 +59,12 @@ public class QuizDAO {
                 return "Erro ao alterar";
             }
         } catch (SQLException e) {
-            return "Erro de SQL: " + e.getMessage();
+            throw new SQLException("Erro de SQL: " + e.getMessage());
         }
     }
 
-    public String excluir(Quiz quiz){
+    public String excluir(Object object) throws SQLException {
+        Quiz quiz = (Quiz) object;
         String sql = "delete from quiz where ID_QUIZ=?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
             ps.setInt(1, quiz.getIdQuiz());
@@ -74,13 +75,13 @@ public class QuizDAO {
                 return "Erro ao excluir";
             }
         } catch (SQLException e) {
-            return "Erro de SQL: " + e.getMessage();
+            throw new SQLException("Erro de SQL: " + e.getMessage());
         }
     }
 
-    public ArrayList<Quiz> listarTodos(){
+    public ArrayList<Object> listarTodos() throws SQLException {
         String sql = "select * from quiz order by ID_QUIZ";
-        ArrayList<Quiz> listaQuiz = new ArrayList<>();
+        ArrayList<Object> listaQuiz = new ArrayList<>();
 
         try (PreparedStatement ps = getCon().prepareStatement(sql);
              ResultSet rs = ps.executeQuery()){
@@ -108,12 +109,11 @@ public class QuizDAO {
             }
 
         } catch (SQLException e) {
-            System.out.println("Erro de SQL: " + e.getMessage());
-            return null;
+            throw new SQLException("Erro de SQL: " + e.getMessage());
         }
     }
 
-    public Integer criarId() {
+    public Integer criarId() throws SQLException{
         String sql = "SELECT ID_QUIZ FROM QUIZ";
         ArrayList<Integer> listaIds = new ArrayList<Integer>();
         try (PreparedStatement ps = getCon().prepareStatement(sql);
@@ -130,15 +130,14 @@ public class QuizDAO {
                 return null;
             }
         } catch (SQLException e) {
-            System.out.println("Erro de SQL: " + e.getMessage());
-            return null;
+            throw new SQLException("Erro de SQL: " + e.getMessage());
         }
     }
 
-    public Quiz pegarUm(int idQuiz){
+    public Quiz pegarUm(Object object) throws SQLException {
         String sql = "SELECT * FROM QUIZ WHERE ID_QUIZ = ?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)){
-            ps.setInt(1,idQuiz);
+            ps.setObject(1,object);
             try (ResultSet rs = ps.executeQuery()){
                 if (rs.next()){
                     Quiz quiz = new Quiz();
@@ -157,8 +156,7 @@ public class QuizDAO {
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Erro de SQL: " + e.getMessage());
-            return null;
+            throw new SQLException("Erro de SQL: " + e.getMessage());
         }
     }
 }

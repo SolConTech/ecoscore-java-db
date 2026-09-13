@@ -31,25 +31,41 @@ public class Acao {
     public int getIdAcao() {
         return idAcao;
     }
-    public void setIdAcao(int idAcao) {
+    public void setIdAcao(int idAcao) throws IllegalArgumentException{
+        if (idAcao < 0) { //não pode ser negativo
+            throw new IllegalArgumentException("Valor do ID não pode ser negativo.");
+        }
         this.idAcao = idAcao;
     }
     public String getIdUsuario() {
         return idUsuario;
     }
-    public void setIdUsuario(String idUsuario) {
+    public void setIdUsuario(String idUsuario) throws IllegalArgumentException{
+        //máx 30 caracteres no banco
+        if (idUsuario.length() > 30) {
+            throw new IllegalArgumentException("Limite de caracteres é 30");
+        }
         this.idUsuario = idUsuario;
     }
     public String getDsAcao() {
         return dsAcao;
     }
-    public void setDsAcao(String dsAcao) {
+    public void setDsAcao(String dsAcao) throws IllegalArgumentException{
+        if (dsAcao == null || dsAcao.isBlank()) {
+            throw new IllegalArgumentException("A descrição da ação não pode ser vazia.");
+        }
+        if (dsAcao.length() > 50) {//varchar(50) no banco
+            throw new IllegalArgumentException("Limite de caracteres é 50");
+        }
         this.dsAcao = dsAcao;
     }
     public int getQtPontosGerados() {
         return qtPontosGerados;
     }
     public void setQtPontosGerados(int qtPontosGerados) {
+        if (qtPontosGerados <= 0) {
+            throw new IllegalArgumentException("Pontos da ação não podem ser negativos.");
+        }
         this.qtPontosGerados = qtPontosGerados;
     }
     public LocalDateTime getDtAcao() {
@@ -65,8 +81,10 @@ public class Acao {
      * @return O número de Soul Coins gerados
      */
     public int registrarPontos(int pontosGerados) {
-        dtAcao = LocalDateTime.now();
-        qtPontosGerados = pontosGerados;
+        if (dtAcao == null) {
+            dtAcao = LocalDateTime.now();
+        }
+        setQtPontosGerados(pontosGerados);
         return qtPontosGerados;
     }
 

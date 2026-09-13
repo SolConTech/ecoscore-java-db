@@ -6,7 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class AcaoDAO {
+public class AcaoDAO implements IDAO{
     private Connection con;
 
     public AcaoDAO() {}
@@ -18,7 +18,8 @@ public class AcaoDAO {
         return con;
     }
 
-    public String inserir(Acao acao) {
+    public String inserir(Object object) throws SQLException {
+        Acao acao = (Acao) object;
         String sql = "insert into acao(ID_ACAO,usuario_id_usuario, ds_acao, qt_pontosGerados, dt_acao) values(?,?,?,?,?)";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
             ps.setInt(1, acao.getIdAcao());
@@ -33,11 +34,12 @@ public class AcaoDAO {
                 return "Erro ao inserir";
             }
         } catch (SQLException e) {
-            return "Erro de SQL: " + e.getMessage();
+            throw new SQLException("Erro de SQL: " + e.getMessage());
         }
     }
 
-    public String alterar(Acao acao) {
+    public String alterar(Object object) throws SQLException {
+        Acao acao = (Acao) object;
         String sql = "update acao set USUARIO_ID_USUARIO=?, DS_ACAO=?, QT_PONTOSGERADOS=?, DT_ACAO=? where ID_ACAO=?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
             ps.setString(1, acao.getIdUsuario());
@@ -51,11 +53,12 @@ public class AcaoDAO {
                 return "Erro ao alterar";
             }
         } catch (SQLException e) {
-            return "Erro de SQL: " + e.getMessage();
+            throw new SQLException("Erro de SQL: " + e.getMessage());
         }
     }
 
-    public String excluir(Acao acao) {
+    public String excluir(Object object) throws SQLException {
+        Acao acao = (Acao) object;
         String sql = "delete from acao where ID_ACAO=?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
             ps.setInt(1, acao.getIdAcao());
@@ -65,13 +68,13 @@ public class AcaoDAO {
                 return "Erro ao excluir";
             }
         } catch (SQLException e) {
-            return "Erro de SQL: " + e.getMessage();
+            throw new SQLException("Erro de SQL: " + e.getMessage());
         }
     }
 
-    public ArrayList<Acao> listarTodos() {
+    public ArrayList<Object> listarTodos() throws SQLException {
         String sql = "select * from acao order by USUARIO_ID_USUARIO";
-        ArrayList<Acao> listaAcao = new ArrayList<>();
+        ArrayList<Object> listaAcao = new ArrayList<>();
         try (PreparedStatement ps = getCon().prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             if (rs != null) {
@@ -92,13 +95,11 @@ public class AcaoDAO {
                 return null;
             }
         } catch (SQLException e) {
-            System.out.println("Erro de SQL: " + e.getMessage());
-            return null;
+            throw new SQLException("Erro de SQL: " + e.getMessage());
         }
     }
 
-    //Pega todos os ids e usa srteam api para pegar o maior e adicionar um
-    public Integer criarId() {
+    public Object criarId() throws SQLException {
         String sql = "SELECT ID_ACAO FROM ACAO";
         ArrayList<Integer> listaIds = new ArrayList<Integer>();
         try (PreparedStatement ps = getCon().prepareStatement(sql);
@@ -115,15 +116,14 @@ public class AcaoDAO {
                 return null;
             }
         } catch (SQLException e) {
-            System.out.println("Erro de SQL: " + e.getMessage());
-            return null;
+            throw new SQLException("Erro de SQL: " + e.getMessage());
         }
     }
 
-    public Acao pegarUm(int idAcao){
+    public Acao pegarUm(Object object) throws SQLException {
         String sql = "SELECT * FROM ACAO WHERE ID_ACAO = ?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)){
-            ps.setInt(1,idAcao);
+            ps.setObject(1,object);
             try (ResultSet rs = ps.executeQuery()){
                 if (rs.next()){
                     Acao acao = new Acao();
@@ -139,8 +139,7 @@ public class AcaoDAO {
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Erro de SQL: " + e.getMessage());
-            return null;
+            throw new SQLException("Erro de SQL: " + e.getMessage());
         }
     }
 }

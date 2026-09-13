@@ -32,28 +32,39 @@ public class Usuario {
     public String getNmUsuario() {
         return nmUsuario;
     }
-    public void setNmUsuario(String nmUsuario) {
+    public void setNmUsuario(String nmUsuario) throws IllegalArgumentException{
+        //banco está como varchar(50)
+        if (nmUsuario.length() > 50) {
+            throw new IllegalArgumentException("O nome do usuário deve ser menor que 50 caracteres.");
+        }
         this.nmUsuario = nmUsuario;
     }
     public String getIdUsuario() {
         return idUsuario;
     }
     // A idUsuario é sempre minúscula.
-    public void setIdUsuario(String idUsuario) {
+    public void setIdUsuario(String idUsuario) throws IllegalArgumentException{
+        //máx 30 caracteres no banco
+        if (idUsuario.length() > 30) {
+            throw new IllegalArgumentException("Limite de caracteres é 30");
+        }
         this.idUsuario = idUsuario.toLowerCase();
     }
     public float getVlMerito() {
         return vlMerito;
     }
     // Confiabilidade varia entre 0 e 100%, e é mostrada como porcentagem
-    public void setVlMerito(float vlMerito) {
+    /* EU vi no material que throws é "inutil" com as runtimes,
+    porém vou deixar para documentação mais e identificação
+      eu uso direto o folding all pra fechar os métodos, com isso saberei se ele tem runtimeexception*/
+    public void setVlMerito(float vlMerito) throws IllegalArgumentException{
         try {
             if (vlMerito >= 0 && vlMerito <= 100) {
                 this.vlMerito = vlMerito;
             } else {
                 // 50 é a vlMerito padrão
                 setVlMerito(50);
-                throw new Exception("Valor inválido, digite um número de 1 a 100 para vlMerito");
+                throw new IllegalArgumentException("Valor inválido, digite um número de 1 a 100 para vlMerito");
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
@@ -62,13 +73,13 @@ public class Usuario {
     public int getQtSoulCoins() {
         return qtSoulCoins;
     }
-    public void setQtSoulCoins(int qtSoulCoins) {
+    public void setQtSoulCoins(int qtSoulCoins) throws IllegalArgumentException{
         try {
             if (qtSoulCoins >= 0) {
                 this.qtSoulCoins = qtSoulCoins;
             } else {
                 //0 é a vlMerito padrão mesmo
-                throw new Exception("O número de Soul coins não pode ser negativo");
+                throw new IllegalArgumentException("O número de Soul coins não pode ser negativo");
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
@@ -81,11 +92,13 @@ public class Usuario {
         this.dsAtividadeRecente = dsAtividadeRecente;
     }
     public ArrayList<String> getSelosGanhos() {
+        // banco aceita até 200 caracteres, não vai passar iss, mas validação nunca é ruim.
         return selosGanhos;
     }
     public void setSelosGanhos(ArrayList<String> selosGanhos) {
         this.selosGanhos = selosGanhos;
     }
+
     /**
      * Registrar uma atividade do usuário.
      * @param dsAtividade é o texto descrevendo a atividade realizada
@@ -118,8 +131,8 @@ public class Usuario {
         } else {
             // Menor que tres metade, maior já recebe todos os pontos normais
             dsAtividade += String.format("[%d pontos]", qtSoulCoins);
-            registrarAtividade(dsAtividade);
             this.qtSoulCoins += qtSoulCoins;
+            registrarAtividade(dsAtividade);
         }
     }
 
@@ -147,8 +160,8 @@ public class Usuario {
         } else {
             // Menor que tres metade, maior já recebe todos os pontos normais
             dsAtividade += String.format(" [%d pontos]", qtSoulCoins);
-            registrarAtividade(dsAtividade);
             this.qtSoulCoins += qtSoulCoins;
+            registrarAtividade(dsAtividade);
         }
         selosGanhos.add(selo);
     }
