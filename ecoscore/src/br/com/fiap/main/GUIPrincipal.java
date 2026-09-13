@@ -58,7 +58,8 @@ public class GUIPrincipal extends JFrame {
             postDAO = new PostDAO(con);
             quizDAO = new QuizDAO(con);
 
-            usuario = usuarioDAO.pegarUm("dragonborn123"); //como se fosse um login
+            usuario.setIdUsuario("dragonborn123");
+            usuario = (Usuario) usuarioDAO.pegarUm(usuario); //como se fosse um login
             acao = acaoDAO.pegarUm(4);
             usuario.registrarAtividade(acao.detalhesAcao());
             missao = (Missao) missaoDAO.pegarUm(0);
@@ -252,13 +253,13 @@ public class GUIPrincipal extends JFrame {
                     usuarioDAO = new UsuarioDAO(con);
 
                     String novoId = JOptionPane.showInputDialog("Qual usuário você quer usar?: (dica: Liste os usuários pelo menu)");
-                    testarSeExiste = usuarioDAO.pegarUm(novoId);
+                    testarSeExiste = (Usuario) usuarioDAO.pegarUm(novoId);
                     if (testarSeExiste != null) {
                         if (JOptionPane.showConfirmDialog(null,
                                                  "Usuário encontado, você tem certeza que quer mudar isso pode apagar algumas alterações!",
                                                           "Confirme!",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==0) {
                             usuario = new Usuario();
-                            usuario = usuarioDAO.pegarUm(novoId);
+                            usuario = (Usuario) usuarioDAO.pegarUm(novoId);
                             JOptionPane.showMessageDialog(null,"Logado como " + usuario.getNmUsuario(),
                                                           "Novo usuário!", JOptionPane.INFORMATION_MESSAGE);
                         } else {
@@ -308,7 +309,7 @@ public class GUIPrincipal extends JFrame {
                     }
                     if (escolha != 0){
                         String descricao = JOptionPane.showInputDialog("Digite a descrição da ação: ");
-                        acao.setIdAcao(acaoDAO.criarId());
+                        acao.setIdAcao((int) acaoDAO.criarId());
                         acao.setIdUsuario(usuario.getIdUsuario());
                         acao.setDsAcao(descricao);
                         acao.setDtAcao(LocalDateTime.now());
@@ -339,7 +340,7 @@ public class GUIPrincipal extends JFrame {
                     String selo = JOptionPane.showInputDialog("Digite o selo da missão: ");
                     int pontos = Integer.parseInt(JOptionPane.showInputDialog("Digite a qtde. de pontos gerados: "));
 
-                    missao.setIdMissao(missaoDAO.criarId());
+                    missao.setIdMissao((int) missaoDAO.criarId());
                     missao.setNmMissao(nome);
                     missao.setDsMissao(descricao);
                     missao.setSelo(selo);
@@ -483,10 +484,11 @@ public class GUIPrincipal extends JFrame {
             public void actionPerformed(ActionEvent actionEvent) {
                 try (Connection con = ConnectionFactory.abrirConexao()){
                     usuarioDAO = new UsuarioDAO(con);
-                    ArrayList<Usuario> listaUsuarios = usuarioDAO.listarTodos();
+                    ArrayList<Object> listaUsuarios = usuarioDAO.listarTodos();
                     String allUsuarios = "";
                     if (listaUsuarios != null) {
-                        for (Usuario usuario : listaUsuarios) {
+                        for (Object object : listaUsuarios) {
+                            usuario = (Usuario) object;
                             allUsuarios += String.format("ID: %s | Nome: %s | Mérito: %.1f | SoulCoins: %d\n",
                                                          usuario.getIdUsuario(), usuario.getNmUsuario(),
                                                          usuario.getVlMerito(), usuario.getQtSoulCoins());
@@ -517,7 +519,7 @@ public class GUIPrincipal extends JFrame {
                     //Se atualizar o usuário atual
                     ArrayList<String> arAntiga = usuario.getDsAtividadeRecente();
                     ArrayList<String> sgAntiga = usuario.getSelosGanhos();
-                    usuario = usuarioDAO.pegarUm(usuario.getIdUsuario());
+                    usuario = (Usuario) usuarioDAO.pegarUm(usuario.getIdUsuario());
                     usuario.setDsAtividadeRecente(arAntiga);
                     usuario.setSelosGanhos(sgAntiga);
                     taDetalhesPerfil.setText(usuario.detalhesPerfil());
@@ -554,7 +556,7 @@ public class GUIPrincipal extends JFrame {
                     String selo = JOptionPane.showInputDialog("Digite o selo da missão: ");
                     int pontos = Integer.parseInt(JOptionPane.showInputDialog("Digite a qtde. de pontos gerados: "));
 
-                    missao.setIdMissao(missaoDAO.criarId());
+                    missao.setIdMissao((int) missaoDAO.criarId());
                     missao.setNmMissao(nome);
                     missao.setDsMissao(descricao);
                     missao.setSelo(selo);
@@ -673,7 +675,7 @@ public class GUIPrincipal extends JFrame {
                     }
                     if (escolha != 0){
                         String descricao = JOptionPane.showInputDialog("Digite a descrição da ação: ");
-                        acao.setIdAcao(acaoDAO.criarId());
+                        acao.setIdAcao((int) acaoDAO.criarId());
                         acao.setIdUsuario(usuario.getIdUsuario());
                         acao.setDsAcao(descricao);
                         acao.setDtAcao(LocalDateTime.now());
@@ -698,10 +700,11 @@ public class GUIPrincipal extends JFrame {
             public void actionPerformed(ActionEvent actionEvent) {
                 try (Connection con = ConnectionFactory.abrirConexao()) {
                     acaoDAO = new AcaoDAO(con);
-                    ArrayList<Acao> lista = acaoDAO.listarTodos();
+                    ArrayList<Object> lista = acaoDAO.listarTodos();
                     String texto = "";
                     if (lista != null) {
-                        for (Acao acao : lista) {
+                        for (Object object : lista) {
+                            acao = (Acao) object;
                             texto += String.format("ID: %d | Usuário: %s | Descrição: %s | Pontos: %d\n",
                                                    acao.getIdAcao(),acao.getIdUsuario(),
                                                    acao.getDsAcao(), acao.getQtPontosGerados());
@@ -791,11 +794,12 @@ public class GUIPrincipal extends JFrame {
             public void actionPerformed(ActionEvent actionEvent) {
                 try (Connection con = ConnectionFactory.abrirConexao()) {
                     postDAO = new PostDAO(con);
-                    ArrayList<Post> lista = postDAO.listarTodos();
+                    ArrayList<Object> lista = postDAO.listarTodos();
                     String texto = "";
                     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy - hh:mm");
                     if (lista != null) {
-                        for (Post post : lista) {
+                        for (Object object : lista) {
+                            post = (Post) object;
                             texto += String.format("ID: %d | Usuário: %s | Votos: +%d-%d=%d | Data: %s\n",
                                                    post.getIdPost(),post.getIdUsuario(),post.getNumUpVotes(),
                                                    post.getNumDownVotes(),post.getNumSaldoVotes(),post.getDtPost().format(dtf)); 
@@ -890,10 +894,11 @@ public class GUIPrincipal extends JFrame {
             public void actionPerformed(ActionEvent actionEvent) {
                 try (Connection con = ConnectionFactory.abrirConexao()) {
                     quizDAO = new QuizDAO(con);
-                    ArrayList<Quiz> lista = quizDAO.listarTodos();
+                    ArrayList<Object> lista = quizDAO.listarTodos();
                     String texto = "";
                     if (lista != null) {
-                        for (Quiz quiz : lista) {
+                        for (Object object : lista) {
+                            quiz = (Quiz) object;
                             texto += String.format("ID: %d | Usuário: %s | Acertos: %d/%d | Pontos: %d\n",
                                                    quiz.getIdQuiz(),quiz.getIdUsuario(),
                                                    quiz.getNumAcertos(),quiz.getNumQuestoes(),
@@ -957,13 +962,13 @@ public class GUIPrincipal extends JFrame {
                 try (Connection con = ConnectionFactory.abrirConexao()){
                     ranking = new RankingUsuario();
                     rankingUsuarioDAO = new RankingUsuarioDAO(con);
-                    ArrayList<RankingUsuario> listaRanking = new ArrayList<>();
-                    listaRanking = rankingUsuarioDAO.listarTodos();
+                    ArrayList<Object> listaRanking = rankingUsuarioDAO.listarTodos();
                     String texto = "";
                     int posicao = 1;
-                    for (RankingUsuario cadaPosicao : listaRanking) {
+                    for (Object object : listaRanking) {
+                        ranking = (RankingUsuario) object;
                         texto += String.format("POS.: %dº | Nome: %s | Votos: %d\n",
-                                               posicao,cadaPosicao.getIdUsuario(),cadaPosicao.getQtVotos());
+                                               posicao,ranking.getIdUsuario(),ranking.getQtVotos());
                         posicao++;
                     }
                     JOptionPane.showMessageDialog(null,texto,"Ranking",JOptionPane.INFORMATION_MESSAGE);

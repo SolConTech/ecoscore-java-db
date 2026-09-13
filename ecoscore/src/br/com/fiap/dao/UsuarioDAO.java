@@ -107,12 +107,13 @@ public class UsuarioDAO implements IDAO{
     }
 
     public Object pegarUm(Object object){
+        Usuario usuario = (Usuario) object;
         String sql = "SELECT * FROM USUARIO WHERE ID_USUARIO = ?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)){
-            ps.setObject(1,object);
+            ps.setObject(1,usuario.getIdUsuario());
             try (ResultSet rs = ps.executeQuery()){
                 if (rs.next()){
-                    Usuario usuario = new Usuario();
+                    usuario = new Usuario();
                     usuario.setIdUsuario(rs.getString(1));
                     usuario.setNmUsuario(rs.getString(2));
                     usuario.setVlMerito(rs.getFloat(3));
