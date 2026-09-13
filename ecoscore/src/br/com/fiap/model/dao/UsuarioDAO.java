@@ -24,12 +24,14 @@ public class UsuarioDAO implements IDAO{
 
     public String inserir(Object object) throws SQLException {
         Usuario usuario = (Usuario) object;
-        String sql = "insert into usuario(ID_USUARIO,NM_USUARIO,VL_MERITO,QT_SOULCOINS) values(?,?,?,?)";
+        String sql = "insert into usuario(ID_USUARIO,NM_USUARIO,VL_MERITO,QT_SOULCOINS,DS_DESCRICAO,SELOS_GANHOS) values(?,?,?,?,?,?)";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
             ps.setString(1, usuario.getIdUsuario());
             ps.setString(2, usuario.getNmUsuario());
             ps.setFloat(3, usuario.getVlMerito());
             ps.setInt(4, usuario.getQtSoulCoins());
+            ps.setString(5, usuario.getDsAtividadeRecente());
+            ps.setString(6, usuario.getSelosGanhos());
 
             if (ps.executeUpdate() > 0) {
                 return "Inserido com sucesso";
@@ -43,12 +45,14 @@ public class UsuarioDAO implements IDAO{
 
     public String alterar(Object object) throws SQLException {
         Usuario usuario = (Usuario) object;
-        String sql = "update usuario set NM_USUARIO=?, VL_MERITO=?, QT_SOULCOINS=? where ID_USUARIO=?";
+        String sql = "update usuario set NM_USUARIO=?, VL_MERITO=?, QT_SOULCOINS=?,DS_DESCRICAO=?,SELOS_GANHOS=? where ID_USUARIO=?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
             ps.setString(1, usuario.getNmUsuario());
             ps.setFloat(2, usuario.getVlMerito());
             ps.setInt(3, usuario.getQtSoulCoins());
             ps.setString(4,usuario.getIdUsuario());
+            ps.setString(5, usuario.getDsAtividadeRecente());
+            ps.setString(6, usuario.getSelosGanhos());
 
             if (ps.executeUpdate() > 0) {
                 return "Alterado com sucesso";
@@ -91,6 +95,8 @@ public class UsuarioDAO implements IDAO{
                     usuario.setNmUsuario(rs.getString(2));
                     usuario.setVlMerito(rs.getFloat(3));
                     usuario.setQtSoulCoins(rs.getInt(4));
+                    usuario.setDsAtividadeRecente(rs.getString(5));
+                    usuario.setSelosGanhos(rs.getString(6));
 
                     listaUsuario.add(usuario);
                 }
@@ -117,6 +123,8 @@ public class UsuarioDAO implements IDAO{
                     usuario.setNmUsuario(rs.getString(2));
                     usuario.setVlMerito(rs.getFloat(3));
                     usuario.setQtSoulCoins(rs.getInt(4));
+                    usuario.setDsAtividadeRecente(rs.getString(5));
+                    usuario.setSelosGanhos(rs.getString(6));
 
                     return usuario;
                 } else {

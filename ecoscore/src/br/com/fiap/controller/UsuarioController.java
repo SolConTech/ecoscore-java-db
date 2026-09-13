@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class UsuarioController {
 
-    public String inserirUsuario(String idUsuario, String nmUsuario, float vlMerito, int qtSoulCoins)
+    public String inserirUsuario(String idUsuario, String nmUsuario, float vlMerito, int qtSoulCoins,String dsAtividadeRecente,String selosGanhos)
             throws ClassNotFoundException, SQLException {
 
         String resultado;
@@ -21,6 +21,8 @@ public class UsuarioController {
         usuario.setNmUsuario(nmUsuario);
         usuario.setVlMerito(vlMerito);
         usuario.setQtSoulCoins(qtSoulCoins);
+        usuario.setDsAtividadeRecente(dsAtividadeRecente);
+        usuario.setSelosGanhos(selosGanhos);
 
         UsuarioDAO usuarioDAO = new UsuarioDAO(con);
         resultado = usuarioDAO.inserir(usuario);

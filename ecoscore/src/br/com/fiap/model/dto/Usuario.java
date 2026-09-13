@@ -12,8 +12,8 @@ public class Usuario {
     private String nmUsuario;
     private float vlMerito; //A confiabilidade do usuário, quanto o voto e as ações dele são confiáveis
     private int qtSoulCoins;
-    private ArrayList<String> dsAtividadeRecente = new ArrayList<String>(); //Últimas ações realizadas
-    private ArrayList<String> selosGanhos = new ArrayList<String>();
+    private String dsAtividadeRecente = "\n"; //Últimas ações realizadas
+    private String selosGanhos = "\n"; // tentei usar ArrayList (não deu no banco)
 
     public Usuario() {}
     // Construtor para registrar apenas nmUsuario do usuário e idUsuario, pois ambos não tem validação
@@ -85,18 +85,18 @@ public class Usuario {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
-    public ArrayList<String> getDsAtividadeRecente() {
+    public String getDsAtividadeRecente() {
         return dsAtividadeRecente;
     }
-    public void setDsAtividadeRecente(ArrayList<String> dsAtividadeRecente) {
+    public void setDsAtividadeRecente(String dsAtividadeRecente) {
         this.dsAtividadeRecente = dsAtividadeRecente;
     }
-    public ArrayList<String> getSelosGanhos() {
+    public String getSelosGanhos() {
         // banco aceita até 200 caracteres, não vai passar iss, mas validação nunca é ruim.
         return selosGanhos;
     }
-    public void setSelosGanhos(ArrayList<String> selosGanhos) {
-        this.selosGanhos = selosGanhos;
+    public void setSelosGanhos(String selosGanhos) {
+        this.selosGanhos += selosGanhos + "\n";
     }
 
     /**
@@ -108,7 +108,7 @@ public class Usuario {
         if (dsAtividade == null || dsAtividade.isBlank()) {
             throw new IllegalArgumentException("A descrição da atividade não pode ser vazia");
         }
-        dsAtividadeRecente.add(dsAtividade);
+        dsAtividadeRecente += dsAtividade + "\n";
     }
 
     /**
@@ -163,7 +163,7 @@ public class Usuario {
             this.qtSoulCoins += qtSoulCoins;
             registrarAtividade(dsAtividade);
         }
-        selosGanhos.add(selo);
+        selosGanhos += "\n" + selo;
     }
 
     /**
@@ -171,16 +171,8 @@ public class Usuario {
      * @return Uma string formatada com tudo ajustado
      */
     public String detalhesPerfil() {
-        String listaAtividaderecente = "";
-        for (String atividade : dsAtividadeRecente) {
-            listaAtividaderecente += "\n-" + atividade;
-        }
-        String listaSelosGanhos = "";
-        for (String selo : selosGanhos) {
-            listaSelosGanhos += "\n-"+ selo;
-        }
 
-        return String.format("Nome: %s\nId: %s\nConfiabilidade: %.1f\nSoul Coins: %d\nAtividade recente:%s\nSelos ganhos:%s", nmUsuario, idUsuario, vlMerito, qtSoulCoins, listaAtividaderecente, listaSelosGanhos);
+        return String.format("Nome: %s\nId: %s\nConfiabilidade: %.1f\nSoul Coins: %d\nAtividade recente:\n%s\nSelos ganhos:%s", nmUsuario, idUsuario, vlMerito, qtSoulCoins, dsAtividadeRecente, selosGanhos);
     }
 
     /**
