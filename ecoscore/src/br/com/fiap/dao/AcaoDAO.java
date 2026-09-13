@@ -18,7 +18,7 @@ public class AcaoDAO implements IDAO{
         return con;
     }
 
-    public String inserir(Object object) {
+    public String inserir(Object object) throws SQLException {
         Acao acao = (Acao) object;
         String sql = "insert into acao(ID_ACAO,usuario_id_usuario, ds_acao, qt_pontosGerados, dt_acao) values(?,?,?,?,?)";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
@@ -38,7 +38,7 @@ public class AcaoDAO implements IDAO{
         }
     }
 
-    public String alterar(Object object) {
+    public String alterar(Object object) throws SQLException {
         Acao acao = (Acao) object;
         String sql = "update acao set USUARIO_ID_USUARIO=?, DS_ACAO=?, QT_PONTOSGERADOS=?, DT_ACAO=? where ID_ACAO=?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
@@ -57,7 +57,7 @@ public class AcaoDAO implements IDAO{
         }
     }
 
-    public String excluir(Object object) {
+    public String excluir(Object object) throws SQLException {
         Acao acao = (Acao) object;
         String sql = "delete from acao where ID_ACAO=?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
@@ -72,7 +72,7 @@ public class AcaoDAO implements IDAO{
         }
     }
 
-    public ArrayList<Object> listarTodos() {
+    public ArrayList<Object> listarTodos() throws SQLException {
         String sql = "select * from acao order by USUARIO_ID_USUARIO";
         ArrayList<Object> listaAcao = new ArrayList<>();
         try (PreparedStatement ps = getCon().prepareStatement(sql);
@@ -100,7 +100,7 @@ public class AcaoDAO implements IDAO{
         }
     }
 
-    public Object criarId() {
+    public Object criarId() throws SQLException {
         String sql = "SELECT ID_ACAO FROM ACAO";
         ArrayList<Integer> listaIds = new ArrayList<Integer>();
         try (PreparedStatement ps = getCon().prepareStatement(sql);
@@ -122,7 +122,7 @@ public class AcaoDAO implements IDAO{
         }
     }
 
-    public Acao pegarUm(Object object){
+    public Acao pegarUm(Object object) throws SQLException {
         String sql = "SELECT * FROM ACAO WHERE ID_ACAO = ?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)){
             ps.setObject(1,object);

@@ -1,10 +1,8 @@
 package br.com.fiap.dao;
 
-import br.com.fiap.dto.Acao;
 import br.com.fiap.dto.Missao;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -21,7 +19,7 @@ public class MissaoDAO implements IDAO{
         return con;
     }
 
-    public String inserir(Object objeto){
+    public String inserir(Object objeto) throws SQLException {
         Missao missao = (Missao) objeto;
         String sql = "insert into missao(ID_MISSAO,nm_missao, DS_MISSAO, SELO, qt_pontosGerados, dt_missao) values(?,?,?,?,?,?)";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
@@ -41,7 +39,7 @@ public class MissaoDAO implements IDAO{
         }
     }
 
-    public String alterar(Object objeto){
+    public String alterar(Object objeto) throws SQLException {
         Missao missao = (Missao) objeto;
         String sql = "update missao set NM_MISSAO=?, DS_MISSAO=?, SELO=?, QT_PONTOSGERADOS=?, DT_MISSAO=? where ID_MISSAO=?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
@@ -61,7 +59,7 @@ public class MissaoDAO implements IDAO{
         }
     }
 
-    public String excluir(Object objeto){
+    public String excluir(Object objeto) throws SQLException {
         Missao missao = (Missao) objeto;
         String sql = "delete from missao where ID_MISSAO=?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
@@ -76,7 +74,7 @@ public class MissaoDAO implements IDAO{
         }
     }
 
-    public ArrayList<Object> listarTodos(){
+    public ArrayList<Object> listarTodos() throws SQLException {
         String sql = "select * from missao order by ID_MISSAO";
         ArrayList<Object> listaMissao = new ArrayList<>();
         try (PreparedStatement ps = getCon().prepareStatement(sql);
@@ -104,7 +102,7 @@ public class MissaoDAO implements IDAO{
         }
     }
 
-    public Object pegarUm(Object object){
+    public Object pegarUm(Object object) throws SQLException {
         String sql = "SELECT * FROM MISSAO WHERE ID_MISSAO = ?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)){
             ps.setObject(1,object);
@@ -129,7 +127,7 @@ public class MissaoDAO implements IDAO{
         }
     }
 
-    public Object criarId() {
+    public Object criarId() throws SQLException {
         String sql = "SELECT ID_MISSAO FROM MISSAO";
         ArrayList<Integer> listaIds = new ArrayList<Integer>();
         try (PreparedStatement ps = getCon().prepareStatement(sql);

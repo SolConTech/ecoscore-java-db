@@ -1,8 +1,6 @@
 package br.com.fiap.dao;
 
-import br.com.fiap.dto.Missao;
 import br.com.fiap.dto.RankingUsuario;
-import br.com.fiap.dto.Usuario;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -20,7 +18,7 @@ public class RankingUsuarioDAO implements IDAO{
         return con;
     }
 
-    public String inserir(Object object){
+    public String inserir(Object object) throws SQLException {
         RankingUsuario rankingUsuario = (RankingUsuario) object;
         String sql = "insert into ranking_usuario(ID_RANKING,ID_USUARIO,QT_VOTOS) values(?,?,?)";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
@@ -38,7 +36,7 @@ public class RankingUsuarioDAO implements IDAO{
         }
     }
 
-    public String alterar(Object object){
+    public String alterar(Object object) throws SQLException {
         RankingUsuario rankingUsuario = (RankingUsuario) object;
         String sql = "update ranking_usuario set ID_USUARIO=?, QT_VOTOS=? where ID_RANKING=?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
@@ -56,7 +54,7 @@ public class RankingUsuarioDAO implements IDAO{
         }
     }
 
-    public String excluir(Object object){
+    public String excluir(Object object) throws SQLException {
         RankingUsuario rankingUsuario = (RankingUsuario) object;
         String sql = "delete from ranking_usuario where ID_RANKING=?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
@@ -72,7 +70,7 @@ public class RankingUsuarioDAO implements IDAO{
         }
     }
 
-    public ArrayList<Object> listarTodos(){
+    public ArrayList<Object> listarTodos() throws SQLException {
         String sql = "select * from ranking_usuario order by QT_VOTOS DESC";
         ArrayList<Object> listaRankingUsuario = new ArrayList<>();
 
@@ -101,7 +99,7 @@ public class RankingUsuarioDAO implements IDAO{
         }
     }
 
-    public RankingUsuario pegarUm(Object object){
+    public RankingUsuario pegarUm(Object object) throws SQLException {
         String sql = "SELECT * FROM RANKING_USUARIO WHERE ID_USUARIO = ?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)){
             ps.setObject(1,object);
@@ -115,6 +113,28 @@ public class RankingUsuarioDAO implements IDAO{
                 } else {
                     return null;
                 }
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro de SQL: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public Object criarId() {
+        String sql = "SELECT ID_RANKING FROM RANKING_USUARIO";
+        ArrayList<Integer> listaIds = new ArrayList<Integer>();
+        try (PreparedStatement ps = getCon().prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs != null) {
+                while (rs.next()) {
+                    int id = rs.getInt(1);
+                    listaIds.add(id);
+                }
+                //o orElse serve para não retornar 0 nada se a lista estiver vazia, o max retorna Integer
+                Integer id = listaIds.stream().max(Comparator.naturalOrder()).orElse(null);
+                return id+1;
+            } else {
+                return null;
             }
         } catch (SQLException e) {
             System.out.println("Erro de SQL: " + e.getMessage());

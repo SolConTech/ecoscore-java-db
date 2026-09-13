@@ -1,10 +1,8 @@
 package br.com.fiap.dao;
 
-import br.com.fiap.dto.Post;
 import br.com.fiap.dto.Quiz;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -21,7 +19,7 @@ public class QuizDAO implements IDAO{
         return con;
     }
 
-    public String inserir(Object object){
+    public String inserir(Object object) throws SQLException {
         Quiz quiz = (Quiz) object;
         String sql = "insert into quiz(ID_QUIZ,USUARIO_ID_USUARIO,NUM_QUESTOES,NUM_ACERTOS,QT_PONTOSPORQUESTAO,QT_PONTOSGERADOS,DT_QUIZ) values(?,?,?,?,?,?,?)";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
@@ -43,7 +41,7 @@ public class QuizDAO implements IDAO{
         }
     }
 
-    public String alterar(Object object){
+    public String alterar(Object object) throws SQLException {
         Quiz quiz = (Quiz) object;
         String sql = "update quiz set USUARIO_ID_USUARIO=?, NUM_QUESTOES=?, NUM_ACERTOS=?, QT_PONTOSPORQUESTAO=?, QT_PONTOSGERADOS=?, DT_QUIZ=? where ID_QUIZ=?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
@@ -65,7 +63,7 @@ public class QuizDAO implements IDAO{
         }
     }
 
-    public String excluir(Object object){
+    public String excluir(Object object) throws SQLException {
         Quiz quiz = (Quiz) object;
         String sql = "delete from quiz where ID_QUIZ=?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
@@ -81,7 +79,7 @@ public class QuizDAO implements IDAO{
         }
     }
 
-    public ArrayList<Object> listarTodos(){
+    public ArrayList<Object> listarTodos() throws SQLException {
         String sql = "select * from quiz order by ID_QUIZ";
         ArrayList<Object> listaQuiz = new ArrayList<>();
 
@@ -138,7 +136,7 @@ public class QuizDAO implements IDAO{
         }
     }
 
-    public Quiz pegarUm(Object object){
+    public Quiz pegarUm(Object object) throws SQLException {
         String sql = "SELECT * FROM QUIZ WHERE ID_QUIZ = ?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)){
             ps.setObject(1,object);

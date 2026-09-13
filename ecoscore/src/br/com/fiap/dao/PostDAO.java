@@ -1,11 +1,8 @@
 package br.com.fiap.dao;
 
-import br.com.fiap.dto.Acao;
-import br.com.fiap.dto.Missao;
 import br.com.fiap.dto.Post;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -22,7 +19,7 @@ public class PostDAO implements IDAO{
         return con;
     }
 
-    public String inserir(Object object){
+    public String inserir(Object object) throws SQLException {
         Post post = (Post) object;
         String sql = "insert into post(ID_POST,USUARIO_ID_USUARIO,DS_POST,DT_POST,NUM_UPVOTES,NUM_DOWNVOTES,NUM_SALDOVOTES) values(?,?,?,?,?,?,?)";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
@@ -44,7 +41,7 @@ public class PostDAO implements IDAO{
         }
     }
 
-    public String alterar(Object object){
+    public String alterar(Object object) throws SQLException {
         Post post = (Post) object;
         String sql = "update post set USUARIO_ID_USUARIO=?, DS_POST=?, DT_POST=?, NUM_UPVOTES=?, NUM_DOWNVOTES=?, NUM_SALDOVOTES=? where ID_POST=?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
@@ -66,7 +63,7 @@ public class PostDAO implements IDAO{
         }
     }
 
-    public String excluir(Object object){
+    public String excluir(Object object) throws SQLException {
         Post post = (Post) object;
         String sql = "delete from post where ID_POST=?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
@@ -82,7 +79,7 @@ public class PostDAO implements IDAO{
         }
     }
 
-    public ArrayList<Object> listarTodos(){
+    public ArrayList<Object> listarTodos() throws SQLException {
         String sql = "select * from post order by ID_POST";
         ArrayList<Object> listaPost = new ArrayList<>();
 
@@ -115,7 +112,7 @@ public class PostDAO implements IDAO{
         }
     }
 
-    public Integer criarId() {
+    public Integer criarId() throws SQLException {
         String sql = "SELECT ID_post FROM POST";
         ArrayList<Integer> listaIds = new ArrayList<Integer>();
         try (PreparedStatement ps = getCon().prepareStatement(sql);
@@ -137,7 +134,7 @@ public class PostDAO implements IDAO{
         }
     }
 
-    public Post pegarUm(Object object){
+    public Post pegarUm(Object object) throws SQLException {
         String sql = "SELECT * FROM POST WHERE ID_POST = ?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)){
             ps.setObject(1,object);

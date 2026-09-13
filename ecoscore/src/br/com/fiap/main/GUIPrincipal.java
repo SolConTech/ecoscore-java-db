@@ -12,7 +12,6 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 
 @SuppressWarnings("serial")
 public class GUIPrincipal extends JFrame {
@@ -219,8 +218,10 @@ public class GUIPrincipal extends JFrame {
 
                         JOptionPane.showMessageDialog(null,usuarioDAO.alterar(usuario));
                     }
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Erro numérico: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null,"Erro: "+ e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 }
                 taDetalhesPerfil.setText(usuario.detalhesPerfil());
             }
@@ -228,7 +229,7 @@ public class GUIPrincipal extends JFrame {
         miLimparAtividades.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                if (JOptionPane.showConfirmDialog(null, "Tem certa? Isso apagará toda a Atividade Recente do perfil do usuário!","Confirme",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==0){
+                if (JOptionPane.showConfirmDialog(null, "Tem certa? Isso apagará toda a Atividade Recente (não do banco)","Confirme",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==0){
                     ArrayList<String> atividadesVazio = new ArrayList<>();
                     usuario.setDsAtividadeRecente(atividadesVazio);
                 }
@@ -238,7 +239,7 @@ public class GUIPrincipal extends JFrame {
         miLimparSelos.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                if (JOptionPane.showConfirmDialog(null, "Tem certa? Isso apagará todos os selos ganhos do perfil do usuário!","Confirme",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==0){
+                if (JOptionPane.showConfirmDialog(null, "Tem certa? Isso apagará todos os selos (não do banco)","Confirme",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==0){
                     ArrayList<String> selosVazio = new ArrayList<>();
                     usuario.setSelosGanhos(selosVazio);
                 }
@@ -323,6 +324,8 @@ public class GUIPrincipal extends JFrame {
                         taDetalhesPerfil.setText(usuario.detalhesPerfil());
                         JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
                     }
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Erro numérico: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 }
@@ -357,6 +360,8 @@ public class GUIPrincipal extends JFrame {
                     String resultado = missaoDAO.inserir(missao);
                     taDetalhesPerfil.setText(usuario.detalhesPerfil());
                     JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Erro numérico: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 }
@@ -391,6 +396,8 @@ public class GUIPrincipal extends JFrame {
                     taDetalhesPerfil.setText(usuario.detalhesPerfil());
                     String resultado = quizDAO.inserir(quiz);
                     JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Erro numérico: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 }
@@ -422,14 +429,17 @@ public class GUIPrincipal extends JFrame {
                         ranking.addQtVotos(post.getNumSaldoVotes());
                         rankingUsuarioDAO.alterar(ranking);
                     } else {
-                        ranking = new RankingUsuario(5,usuario.getIdUsuario(),post.getNumSaldoVotes());
+                        ranking = new RankingUsuario((int) rankingUsuarioDAO.criarId(),usuario.getIdUsuario(),
+                                                     post.getNumSaldoVotes());
                         rankingUsuarioDAO.inserir(ranking);
                     }
                     usuario.registrarAtividade(post.detalhesPost());
                     taDetalhesPerfil.setText(usuario.detalhesPerfil());
                     JOptionPane.showMessageDialog(null, resultado, "Posts", JOptionPane.INFORMATION_MESSAGE);
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Erro numérico: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro:", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -447,8 +457,10 @@ public class GUIPrincipal extends JFrame {
                         usuario.registrarPenalidade(valorPenalidade, descOcorrido);
                         usuarioDAO.alterar(usuario);
                     }
+                }catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Erro numérico: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 }
 
                 taDetalhesPerfil.setText(usuario.detalhesPerfil());
@@ -474,8 +486,10 @@ public class GUIPrincipal extends JFrame {
 
                     String resultado = usuarioDAO.inserir(usuario);
                     JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
+                }catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Erro numérico: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });

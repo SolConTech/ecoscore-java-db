@@ -22,7 +22,7 @@ public class UsuarioDAO implements IDAO{
         return con;
     }
 
-    public String inserir(Object object){
+    public String inserir(Object object) throws SQLException {
         Usuario usuario = (Usuario) object;
         String sql = "insert into usuario(ID_USUARIO,NM_USUARIO,VL_MERITO,QT_SOULCOINS) values(?,?,?,?)";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
@@ -41,7 +41,7 @@ public class UsuarioDAO implements IDAO{
         }
     }
 
-    public String alterar(Object object){
+    public String alterar(Object object) throws SQLException {
         Usuario usuario = (Usuario) object;
         String sql = "update usuario set NM_USUARIO=?, VL_MERITO=?, QT_SOULCOINS=? where ID_USUARIO=?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
@@ -60,7 +60,7 @@ public class UsuarioDAO implements IDAO{
         }
     }
 
-    public String excluir(Object object){
+    public String excluir(Object object) throws SQLException {
         Usuario usuario = (Usuario) object;
         String sql = "delete from usuario where ID_USUARIO=?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
@@ -76,7 +76,7 @@ public class UsuarioDAO implements IDAO{
         }
     }
 
-    public ArrayList<Object> listarTodos(){
+    public ArrayList<Object> listarTodos() throws SQLException {
         String sql = "select * from usuario order by ID_USUARIO";
         ArrayList<Object> listaUsuario = new ArrayList<>();
 
@@ -106,7 +106,7 @@ public class UsuarioDAO implements IDAO{
         }
     }
 
-    public Object pegarUm(Object object){
+    public Object pegarUm(Object object) throws SQLException {
         Usuario usuario = (Usuario) object;
         String sql = "SELECT * FROM USUARIO WHERE ID_USUARIO = ?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)){
@@ -130,7 +130,7 @@ public class UsuarioDAO implements IDAO{
         }
     }
 
-    public Object criarId() {
+    public Object criarId()throws SQLException{
         String sql = "SELECT ID_USUARIO FROM USUARIO";
         ArrayList<Integer> listaIds = new ArrayList<Integer>();
         try (PreparedStatement ps = getCon().prepareStatement(sql);
