@@ -1,7 +1,7 @@
-package br.com.fiap.main;
+package br.com.fiap.view;
 
-import br.com.fiap.dto.*;
-import br.com.fiap.dao.*;
+import br.com.fiap.model.dao.*;
+import br.com.fiap.model.dto.*;
 
 import javax.swing.*;
 import java.awt.*;

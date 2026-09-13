@@ -1,6 +1,4 @@
-package br.com.fiap.dto;
-
-import java.time.LocalDateTime;
+package br.com.fiap.model.dto;
 
 /**
  * Cada registro de um usuário do ranking
