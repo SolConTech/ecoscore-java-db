@@ -68,8 +68,10 @@ public class GUIPrincipal extends JFrame {
             quiz = quizDAO.pegarUm(0);
             usuario.registrarAtividade(quiz.detalhesQuiz());
 
+        } catch (ClassNotFoundException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Erro de SQL:" + e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Erro:" + e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
         }
@@ -271,6 +273,8 @@ public class GUIPrincipal extends JFrame {
                         JOptionPane.showMessageDialog(null, "Esse usuário não existe!",
                                                       "Erro",JOptionPane.WARNING_MESSAGE);
                     }
+                }  catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 }
@@ -324,6 +328,8 @@ public class GUIPrincipal extends JFrame {
                         taDetalhesPerfil.setText(usuario.detalhesPerfil());
                         JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
                     }
+                }  catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
                 } catch (NumberFormatException e) {
                     JOptionPane.showMessageDialog(null, "Erro numérico: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 } catch (Exception e) {
@@ -360,6 +366,8 @@ public class GUIPrincipal extends JFrame {
                     String resultado = missaoDAO.inserir(missao);
                     taDetalhesPerfil.setText(usuario.detalhesPerfil());
                     JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
+                }  catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
                 } catch (NumberFormatException e) {
                     JOptionPane.showMessageDialog(null, "Erro numérico: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 } catch (Exception e) {
@@ -396,6 +404,8 @@ public class GUIPrincipal extends JFrame {
                     taDetalhesPerfil.setText(usuario.detalhesPerfil());
                     String resultado = quizDAO.inserir(quiz);
                     JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
+                }  catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
                 } catch (NumberFormatException e) {
                     JOptionPane.showMessageDialog(null, "Erro numérico: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 } catch (Exception e) {
@@ -436,6 +446,8 @@ public class GUIPrincipal extends JFrame {
                     usuario.registrarAtividade(post.detalhesPost());
                     taDetalhesPerfil.setText(usuario.detalhesPerfil());
                     JOptionPane.showMessageDialog(null, resultado, "Posts", JOptionPane.INFORMATION_MESSAGE);
+                }  catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
                 } catch (NumberFormatException e) {
                     JOptionPane.showMessageDialog(null, "Erro numérico: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 } catch (Exception e) {
@@ -457,7 +469,9 @@ public class GUIPrincipal extends JFrame {
                         usuario.registrarPenalidade(valorPenalidade, descOcorrido);
                         usuarioDAO.alterar(usuario);
                     }
-                }catch (NumberFormatException e) {
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
+                } catch (NumberFormatException e) {
                     JOptionPane.showMessageDialog(null, "Erro numérico: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
@@ -486,7 +500,9 @@ public class GUIPrincipal extends JFrame {
 
                     String resultado = usuarioDAO.inserir(usuario);
                     JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
-                }catch (NumberFormatException e) {
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
+                } catch (NumberFormatException e) {
                     JOptionPane.showMessageDialog(null, "Erro numérico: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
@@ -509,6 +525,8 @@ public class GUIPrincipal extends JFrame {
                         }
                     }
                     JOptionPane.showMessageDialog(null, allUsuarios, "Usuários", JOptionPane.INFORMATION_MESSAGE);
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 }
@@ -537,8 +555,12 @@ public class GUIPrincipal extends JFrame {
                     usuario.setDsAtividadeRecente(arAntiga);
                     usuario.setSelosGanhos(sgAntiga);
                     taDetalhesPerfil.setText(usuario.detalhesPerfil());
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Erro numérico: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -553,6 +575,8 @@ public class GUIPrincipal extends JFrame {
 
                     String resultado = usuarioDAO.excluir(usuario);
                     JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 }
@@ -587,8 +611,12 @@ public class GUIPrincipal extends JFrame {
                     String resultado = missaoDAO.inserir(missao);
                     taDetalhesPerfil.setText(usuario.detalhesPerfil());
                     JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Erro numérico: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -610,6 +638,8 @@ public class GUIPrincipal extends JFrame {
                         todasMissoes += "Nenhuma missão encontrada!";
                     }
                     JOptionPane.showMessageDialog(null, todasMissoes, "Missões", JOptionPane.INFORMATION_MESSAGE);
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 }
@@ -636,8 +666,12 @@ public class GUIPrincipal extends JFrame {
 
                     String resultado = missaoDAO.alterar(missao);
                     JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Erro numérico: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -651,8 +685,12 @@ public class GUIPrincipal extends JFrame {
                     missao.setIdMissao(id);
                     String resultado = missaoDAO.excluir(missao);
                     JOptionPane.showMessageDialog(null, resultado, "Missão", JOptionPane.INFORMATION_MESSAGE);
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Erro numérico: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -704,8 +742,12 @@ public class GUIPrincipal extends JFrame {
                         taDetalhesPerfil.setText(usuario.detalhesPerfil());
                         JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
                     }
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Erro numérico: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -725,6 +767,8 @@ public class GUIPrincipal extends JFrame {
                         }
                     }
                     JOptionPane.showMessageDialog(null, texto, "Ações", JOptionPane.INFORMATION_MESSAGE);
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 }
@@ -749,8 +793,12 @@ public class GUIPrincipal extends JFrame {
 
                     String resultado = acaoDAO.alterar(acao);
                     JOptionPane.showMessageDialog(null, resultado, "Ação", JOptionPane.INFORMATION_MESSAGE);
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Erro numérico: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -766,8 +814,12 @@ public class GUIPrincipal extends JFrame {
 
                     String resultado = acaoDAO.excluir(acao);
                     JOptionPane.showMessageDialog(null, resultado, "Ação", JOptionPane.INFORMATION_MESSAGE);
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Erro numérico: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -798,8 +850,12 @@ public class GUIPrincipal extends JFrame {
                     usuario.registrarAtividade(post.detalhesPost());
                     taDetalhesPerfil.setText(usuario.detalhesPerfil());
                     JOptionPane.showMessageDialog(null, resultado, "Posts", JOptionPane.INFORMATION_MESSAGE);
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Erro numérico: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -820,6 +876,8 @@ public class GUIPrincipal extends JFrame {
                         }
                     }
                     JOptionPane.showMessageDialog(null, texto, "Posts", JOptionPane.INFORMATION_MESSAGE);
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 }
@@ -847,8 +905,12 @@ public class GUIPrincipal extends JFrame {
 
                     String resultado = postDAO.alterar(post);
                     JOptionPane.showMessageDialog(null, texto, "Posts", JOptionPane.INFORMATION_MESSAGE);
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Erro numérico: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -864,8 +926,12 @@ public class GUIPrincipal extends JFrame {
 
                     String resultado = postDAO.excluir(post);
                     JOptionPane.showMessageDialog(null, resultado, "Posts", JOptionPane.INFORMATION_MESSAGE);
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Erro numérico: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -898,8 +964,12 @@ public class GUIPrincipal extends JFrame {
                     taDetalhesPerfil.setText(usuario.detalhesPerfil());
                     String resultado = quizDAO.inserir(quiz);
                     JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Erro numérico: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -920,6 +990,8 @@ public class GUIPrincipal extends JFrame {
                         }
                     }
                     JOptionPane.showMessageDialog(null, texto, "Quizzes", JOptionPane.INFORMATION_MESSAGE);
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 }
@@ -947,8 +1019,12 @@ public class GUIPrincipal extends JFrame {
 
                     String resultado = quizDAO.alterar(quiz);
                     JOptionPane.showMessageDialog(null, resultado, "Quiz", JOptionPane.INFORMATION_MESSAGE);
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Erro numérico: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -964,8 +1040,12 @@ public class GUIPrincipal extends JFrame {
 
                     String resultado = quizDAO.excluir(quiz);
                     JOptionPane.showMessageDialog(null, resultado, "Quiz", JOptionPane.INFORMATION_MESSAGE);
+                } catch (SQLException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Erro numérico: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -987,7 +1067,9 @@ public class GUIPrincipal extends JFrame {
                     }
                     JOptionPane.showMessageDialog(null,texto,"Ranking",JOptionPane.INFORMATION_MESSAGE);
                 } catch (SQLException e) {
-                    JOptionPane.showMessageDialog(null, "Erro de SQL: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
+                } catch (ClassNotFoundException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });

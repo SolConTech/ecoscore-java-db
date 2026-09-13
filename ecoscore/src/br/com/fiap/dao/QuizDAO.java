@@ -59,7 +59,7 @@ public class QuizDAO implements IDAO{
                 return "Erro ao alterar";
             }
         } catch (SQLException e) {
-            return "Erro de SQL: " + e.getMessage();
+            throw new SQLException("Erro de SQL: " + e.getMessage());
         }
     }
 
@@ -75,7 +75,7 @@ public class QuizDAO implements IDAO{
                 return "Erro ao excluir";
             }
         } catch (SQLException e) {
-            return "Erro de SQL: " + e.getMessage();
+            throw new SQLException("Erro de SQL: " + e.getMessage());
         }
     }
 
@@ -109,12 +109,11 @@ public class QuizDAO implements IDAO{
             }
 
         } catch (SQLException e) {
-            System.out.println("Erro de SQL: " + e.getMessage());
-            return null;
+            throw new SQLException("Erro de SQL: " + e.getMessage());
         }
     }
 
-    public Integer criarId() {
+    public Integer criarId() throws SQLException{
         String sql = "SELECT ID_QUIZ FROM QUIZ";
         ArrayList<Integer> listaIds = new ArrayList<Integer>();
         try (PreparedStatement ps = getCon().prepareStatement(sql);
@@ -131,8 +130,7 @@ public class QuizDAO implements IDAO{
                 return null;
             }
         } catch (SQLException e) {
-            System.out.println("Erro de SQL: " + e.getMessage());
-            return null;
+            throw new SQLException("Erro de SQL: " + e.getMessage());
         }
     }
 
@@ -158,8 +156,7 @@ public class QuizDAO implements IDAO{
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Erro de SQL: " + e.getMessage());
-            return null;
+            throw new SQLException("Erro de SQL: " + e.getMessage());
         }
     }
 }

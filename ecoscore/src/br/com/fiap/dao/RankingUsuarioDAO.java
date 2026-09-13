@@ -32,7 +32,7 @@ public class RankingUsuarioDAO implements IDAO{
                 return "Erro ao inserir";
             }
         } catch (SQLException e) {
-            return "Erro de SQL: " + e.getMessage();
+            throw new SQLException("Erro de SQL: " + e.getMessage());
         }
     }
 
@@ -50,7 +50,7 @@ public class RankingUsuarioDAO implements IDAO{
                 return "Erro ao alterar";
             }
         } catch (SQLException e) {
-            return "Erro de SQL: " + e.getMessage();
+            throw new SQLException("Erro de SQL: " + e.getMessage());
         }
     }
 
@@ -66,7 +66,7 @@ public class RankingUsuarioDAO implements IDAO{
                 return "Erro ao excluir";
             }
         } catch (SQLException e) {
-            return "Erro de SQL: " + e.getMessage();
+            throw new SQLException("Erro de SQL: " + e.getMessage());
         }
     }
 
@@ -94,8 +94,7 @@ public class RankingUsuarioDAO implements IDAO{
             }
 
         } catch (SQLException e) {
-            System.out.println("Erro de SQL: " + e.getMessage());
-            return null;
+            throw new SQLException("Erro de SQL: " + e.getMessage());
         }
     }
 
@@ -115,12 +114,11 @@ public class RankingUsuarioDAO implements IDAO{
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Erro de SQL: " + e.getMessage());
-            return null;
+            throw new SQLException("Erro de SQL: " + e.getMessage());
         }
     }
 
-    public Object criarId() {
+    public Object criarId() throws SQLException{
         String sql = "SELECT ID_RANKING FROM RANKING_USUARIO";
         ArrayList<Integer> listaIds = new ArrayList<Integer>();
         try (PreparedStatement ps = getCon().prepareStatement(sql);
@@ -137,8 +135,7 @@ public class RankingUsuarioDAO implements IDAO{
                 return null;
             }
         } catch (SQLException e) {
-            System.out.println("Erro de SQL: " + e.getMessage());
-            return null;
+            throw new SQLException("Erro de SQL: " + e.getMessage());
         }
     }
     

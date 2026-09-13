@@ -6,7 +6,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConnectionFactory {
-    public static Connection abrirConexao(){
+    public static Connection abrirConexao() throws ClassNotFoundException, SQLException{
         Connection con = null;
         try {
             Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -16,14 +16,14 @@ public class ConnectionFactory {
             con = DriverManager.getConnection(url, USER, PASS);
             System.out.println("Conectado ao Ecoscore");
         } catch (ClassNotFoundException e) {
-            System.out.println("Erro: A classe digitada não foi encontrada. " + e.getMessage());
+            throw new ClassNotFoundException("Erro: A classe digitada não foi encontrada. " + e.getMessage());
         } catch (SQLException e) {
-            System.out.println("Erro de SQL:" + e.getMessage());
+            throw new SQLException("Erro de SQL:" + e.getMessage());
         }
         return con;
     }
 
-    public static void fecharConexao(Connection con) {
+    public static void fecharConexao(Connection con) throws SQLException{
         if (con == null){
             JOptionPane.showMessageDialog(null, "Essa conexão já está fechada");
             return;
@@ -32,7 +32,7 @@ public class ConnectionFactory {
             con.close();
             System.out.println("Desconectado do Ecoscore");
         } catch (SQLException e) {
-            System.out.println("Erro de SQL:" + e.getMessage());
+            throw new SQLException("Erro de SQL:" + e.getMessage());
         }
     }
 
