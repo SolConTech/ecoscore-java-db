@@ -38,34 +38,17 @@ public class GUIPrincipal extends JFrame {
     private JLabel lbPerfil;
 
     public GUIPrincipal() {
-        iniciarValores();
+        iniciarUsuario();
         inicializarComponentes();
         definirEventos();
     }
 
-    public void iniciarValores(){
+    public void iniciarUsuario(){
         try {
             usuarioController = new UsuarioController();
 
-            acao = new Acao();
-            missao = new Missao();
-            post = new Post();
-            quiz = new Quiz();
-            acaoController = new AcaoController();
-            missaoController = new MissaoController();
-            postController = new PostController();
-            quizController = new QuizController();
-
             usuario.setIdUsuario("dragonborn123");
             usuario = usuarioController.pegarUmUsuario(usuario.getIdUsuario()); //como se fosse um login
-            acao = acaoController.pegarUmAcao(4);
-            usuario.registrarAtividade(acao.detalhesAcao());
-            missao = missaoController.pegarUmMissao(0);
-            usuario.registrarAtividade(missao.detalhesMissao(),missao.getQtPontosGerados(),missao.getSelo());
-            post = postController.pegarUmPost(0);
-            usuario.registrarAtividade(post.detalhesPost());
-            quiz = quizController.pegarUmQuiz(0);
-            usuario.registrarAtividade(quiz.detalhesQuiz());
 
         } catch (ClassNotFoundException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);

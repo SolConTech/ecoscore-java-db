@@ -12,8 +12,8 @@ public class Usuario {
     private String nmUsuario;
     private float vlMerito; //A confiabilidade do usuário, quanto o voto e as ações dele são confiáveis
     private int qtSoulCoins;
-    private String dsAtividadeRecente = ""; //Últimas ações realizadas
-    private String selosGanhos = ""; // tentei usar ArrayList (não deu no banco)
+    private String dsAtividadeRecente = "\n"; //Últimas ações realizadas
+    private String selosGanhos = "\n"; // tentei usar ArrayList (não deu no banco)
 
     public Usuario() {}
     // Construtor para registrar apenas nmUsuario do usuário e idUsuario, pois ambos não tem validação
@@ -96,7 +96,7 @@ public class Usuario {
         return selosGanhos;
     }
     public void setSelosGanhos(String selosGanhos) {
-        this.selosGanhos = selosGanhos;
+        this.selosGanhos += selosGanhos + "\n";
     }
 
     /**
@@ -108,7 +108,7 @@ public class Usuario {
         if (dsAtividade == null || dsAtividade.isBlank()) {
             throw new IllegalArgumentException("A descrição da atividade não pode ser vazia");
         }
-        dsAtividadeRecente += "\n";
+        dsAtividadeRecente += dsAtividade + "\n";
     }
 
     /**
@@ -163,7 +163,7 @@ public class Usuario {
             this.qtSoulCoins += qtSoulCoins;
             registrarAtividade(dsAtividade);
         }
-        selosGanhos += selo += "\n";
+        selosGanhos += "\n" + selo;
     }
 
     /**
@@ -172,7 +172,7 @@ public class Usuario {
      */
     public String detalhesPerfil() {
 
-        return String.format("Nome: %s\nId: %s\nConfiabilidade: %.1f\nSoul Coins: %d\nAtividade recente:%s\nSelos ganhos:%s", nmUsuario, idUsuario, vlMerito, qtSoulCoins, dsAtividadeRecente, selosGanhos);
+        return String.format("Nome: %s\nId: %s\nConfiabilidade: %.1f\nSoul Coins: %d\nAtividade recente:\n%s\nSelos ganhos:%s", nmUsuario, idUsuario, vlMerito, qtSoulCoins, dsAtividadeRecente, selosGanhos);
     }
 
     /**
