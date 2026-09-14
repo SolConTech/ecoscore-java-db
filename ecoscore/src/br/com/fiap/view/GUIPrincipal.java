@@ -30,7 +30,7 @@ public class GUIPrincipal extends JFrame {
     private Container contentPane;
     private JMenuBar mnBarra;
     private JMenu mnArquivo, mnUsuario,mnMissao,mnAcao,mnPost,mnQuiz,mnAjuda;
-    private JMenuItem miSair, miAjuda, miEditarExemplo,miTrocarUsuario,miLimparAtividades,miLimparSelos,miCriarUsuario,miLerUsuario,miAtualizarUsuario,miExcluirUsuario,miCriarMissao,miLerMissao,miAtualizarMissao,miExcluirMissao,miCriarAcao,miLerAcao,miAtualizarAcao,miExcluirAcao,miCriarPost,miLerPost,miAtualizarPost,miExcluirPost,miCriarQuiz,miLerQuiz,miAtualizarQuiz,miExcluirQuiz;
+    private JMenuItem miSair, miAjuda, miAjuda2, miEditarExemplo,miTrocarUsuario,miLimparAtividades,miLimparSelos,miCriarUsuario,miLerUsuario,miAtualizarUsuario,miExcluirUsuario,miCriarMissao,miLerMissao,miAtualizarMissao,miExcluirMissao,miCriarAcao,miLerAcao,miAtualizarAcao,miExcluirAcao,miCriarPost,miLerPost,miAtualizarPost,miExcluirPost,miCriarQuiz,miLerQuiz,miAtualizarQuiz,miExcluirQuiz;
     private JPanel painel, painelBts, painelTxt;
     private JButton btRegistrarAcao, btRegistrarMissao, btRegistrarQuiz, btRegistrarPost, btRegistrarPenalidade, btRanking;
     private JPopupMenu teste;
@@ -74,7 +74,8 @@ public class GUIPrincipal extends JFrame {
         miSair = new JMenuItem("Sair");
         miLimparAtividades = new JMenuItem("Limpar atividades");
         miLimparSelos = new JMenuItem("Limpar selos");
-        miAjuda = new JMenuItem("Tutorial");
+        miAjuda = new JMenuItem("Tutorial menus");
+        miAjuda2 = new JMenuItem("Tutorial botões");
         miTrocarUsuario = new JMenuItem("Trocar usuário");
         miCriarUsuario = new JMenuItem("Criar usuário");
         miLerUsuario = new JMenuItem("Ler usuário");
@@ -153,6 +154,7 @@ public class GUIPrincipal extends JFrame {
         mnQuiz.add(miAtualizarQuiz);
         mnQuiz.add(miExcluirQuiz);
         mnAjuda.add(miAjuda);
+        mnAjuda.add(miAjuda2);
 
         painelBts.add(btRegistrarAcao);
         painelBts.add(btRegistrarMissao);
@@ -179,8 +181,14 @@ public class GUIPrincipal extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 JOptionPane.showMessageDialog(null,
-                        "Esse protótipo registra ações sustentáveis e penalidades pra um usuário, mostrando na tela alterações\n\nAções possíveis:\nNormal - representa ações reais\nConquista - representa uma missão realizada\nPost - representa um post encerrado\nQuiz - representa um quiz de uma missão\n\nTipos de ação:\nNatureza - ações de plantio e natureza\nÁgua - ações de economia de água\nCarbono - relacionadas a crédit de carbono e automoveis\nReciclagem - relacionadas a reciclagem\n\nPenalidade:\nUma opção que reduz a confiabilidade do usuário, normalmente quando ele comete uma infração",
+                        "Ação registra uma atitude sustentável, gerando pontos.\n\nTipos: Natureza, Carbono, Água e Reciclagem, cada um com seu cálculo próprio\nCriar - escolhe o tipo e informa os dados\nListar - mostra todas as ações cadastradas\nAtualizar - edita uma ação existente\nExcluir - remove uma ação do banco\n\nMissão é uma conquista que gera pontos e um selo pro usuário.\n\nCriar - cadastra nome, descrição, selo e pontos gerados\nListar - mostra todas as missões cadastradas\nAtualizar - edita uma missão existente\nExcluir - remove uma missão do banco\n\nPost é uma publicação do usuário que recebe votos da comunidade.\n\nCriar - registra o texto e os votos (up/down)\nListar - mostra todos os posts cadastrados\nAtualizar - edita um post existente\nExcluir - remove um post do banco\n\nObs: o saldo de votos entra automaticamente no Ranking\n\nQuiz registra o resultado de um quiz de uma missão, gerando pontos.\n\nCriar - informa questões, acertos e pontos por questão\nListar - mostra todos os quizzes cadastrados\nAtualizar - edita um quiz existente\nExcluir - remove um quiz do banco\n\nRanking mostra a posição dos usuários pelo saldo de votos dos posts.\n\nVer ranking - lista os usuários do maior pro menor saldo de votos",
                         "Ajuda", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+        miAjuda2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                JOptionPane.showMessageDialog(null,"TUTORIAL RÁPIDO — ECOSCORE\n\nO EcoScore transforma ações sustentáveis em uma experiência de gamificação.\n\n• REGISTRAR AÇÃO\nCadastre uma ação sustentável e receba pontos.\n\n• REGISTRAR MISSÃO\nComplete uma missão e avance no seu progresso, recebendo pontos e selos.\n\n• REGISTRAR QUIZ\nResponda ao quiz e receba pontos de acordo com seus acertos.\n\n• REGISTRAR POST\nCompartilhe sua ação sustentável. Outros usuários podem votar no conteúdo.\n\n• REGISTRAR PENALIDADE\nRegistre uma penalidade para ações inadequadas ou repetidas.\n\n• VER RANKING\nAcompanhe sua posição e compare seu desempenho com os demais usuários.\n\nFLUXO PRINCIPAL:\nAção → Pontos → Post → Votos → Ranking\n\nUse os menus para consultar e gerenciar os dados do sistema.","Erro",JOptionPane.INFORMATION_MESSAGE);
             }
         });
         miEditarExemplo.addActionListener(new ActionListener() {
