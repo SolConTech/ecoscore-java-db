@@ -1,4 +1,4 @@
-package br.com.fiap.bean;
+package br.com.fiap.model.dto;
 
 import javax.swing.*;
 
@@ -12,12 +12,12 @@ public class CalculadoraPontos {
      * @param dificuldade recebe o valor de dificuldade da ação
      * @return retorna o número d epontos gerados dependendo da dificuldade.
      */
-    public int pontosNatureza(int dificuldade) {
+    public int pontosNatureza(int dificuldade) throws IllegalArgumentException{
         //dificuldade vai de 1 a 5, se digitar além disso vai virar 1 automáticamente.
         try {
             if (dificuldade < 1 || dificuldade > 5) {
                 dificuldade = 1;
-                throw new Exception("Dificuldade deve ser entre 1-5. Colocado automaticamnte como 1");
+                throw new IllegalArgumentException("Dificuldade deve ser entre 1-5. Colocado automaticamnte como 1");
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Valor Inválida!", JOptionPane.ERROR_MESSAGE);
@@ -29,8 +29,11 @@ public class CalculadoraPontos {
      * @param qtdeCarbono recebe o valor de carbono não gasto
      * @return retorna o número de pontos gerados.
      */
-    public int pontosCarbono(float qtdeCarbono) {
+    public int pontosCarbono(float qtdeCarbono) throws IllegalArgumentException{
         // 16 pontos por quilo, pois são R$0,16 e cada quilo custa R$0,20 IRL
+        if (qtdeCarbono <= 0) {
+            throw new IllegalArgumentException("Quantidade de carbono deve ser maior que zero.");
+        }
         return Math.round(qtdeCarbono * 16);
     }
     /**
@@ -38,8 +41,11 @@ public class CalculadoraPontos {
      * @param qtdeLitros recebe o valor de água economizada
      * @return retorna o número de pontos gerados.
      */
-    public int pontosAgua(float qtdeLitros) {
+    public int pontosAgua(float qtdeLitros) throws IllegalArgumentException{
         // 1 ponto por litro economizado
+        if (qtdeLitros <= 0) {
+            throw new IllegalArgumentException("Quantidade de litros deve ser maior que zero.");
+        }
         return Math.round(qtdeLitros * 1);
     }
     /**
@@ -47,8 +53,11 @@ public class CalculadoraPontos {
      * @param qtdeReciclada recebe o valor de lixo reciclado
      * @return retorna o número de pontos gerados.
      */
-    public int pontosReciclagem(float qtdeReciclada) {
+    public int pontosReciclagem(float qtdeReciclada) throws IllegalArgumentException{
         // 160 por quilo reciclado, 200 sera uma média de diferentes materiais, 160 é isso reduzida.
+        if (qtdeReciclada <= 0) {
+            throw new IllegalArgumentException("Quantidade reciclada deve ser maior que zero.");
+        }
         return Math.round(qtdeReciclada * 160);
     }
 }
