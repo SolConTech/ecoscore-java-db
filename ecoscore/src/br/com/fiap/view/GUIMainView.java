@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 @SuppressWarnings("serial")
-public class GUIPrincipal extends JFrame {
+public class GUIMainView extends JFrame {
     private Usuario usuario = new Usuario();
     private Acao acao;
     private Missao missao;
@@ -37,7 +37,7 @@ public class GUIPrincipal extends JFrame {
     private JTextArea taDetalhesPerfil = new JTextArea(usuario.detalhesPerfil());
     private JLabel lbPerfil;
 
-    public GUIPrincipal() {
+    public GUIMainView() {
         iniciarUsuario();
         inicializarComponentes();
         definirEventos();
@@ -1068,7 +1068,7 @@ public class GUIPrincipal extends JFrame {
     }
 
     public static void main(String[] args) {
-        GUIPrincipal frame = new GUIPrincipal();
+        GUIMainView frame = new GUIMainView();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Dimension tela = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setLocation((tela.width - frame.getSize().width) / 2,
