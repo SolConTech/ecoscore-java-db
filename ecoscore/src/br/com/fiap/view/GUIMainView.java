@@ -28,7 +28,7 @@ public class GUIMainView extends JFrame {
     private PostController postController;
     private RankingUsuarioController rankingUsuarioController;
     private Container contentPane;
-    private JMenuBar mnBarra;
+    public JMenuBar mnBarra;
     private JMenu mnArquivo, mnUsuario,mnMissao,mnAcao,mnPost,mnQuiz,mnAjuda;
     private JMenuItem miSair, miAjuda, miAjuda2, miEditarExemplo,miTrocarUsuario,miLimparAtividades,miLimparSelos,miCriarUsuario,miLerUsuario,miAtualizarUsuario,miExcluirUsuario,miCriarMissao,miLerMissao,miAtualizarMissao,miExcluirMissao,miCriarAcao,miLerAcao,miAtualizarAcao,miExcluirAcao,miCriarPost,miLerPost,miAtualizarPost,miExcluirPost,miCriarQuiz,miLerQuiz,miAtualizarQuiz,miExcluirQuiz;
     private JPanel painel, painelBts, painelTxt;
@@ -273,60 +273,13 @@ public class GUIMainView extends JFrame {
         btRegistrarAcao.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                try {
-                    acaoController = new AcaoController();
-                    acao = new Acao();
-
-                    String[] tipos = {"Natureza", "Carbono", "Água", "Reciclagem", "Cancelar"};
-
-                    int escolha = JOptionPane.showOptionDialog(null,"Digite o tipo de ação",
-                                                               "Escolha",JOptionPane.DEFAULT_OPTION,
-                                                               JOptionPane.QUESTION_MESSAGE,null,tipos,tipos[0]);
-                    switch (escolha) {
-                        case 0:
-                            int dificuldade = Integer.parseInt(JOptionPane.showInputDialog("Qual é a dificuldade da ação realizada? Digite (entre 1 a 5): "));
-                            acao.registrarPontos(calculadora.pontosNatureza(dificuldade));
-                            break;
-                        case 1:
-                            float kgCarbono = Float.parseFloat(JOptionPane.showInputDialog("Qual é a qtde. de carbono? Digite (um número): "));
-                            acao.registrarPontos(calculadora.pontosCarbono(kgCarbono));
-                            break;
-                        case 2:
-                            float litros = Float.parseFloat(JOptionPane.showInputDialog("Qual é a qtde. de litros economizados? Digite (um número): "));
-                            acao.registrarPontos(calculadora.pontosAgua(litros));
-                            break;
-                        case 3:
-                            float kgReciclados = Float.parseFloat(JOptionPane.showInputDialog("Qual é a qtde. de KG reciclados? Digite (um número): "));
-                            acao.registrarPontos(calculadora.pontosReciclagem(kgReciclados));
-                            break;
-                        case 4:
-                            break;
-                        default:
-                            throw new Exception("Opção inválida (0-4)");
-                    }
-                    if (escolha != 4){
-                        String descricao = JOptionPane.showInputDialog("Digite a descrição da ação: ");
-                        acao.setIdAcao(acaoController.criarIdAcao());
-                        acao.setIdUsuario(usuario.getIdUsuario());
-                        acao.setDsAcao(descricao);
-                        acao.setDtAcao(LocalDateTime.now());
-
-                        usuario.registrarAtividade(acao.detalhesAcao(),acao.getQtPontosGerados());
-                        String resultado = acaoController.inserirAcao(acao.getIdAcao(), acao.getIdUsuario(), acao.getDsAcao(), acao.getQtPontosGerados(), acao.getDtAcao());
-
-                        usuarioController = new UsuarioController();
-                        usuarioController.alterarUsuario(usuario.getIdUsuario(), usuario.getNmUsuario(), usuario.getVlMerito(), usuario.getQtSoulCoins());
-
-                        taDetalhesPerfil.setText(usuario.detalhesPerfil());
-                        JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
-                    }
-                }  catch (SQLException e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
-                } catch (NumberFormatException e) {
-                    JOptionPane.showMessageDialog(null, "Erro numérico: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
-                }
+                    GUIAcaoView frameAcao = new GUIAcaoView(usuario);
+                    frameAcao.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    Dimension tela = Toolkit.getDefaultToolkit().getScreenSize();
+                    frameAcao.setLocation((tela.width - frameAcao.getSize().width) / 2,
+                            (tela.height - frameAcao.getSize().height) / 2);
+                    frameAcao.setVisible(true);
+                    taDetalhesPerfil.setText(usuario.detalhesPerfil());
             }
         });
         btRegistrarMissao.addActionListener(new ActionListener() {
@@ -686,61 +639,13 @@ public class GUIMainView extends JFrame {
         miCriarAcao.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                try {
-                    acaoController = new AcaoController();
-                    acao = new Acao();
-
-                    String[] tipos = {"Natureza", "Carbono", "Água", "Reciclagem", "Cancelar"};
-
-                    int escolha = JOptionPane.showOptionDialog(null,"Digite o tipo de ação",
-                            "Escolha",JOptionPane.DEFAULT_OPTION,
-                            JOptionPane.QUESTION_MESSAGE,null,tipos,tipos[0]);
-                    switch (escolha) {
-                        case 0:
-                            int dificuldade = Integer.parseInt(JOptionPane.showInputDialog("Qual é a dificuldade da ação realizada? Digite (entre 1 a 5): "));
-                            acao.registrarPontos(calculadora.pontosNatureza(dificuldade));
-                            break;
-                        case 1:
-                            float kgCarbono = Float.parseFloat(JOptionPane.showInputDialog("Qual é a qtde. de carbono? Digite (um número): "));
-                            acao.registrarPontos(calculadora.pontosCarbono(kgCarbono));
-                            break;
-                        case 2:
-                            float litros = Float.parseFloat(JOptionPane.showInputDialog("Qual é a qtde. de litros economizados? Digite (um número): "));
-                            acao.registrarPontos(calculadora.pontosAgua(litros));
-                            break;
-                        case 3:
-                            float kgReciclados = Float.parseFloat(JOptionPane.showInputDialog("Qual é a qtde. de KG reciclados? Digite (um número): "));
-                            acao.registrarPontos(calculadora.pontosReciclagem(kgReciclados));
-                            break;
-                        case 4:
-                            break;
-                        default:
-                            throw new Exception("Opção inválida (0-4)");
-                    }
-                    if (escolha != 4){
-                        String descricao = JOptionPane.showInputDialog("Digite a descrição da ação: ");
-                        acao.setIdAcao(acaoController.criarIdAcao());
-                        acao.setIdUsuario(usuario.getIdUsuario());
-                        acao.setDsAcao(descricao);
-                        acao.setDtAcao(LocalDateTime.now());
-
-                        usuario.registrarAtividade(acao.detalhesAcao(),
-                                acao.getQtPontosGerados());
-                        String resultado = acaoController.inserirAcao(acao.getIdAcao(), acao.getIdUsuario(), acao.getDsAcao(), acao.getQtPontosGerados(), acao.getDtAcao());
-
-                        usuarioController = new UsuarioController();
-                        usuarioController.alterarUsuario(usuario.getIdUsuario(), usuario.getNmUsuario(), usuario.getVlMerito(), usuario.getQtSoulCoins());
-
-                        taDetalhesPerfil.setText(usuario.detalhesPerfil());
-                        JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
-                    }
-                } catch (SQLException e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
-                } catch (NumberFormatException e) {
-                    JOptionPane.showMessageDialog(null, "Erro numérico: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
-                }
+                GUIAcaoView frameAcao = new GUIAcaoView(usuario);
+                frameAcao.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                Dimension tela = Toolkit.getDefaultToolkit().getScreenSize();
+                frameAcao.setLocation((tela.width - frameAcao.getSize().width) / 2,
+                        (tela.height - frameAcao.getSize().height) / 2);
+                frameAcao.setVisible(true);
+                taDetalhesPerfil.setText(usuario.detalhesPerfil());
             }
         });
         miLerAcao.addActionListener(new ActionListener() {
