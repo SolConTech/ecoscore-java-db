@@ -30,13 +30,13 @@ public class GUIAcaoView extends JFrame {
 
     private void inicializarComponentes() {
         setTitle("Ecoscore - Registrar ação");
-        setBounds(0, 0, 450, 125);
+        setBounds(0, 0, 450, 160);
         contentPane = getContentPane();
 
         painelGeral = new JPanel();
         painelGeral.setLayout(new FlowLayout());
         painel = new JPanel();
-        painel.setLayout(new GridLayout(4,1));
+        painel.setLayout(new GridLayout(4,0));
 
         lbDsAcao = new JLabel("Descrição da ação:");
         tfDsAcao = new JTextField(20);

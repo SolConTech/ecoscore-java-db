@@ -33,7 +33,6 @@ public class GUIMainView extends JFrame {
     private JMenuItem miSair, miAjuda, miAjuda2, miEditarExemplo,miTrocarUsuario,miLimparAtividades,miLimparSelos,miCriarUsuario,miLerUsuario,miAtualizarUsuario,miExcluirUsuario,miCriarMissao,miLerMissao,miAtualizarMissao,miExcluirMissao,miCriarAcao,miLerAcao,miAtualizarAcao,miExcluirAcao,miCriarPost,miLerPost,miAtualizarPost,miExcluirPost,miCriarQuiz,miLerQuiz,miAtualizarQuiz,miExcluirQuiz;
     private JPanel painel, painelBts, painelTxt;
     private JButton btRegistrarAcao, btRegistrarMissao, btRegistrarQuiz, btRegistrarPost, btRegistrarPenalidade, btRanking;
-    private JPopupMenu teste;
     private JTextArea taDetalhesPerfil = new JTextArea(usuario.detalhesPerfil());
     private JLabel lbPerfil;
 
@@ -126,7 +125,6 @@ public class GUIMainView extends JFrame {
         mnBarra.add(mnPost);
         mnBarra.add(mnQuiz);
         mnBarra.add(mnAjuda);
-        teste = new JPopupMenu("teste");
 
         mnArquivo.add(miEditarExemplo);
         mnArquivo.add(miLimparAtividades);
@@ -361,43 +359,13 @@ public class GUIMainView extends JFrame {
         btRegistrarPost.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                Post post;
-                try {
-                    postController = new PostController();
-                    post = new Post();
-                    ranking = new RankingUsuario();
-                    rankingUsuarioController = new RankingUsuarioController();
-
-                    String texto = JOptionPane.showInputDialog("Digite o texto do post: (máx. 200 caracteres)");
-                    int upVotes = Integer.parseInt(JOptionPane.showInputDialog("Quantos votos UP recebeu?"));
-                    int downVotes = Integer.parseInt(JOptionPane.showInputDialog("Quantos votos DOWN recebeu?"));
-                    post.setIdPost(postController.criarIdPost());
-                    post.setIdUsuario(usuario.getIdUsuario());
-                    post.setDsPost(texto);
-                    post.setDtPost(LocalDateTime.now());
-                    post.addUpVote(upVotes);
-                    post.addDownVote(downVotes);
-
-                    String resultado = postController.inserirPost(post.getIdPost(), post.getIdUsuario(), post.getDsPost(), post.getDtPost(), post.getNumUpVotes(), post.getNumDownVotes());
-                    ranking = rankingUsuarioController.pegarUmRankingUsuario(usuario.getIdUsuario());
-                    if (ranking != null) {
-                        ranking.addQtVotos(post.getNumSaldoVotes());
-                        rankingUsuarioController.alterarRankingUsuario(ranking.getIdRanking(), ranking.getIdUsuario(), ranking.getQtVotos());
-                    } else {
-                        ranking = new RankingUsuario(rankingUsuarioController.criarIdRanking(),usuario.getIdUsuario(),
-                                post.getNumSaldoVotes());
-                        rankingUsuarioController.inserirRankingUsuario(ranking.getIdRanking(), ranking.getIdUsuario(), ranking.getQtVotos());
-                    }
-                    usuario.registrarAtividade(post.detalhesPost());
-                    taDetalhesPerfil.setText(usuario.detalhesPerfil());
-                    JOptionPane.showMessageDialog(null, resultado, "Posts", JOptionPane.INFORMATION_MESSAGE);
-                }  catch (SQLException e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
-                } catch (NumberFormatException e) {
-                    JOptionPane.showMessageDialog(null, "Erro numérico: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro:", JOptionPane.ERROR_MESSAGE);
-                }
+                GUIPostView framePost = new GUIPostView(usuario);
+                framePost.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                Dimension tela = Toolkit.getDefaultToolkit().getScreenSize();
+                framePost.setLocation((tela.width - framePost.getSize().width) / 2,
+                        (tela.height - framePost.getSize().height) / 2);
+                framePost.setVisible(true);
+                taDetalhesPerfil.setText(usuario.detalhesPerfil());
             }
         });
         btRegistrarPenalidade.addActionListener(new ActionListener() {
@@ -639,13 +607,7 @@ public class GUIMainView extends JFrame {
         miCriarAcao.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                GUIAcaoView frameAcao = new GUIAcaoView(usuario);
-                frameAcao.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                Dimension tela = Toolkit.getDefaultToolkit().getScreenSize();
-                frameAcao.setLocation((tela.width - frameAcao.getSize().width) / 2,
-                        (tela.height - frameAcao.getSize().height) / 2);
-                frameAcao.setVisible(true);
-                taDetalhesPerfil.setText(usuario.detalhesPerfil());
+                btRegistrarAcao.doClick(); // vai disparar a ação do botão, só pra evitar código, eu ia copiar e colar o que tava lá aqui
             }
         });
         miLerAcao.addActionListener(new ActionListener() {
@@ -724,36 +686,7 @@ public class GUIMainView extends JFrame {
         miCriarPost.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                try {
-                    postController = new PostController();
-                    post = new Post();
-                    rankingUsuarioController = new RankingUsuarioController();
-                    ranking = new RankingUsuario();
-
-                    String texto = JOptionPane.showInputDialog("Digite o texto do post: (máx. 200 caracteres)");
-                    int upVotes = Integer.parseInt(JOptionPane.showInputDialog("Quantos votos UP recebeu?"));
-                    int downVotes = Integer.parseInt(JOptionPane.showInputDialog("Quantos votos DOWN recebeu?"));
-                    post.setIdPost(postController.criarIdPost());
-                    post.setIdUsuario(usuario.getIdUsuario());
-                    post.setDsPost(texto);
-                    post.setDtPost(LocalDateTime.now());
-                    post.setNumUpVotes(upVotes);
-                    post.setNumDownVotes(downVotes);
-
-                    String resultado = postController.inserirPost(post.getIdPost(), post.getIdUsuario(), post.getDsPost(), post.getDtPost(), post.getNumUpVotes(), post.getNumDownVotes());
-                    ranking = rankingUsuarioController.pegarUmRankingUsuario(usuario.getIdUsuario());
-                    ranking.addQtVotos(post.getNumSaldoVotes());
-                    rankingUsuarioController.alterarRankingUsuario(ranking.getIdRanking(), ranking.getIdUsuario(), ranking.getQtVotos());
-                    usuario.registrarAtividade(post.detalhesPost());
-                    taDetalhesPerfil.setText(usuario.detalhesPerfil());
-                    JOptionPane.showMessageDialog(null, resultado, "Posts", JOptionPane.INFORMATION_MESSAGE);
-                } catch (SQLException e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
-                } catch (NumberFormatException e) {
-                    JOptionPane.showMessageDialog(null, "Erro numérico: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
-                }
+                btRegistrarPost.doClick();
             }
         });
         miLerPost.addActionListener(new ActionListener() {
