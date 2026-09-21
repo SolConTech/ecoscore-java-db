@@ -14,6 +14,7 @@ public class GUIPostView extends JFrame {
     private Container contentPane;
     private JPanel painel, painelGeral;
     private JTextArea tfDsPost;
+    private JScrollPane spDsPost;
     private JTextField tfNumUpVotes, tfNumDownVotes, tfNumSaldoVotes;
     private JLabel lbDsPost, lbNumUpVotes, lbNumDownVotes, lbNumSaldoVotes;
     private JButton btRegistrarPost, btRecalcularVotos;
@@ -32,7 +33,7 @@ public class GUIPostView extends JFrame {
 
     private void inicializarComponentes() {
         setTitle("Ecoscore - Registrar post");
-        setBounds(0, 0, 450, 220);
+        setBounds(0, 0, 500, 300);
         contentPane = getContentPane();
 
         painelGeral = new JPanel();
@@ -42,6 +43,12 @@ public class GUIPostView extends JFrame {
 
         lbDsPost = new JLabel("Descrição do post:");
         tfDsPost = new JTextArea("Descrição do post");
+        tfDsPost.setColumns(20);
+        tfDsPost.setLineWrap(true);
+        tfDsPost.setWrapStyleWord(true);
+        spDsPost = new JScrollPane(tfDsPost);
+        spDsPost.setPreferredSize(new java.awt.Dimension(400, 50));
+
 
         lbNumUpVotes = new JLabel("Votos positivos:");
         tfNumUpVotes = new JTextField(10);
@@ -56,8 +63,8 @@ public class GUIPostView extends JFrame {
         btRegistrarPost = new JButton("Registrar ação");
         btRecalcularVotos = new JButton("Recalcular votos");
 
-        painel.add(lbDsPost);
-        painel.add(tfDsPost);
+        painelGeral.add(lbDsPost);
+        painelGeral.add(spDsPost);
         painel.add(lbNumUpVotes);
         painel.add(tfNumUpVotes);
         painel.add(lbNumDownVotes);
@@ -95,6 +102,7 @@ public class GUIPostView extends JFrame {
                 postController = new PostController();
                 rankingUsuario = new RankingUsuario();
                 rankingUsuarioController = new RankingUsuarioController();
+                usuarioController = new UsuarioController();
 
                 try {
                     rankingUsuario = rankingUsuarioController.pegarUmRankingUsuario(usuario.getIdUsuario());
@@ -113,7 +121,10 @@ public class GUIPostView extends JFrame {
                         rankingUsuarioController.inserirRankingUsuario(rankingUsuario.getIdRanking(), rankingUsuario.getIdUsuario(), rankingUsuario.getQtVotos());
                     }
                     usuario.registrarAtividade(post.detalhesPost());
+                    usuarioController.alterarUsuario(usuario.getIdUsuario(), usuario.getNmUsuario(), usuario.getVlMerito(), usuario.getQtSoulCoins(),usuario.getDsAtividadeRecente(),usuario.getSelosGanhos());
                     JOptionPane.showMessageDialog(null, resultado, "Posts", JOptionPane.INFORMATION_MESSAGE);
+                    GUIPostView.this.dispose();
+                    return;
 
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, "Erro numérico: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
@@ -123,7 +134,6 @@ public class GUIPostView extends JFrame {
         btRecalcularVotos.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                // Eu poderia chamar o método, mas a opção 4 iria fechar e aqui deve só não fazer nada.
                 calcularVotos();
             }
         });

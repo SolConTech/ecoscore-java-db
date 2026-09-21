@@ -119,7 +119,7 @@ public class GUIAcaoView extends JFrame {
                         String resultado = acaoController.inserirAcao(acao.getIdAcao(), acao.getIdUsuario(), acao.getDsAcao(), acao.getQtPontosGerados(), acao.getDtAcao());
 
                         usuarioController = new UsuarioController();
-                        usuarioController.alterarUsuario(usuario.getIdUsuario(), usuario.getNmUsuario(), usuario.getVlMerito(), usuario.getQtSoulCoins());
+                        usuarioController.alterarUsuario(usuario.getIdUsuario(), usuario.getNmUsuario(), usuario.getVlMerito(), usuario.getQtSoulCoins(),usuario.getDsAtividadeRecente(),usuario.getSelosGanhos());
                         JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
                         GUIAcaoView.this.dispose();
                         return;
