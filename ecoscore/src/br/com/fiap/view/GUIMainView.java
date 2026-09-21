@@ -295,39 +295,12 @@ public class GUIMainView extends JFrame {
         btRegistrarQuiz.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                Quiz quiz;
-                try {
-                    quizController = new QuizController();
-                    quiz = new Quiz();
-
-                    int numQuestoes = Integer.parseInt(JOptionPane.showInputDialog("Digite o número de questões: "));
-                    int numAcertos = Integer.parseInt(JOptionPane.showInputDialog("Digite o número de acertos: "));
-                    int pontosPorQuestao = Integer.parseInt(JOptionPane.showInputDialog("Digite os pontos por questão: "));
-
-                    quiz.setIdQuiz(quizController.criarIdQuiz());
-                    quiz.setIdUsuario(usuario.getIdUsuario());
-                    quiz.setNumQuestoes(numQuestoes);
-                    quiz.setNumAcertos(numAcertos);
-                    quiz.setQtPontosPorQuestao(pontosPorQuestao);
-                    quiz.setQtPontosGerados();
-                    quiz.setDtQuiz(LocalDateTime.now());
-
-                    usuario.registrarAtividade(quiz.detalhesQuiz(),
-                            quiz.getQtPontosGerados());
-
-                    usuarioController = new UsuarioController();
-                    usuarioController.alterarUsuario(usuario.getIdUsuario(), usuario.getNmUsuario(), usuario.getVlMerito(), usuario.getQtSoulCoins(),usuario.getDsAtividadeRecente(),usuario.getSelosGanhos());
-
-                    taDetalhesPerfil.setText(usuario.detalhesPerfil());
-                    String resultado = quizController.inserirQuiz(quiz.getIdQuiz(), quiz.getIdUsuario(), quiz.getNumQuestoes(), quiz.getNumAcertos(), quiz.getQtPontosPorQuestao(), quiz.getDtQuiz());
-                    JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
-                }  catch (SQLException e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
-                } catch (NumberFormatException e) {
-                    JOptionPane.showMessageDialog(null, "Erro numérico: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
-                }
+                GUIQuizView frameQuiz = new GUIQuizView(usuario);
+                frameQuiz.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                Dimension tela = Toolkit.getDefaultToolkit().getScreenSize();
+                frameQuiz.setLocation((tela.width - frameQuiz.getSize().width) / 2,(tela.height - frameQuiz.getSize().height) / 2);
+                frameQuiz.setVisible(true);
+                taDetalhesPerfil.setText(usuario.detalhesPerfil());
             }
         });
         btRegistrarPost.addActionListener(new ActionListener() {
@@ -712,38 +685,7 @@ public class GUIMainView extends JFrame {
         miCriarQuiz.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                try {
-                    quizController = new QuizController();
-                    quiz = new Quiz();
-
-                    int numQuestoes = Integer.parseInt(JOptionPane.showInputDialog("Digite o número de questões: "));
-                    int numAcertos = Integer.parseInt(JOptionPane.showInputDialog("Digite o número de acertos: "));
-                    int pontosPorQuestao = Integer.parseInt(JOptionPane.showInputDialog("Digite os pontos por questão: "));
-
-                    quiz.setIdQuiz(quizController.criarIdQuiz());
-                    quiz.setIdUsuario(usuario.getIdUsuario());
-                    quiz.setNumQuestoes(numQuestoes);
-                    quiz.setNumAcertos(numAcertos);
-                    quiz.setQtPontosPorQuestao(pontosPorQuestao);
-                    quiz.setQtPontosGerados();
-                    quiz.setDtQuiz(LocalDateTime.now());
-
-                    usuario.registrarAtividade(quiz.detalhesQuiz(),
-                            quiz.getQtPontosGerados());
-
-                    usuarioController = new UsuarioController();
-                    usuarioController.alterarUsuario(usuario.getIdUsuario(), usuario.getNmUsuario(), usuario.getVlMerito(), usuario.getQtSoulCoins(),usuario.getDsAtividadeRecente(),usuario.getSelosGanhos());
-
-                    taDetalhesPerfil.setText(usuario.detalhesPerfil());
-                    String resultado = quizController.inserirQuiz(quiz.getIdQuiz(), quiz.getIdUsuario(), quiz.getNumQuestoes(), quiz.getNumAcertos(), quiz.getQtPontosPorQuestao(), quiz.getDtQuiz());
-                    JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
-                } catch (SQLException e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
-                } catch (NumberFormatException e) {
-                    JOptionPane.showMessageDialog(null, "Erro numérico: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
-                }
+                btRegistrarQuiz.doClick();
             }
         });
         miLerQuiz.addActionListener(new ActionListener() {
