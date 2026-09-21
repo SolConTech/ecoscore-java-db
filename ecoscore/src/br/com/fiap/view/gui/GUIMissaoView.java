@@ -1,4 +1,4 @@
-package br.com.fiap.view;
+package br.com.fiap.view.gui;
 
 import br.com.fiap.controller.*;
 import br.com.fiap.model.dto.*;

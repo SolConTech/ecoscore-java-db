@@ -1,4 +1,4 @@
-package br.com.fiap.view;
+package br.com.fiap.view.gui;
 
 import br.com.fiap.controller.*;
 import br.com.fiap.model.dto.*;
@@ -7,7 +7,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 
 public class GUIPostView extends JFrame {

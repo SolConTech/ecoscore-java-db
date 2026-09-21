@@ -1,9 +1,7 @@
-package br.com.fiap.view;
+package br.com.fiap.view.gui;
 
-import br.com.fiap.controller.MissaoController;
 import br.com.fiap.controller.QuizController;
 import br.com.fiap.controller.UsuarioController;
-import br.com.fiap.model.dto.Missao;
 import br.com.fiap.model.dto.Quiz;
 import br.com.fiap.model.dto.Usuario;
 
