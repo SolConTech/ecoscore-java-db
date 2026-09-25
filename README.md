@@ -1,76 +1,98 @@
-<div align="center">
+# 🌱 EcoScore by SolCon
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:111610,100:2d4a1e&height=180&section=header&text=EcoScore&fontSize=60&fontColor=8BAF6E&fontAlignY=38&desc=Sustainable%20Gamification%20System&descSize=16&descAlignY=58&descColor=B8D49A" />
+> Sistema de gamificação sustentável desenvolvido para o Challenge FIAP 2026 em parceria com a SoulUp by Prospera.
 
-**FIAP Challenge 2026 · SoulUp × SolCon**
-
-Protótipo de Java do EcoScore, aplicando regras de negócio com POO e usando JFrame ara criar uma interface gráfca funcional.
-
-</div>
-
----
-## Indíce
-Outras partes do projeto:
-[![Front-end](https://img.shields.io/badge/Front--end-007ACC?style=for-the-badge&logo=html5&logoColor=white)](../frontend/)[![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](../python/)[![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)](../java/)[![IA & Chatbot](https://img.shields.io/badge/IA_%26_Chatbot-8E44AD?style=for-the-badge&logo=probot&logoColor=white)](../ia_chatbot/)[![Banco de Dados](https://img.shields.io/badge/Banco_de_Dados-336791?style=for-the-badge&logo=postgresql&logoColor=white)](../banco_de_dados/)[![Software Engineering & Business Model](https://img.shields.io/badge/Business_Model-2C3E50?style=for-the-badge&logo=diagrams.net&logoColor=white)](../sebm/)
-
-
-## Visão Geral
-
-**EcoScore** é um MVP de gamificação sustentável desenvolvido para o FIAP Challenge 2026, em parceria com a **SoulUp** e a **SolCon**. O sistema transforma ações ecológicas cotidianas em pontos, conquistas e ranking mensal — com o objetivo de criar engajamento duradouro em torno de hábitos sustentáveis.
+[![Java](https://img.shields.io/badge/Java-21-orange?logo=openjdk)](https://www.oracle.com/java/)
+[![Oracle](https://img.shields.io/badge/Database-Oracle-red?logo=oracle)](https://www.oracle.com/database/)
+[![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-CI%2FCD-2088FF?logo=githubactions)](https://github.com/features/actions)
 
 ---
 
-# ☕ Java
+## 📌 Índice
 
-## 📌 Objetivo
-
-Desenvolver um sistema orientado a objetos em Java para representar ações sustentáveis dentro da plataforma SoulUp, utilizando gamificação, pontuação e engajamento social.
-
-O sistema permite:
-
-* registrar ações sustentáveis;
-* calcular SoulCoins;
-* publicar conquistas e ações no perfil do usuário.
-
----
-
-# 📊 Diagramas
-
-**Referências:**
-
-* [Diagramas de classe](./diagramas-java/diagrama-classes_pronta.drawio)
-* [Diagrama de relacionamento](./diagramas-java/diagrama-relacoes-classes.drawio)
-* [Diagrama de regras de negócio](./diagramas-java/diagrama-regras-negocio.drawio)
+- [Sobre o projeto](#-sobre-o-projeto)
+- [Funcionalidades](#-funcionalidades)
+- [Tecnologias e ferramentas](#-tecnologias-e-ferramentas)
+- [Estrutura do projeto](#-estrutura-do-projeto)
+- [Pré-requisitos](#-pré-requisitos)
+- [Importação](#-importação)
+- [Execução](#-execução)
+- [Configuração](#-configuração)
+- [Integrantes](#-integrantes)
+- [Links](#-links)
 
 ---
 
-# 🧩 Estrutura das Classes
+## 🌱 Sobre o projeto
 
-## Classes Java.bean
+O **EcoScore** é uma proposta de gamificação sustentável para a plataforma **SoulUp**.
 
-|      Classes      | Subclasses |          |               |
-| :---------------: | :--------: | :------: | :-----------: |
-|      [Usuario](./projeto-java/src/br/com/fiap/bean/Usuario.java)      |            |          |               |
-|        [Acao](./projeto-java/src/br/com/fiap/bean/Acao.java)       |  [AcaoQuiz](./projeto-java/src/br/com/fiap/bean/AcaoQuiz.java)  | [AcaoPost](./projeto-java/src/br/com/fiap/bean/AcaoPost.java) | [AcaoConquista](./projeto-java/src/br/com/fiap/bean/AcaoConquista.java) |
-| [CalculadoraPontos](./projeto-java/src/br/com/fiap/bean/CalculadoraPontos.java) |            |          |               |
+A solução busca incentivar a realização contínua de ações sustentáveis por meio de pontos, missões, quizzes, posts, selos e ranking.
 
----
+O sistema registra as ações dos usuários, calcula sua pontuação e utiliza interações da comunidade para promover engajamento e reconhecimento.
 
-# ⚙️ Regras de Negócio
-
-* Usuários acumulam **SoulCoins** através de ações sustentáveis.
-* Cada ação possui uma lógica própria de pontuação.
-* Quizzes geram pontos por desempenho e sações atreladas a eles, ou só pelo desempenho
-* Posts sustentáveis podem receber bonificações por engajamento e posição no ranking
-* Usuários mais confiáveis possuem maior peso no sistema.
+O projeto foi desenvolvido pela **SolCon** para o **Challenge FIAP 2026**, em parceria com a SoulUp by Prospera.
 
 ---
 
-# 🛠️ Tecnologias
+## 🎯 Funcionalidades
 
-* Java (orientado por POO e DDD)
-* Draw.io (UML)
+- 👤 Cadastro e gerenciamento de usuários
+- ♻️ Registro de ações sustentáveis
+- 🎯 Registro de missões
+- 🏆 Conquistas e selos
+- 🧠 Registro de quizzes
+- 📝 Publicação de posts
+- 👍 Votos positivos e negativos
+- 📊 Ranking de usuários
+- ⚠️ Registro de penalidades
+- 💰 Sistema de pontos e SoulCoins
+- 🖥️ Interface gráfica com Java Swing
+- 🗄️ Persistência dos dados em Oracle Database
 
-# Como executar
+---
 
-Execute a classe GUIPrincipal, que pedirá para registrar um usuário, então você poderá usar as funcionalidades numa janela gráfica
+## 🛠️ Tecnologias e ferramentas
+
+### Desenvolvimento
+
+| Tecnologia/Ferramenta | Utilização |
+|---|---|
+| Java 21 | Linguagem principal |
+| IntelliJ IDEA | IDE de desenvolvimento |
+| Oracle Database | Banco de dados |
+| Oracle SQL Developer | Administração e execução de scripts SQL |
+| Oracle Data Modeler | Modelagem do banco de dados |
+| Git | Controle de versão |
+| GitHub | Repositório e colaboração |
+| GitHub Actions | Automação do repositório |
+| Java Swing | Interface gráfica |
+| JDBC | Comunicação entre Java e Oracle |
+
+### IDE
+
+**IntelliJ IDEA**
+
+Licença utilizada: **Ultimate**
+
+---
+
+## 📁 Estrutura do projeto
+
+```text
+src/
+└── br.com.fiap/
+    ├── bean/
+    │   └── Classes de domínio
+    │
+    ├── controller/
+    │   └── Controllers da aplicação
+    │
+    ├── dao/
+    │   └── Acesso e persistência no banco
+    │
+    ├── model/
+    │   └── DTOs e modelos auxiliares
+    │
+    └── main/
+        └── Interface e inicialização da aplicação
