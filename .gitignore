@@ -1,0 +1,43 @@
+# ==============================================================================
+# PROJETO ECOSCORE (SOLCON) - .gitignore Unificado na Raiz
+# ==============================================================================
+
+# Antigravity (arquivos locais de contexto, pesquisas e inteligência artificial)
+antigravity/
+
+# Compilação e Build
+out/
+bin/
+dist/
+!**/src/main/**/out/
+!**/src/test/**/out/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+ecoscore.iml
+.kotlin
+
+# Eclipse
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache
+
+# NetBeans
+nbproject/private/
+nbbuild/
+nbdist/
+.nb-gradle/
+
+# VS Code
+.vscode/
+
+# Arquivos do Sistema Operacional
+.DS_Store
+Thumbs.db
