@@ -1,4 +1,4 @@
-package br.com.fiap.view;
+package br.com.fiap.view.gui;
 
 import br.com.fiap.controller.*;
 import br.com.fiap.model.dto.*;
@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 @SuppressWarnings("serial")
-public class GUIPrincipal extends JFrame {
+public class GUIMainView extends JFrame {
     private Usuario usuario = new Usuario();
     private Acao acao;
     private Missao missao;
@@ -28,16 +28,15 @@ public class GUIPrincipal extends JFrame {
     private PostController postController;
     private RankingUsuarioController rankingUsuarioController;
     private Container contentPane;
-    private JMenuBar mnBarra;
+    public JMenuBar mnBarra;
     private JMenu mnArquivo, mnUsuario,mnMissao,mnAcao,mnPost,mnQuiz,mnAjuda;
     private JMenuItem miSair, miAjuda, miAjuda2, miEditarExemplo,miTrocarUsuario,miLimparAtividades,miLimparSelos,miCriarUsuario,miLerUsuario,miAtualizarUsuario,miExcluirUsuario,miCriarMissao,miLerMissao,miAtualizarMissao,miExcluirMissao,miCriarAcao,miLerAcao,miAtualizarAcao,miExcluirAcao,miCriarPost,miLerPost,miAtualizarPost,miExcluirPost,miCriarQuiz,miLerQuiz,miAtualizarQuiz,miExcluirQuiz;
     private JPanel painel, painelBts, painelTxt;
     private JButton btRegistrarAcao, btRegistrarMissao, btRegistrarQuiz, btRegistrarPost, btRegistrarPenalidade, btRanking;
-    private JPopupMenu teste;
     private JTextArea taDetalhesPerfil = new JTextArea(usuario.detalhesPerfil());
     private JLabel lbPerfil;
 
-    public GUIPrincipal() {
+    public GUIMainView() {
         iniciarUsuario();
         inicializarComponentes();
         definirEventos();
@@ -126,7 +125,6 @@ public class GUIPrincipal extends JFrame {
         mnBarra.add(mnPost);
         mnBarra.add(mnQuiz);
         mnBarra.add(mnAjuda);
-        teste = new JPopupMenu("teste");
 
         mnArquivo.add(miEditarExemplo);
         mnArquivo.add(miLimparAtividades);
@@ -208,7 +206,7 @@ public class GUIPrincipal extends JFrame {
                         usuario.setVlMerito(confiabilidade);
                         usuario.setQtSoulCoins(soulCoins);
 
-                        JOptionPane.showMessageDialog(null,usuarioController.alterarUsuario(usuario.getIdUsuario(), usuario.getNmUsuario(), usuario.getVlMerito(), usuario.getQtSoulCoins()));
+                        JOptionPane.showMessageDialog(null,usuarioController.alterarUsuario(usuario.getIdUsuario(), usuario.getNmUsuario(), usuario.getVlMerito(), usuario.getQtSoulCoins(),usuario.getDsAtividadeRecente(),usuario.getSelosGanhos()));
                     }
                 } catch (NumberFormatException e) {
                     JOptionPane.showMessageDialog(null, "Erro numérico: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
@@ -273,178 +271,48 @@ public class GUIPrincipal extends JFrame {
         btRegistrarAcao.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                try {
-                    acaoController = new AcaoController();
-                    acao = new Acao();
-
-                    String[] tipos = {"Natureza", "Carbono", "Água", "Reciclagem", "Cancelar"};
-
-                    int escolha = JOptionPane.showOptionDialog(null,"Digite o tipo de ação",
-                                                               "Escolha",JOptionPane.DEFAULT_OPTION,
-                                                               JOptionPane.QUESTION_MESSAGE,null,tipos,tipos[0]);
-                    switch (escolha) {
-                        case 0:
-                            int dificuldade = Integer.parseInt(JOptionPane.showInputDialog("Qual é a dificuldade da ação realizada? Digite (entre 1 a 5): "));
-                            acao.registrarPontos(calculadora.pontosNatureza(dificuldade));
-                            break;
-                        case 1:
-                            float kgCarbono = Float.parseFloat(JOptionPane.showInputDialog("Qual é a qtde. de carbono? Digite (um número): "));
-                            acao.registrarPontos(calculadora.pontosCarbono(kgCarbono));
-                            break;
-                        case 2:
-                            float litros = Float.parseFloat(JOptionPane.showInputDialog("Qual é a qtde. de litros economizados? Digite (um número): "));
-                            acao.registrarPontos(calculadora.pontosAgua(litros));
-                            break;
-                        case 3:
-                            float kgReciclados = Float.parseFloat(JOptionPane.showInputDialog("Qual é a qtde. de KG reciclados? Digite (um número): "));
-                            acao.registrarPontos(calculadora.pontosReciclagem(kgReciclados));
-                            break;
-                        case 4:
-                            break;
-                        default:
-                            throw new Exception("Opção inválida (0-4)");
-                    }
-                    if (escolha != 4){
-                        String descricao = JOptionPane.showInputDialog("Digite a descrição da ação: ");
-                        acao.setIdAcao(acaoController.criarIdAcao());
-                        acao.setIdUsuario(usuario.getIdUsuario());
-                        acao.setDsAcao(descricao);
-                        acao.setDtAcao(LocalDateTime.now());
-
-                        usuario.registrarAtividade(acao.detalhesAcao(),acao.getQtPontosGerados());
-                        String resultado = acaoController.inserirAcao(acao.getIdAcao(), acao.getIdUsuario(), acao.getDsAcao(), acao.getQtPontosGerados(), acao.getDtAcao());
-
-                        usuarioController = new UsuarioController();
-                        usuarioController.alterarUsuario(usuario.getIdUsuario(), usuario.getNmUsuario(), usuario.getVlMerito(), usuario.getQtSoulCoins());
-
-                        taDetalhesPerfil.setText(usuario.detalhesPerfil());
-                        JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
-                    }
-                }  catch (SQLException e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
-                } catch (NumberFormatException e) {
-                    JOptionPane.showMessageDialog(null, "Erro numérico: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
-                }
+                    GUIAcaoView frameAcao = new GUIAcaoView(usuario);
+                    frameAcao.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    Dimension tela = Toolkit.getDefaultToolkit().getScreenSize();
+                    frameAcao.setLocation((tela.width - frameAcao.getSize().width) / 2,
+                            (tela.height - frameAcao.getSize().height) / 2);
+                    frameAcao.setVisible(true);
+                    taDetalhesPerfil.setText(usuario.detalhesPerfil());
             }
         });
         btRegistrarMissao.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                Missao missao;
-                try {
-                    missao = new Missao();
-                    missaoController = new MissaoController();
-                    String nome = JOptionPane.showInputDialog("Digite o nome da missão: ");
-                    String descricao = JOptionPane.showInputDialog("Digite a descrição da missão: ");
-                    String selo = JOptionPane.showInputDialog("Digite o selo da missão: ");
-                    int pontos = Integer.parseInt(JOptionPane.showInputDialog("Digite a qtde. de pontos gerados: "));
+                GUIMissaoView frameMissao = new GUIMissaoView(usuario);
+                frameMissao.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                Dimension tela = Toolkit.getDefaultToolkit().getScreenSize();
+                frameMissao.setLocation((tela.width - frameMissao.getSize().width) / 2,(tela.height - frameMissao.getSize().height) / 2);
+                frameMissao.setVisible(true);
+                taDetalhesPerfil.setText(usuario.detalhesPerfil());
 
-                    missao.setIdMissao(missaoController.criarIdMissao());
-                    missao.setNmMissao(nome);
-                    missao.setDsMissao(descricao);
-                    missao.setSelo(selo);
-                    missao.setQtPontosGerados(pontos);
-                    missao.setDtMissao(LocalDateTime.now());
-
-                    usuario.registrarAtividade(missao.detalhesMissao(),
-                            missao.getQtPontosGerados(),
-                            missao.getSelo());
-
-                    usuarioController = new UsuarioController();
-                    usuarioController.alterarUsuario(usuario.getIdUsuario(), usuario.getNmUsuario(), usuario.getVlMerito(), usuario.getQtSoulCoins());
-
-                    String resultado = missaoController.inserirMissao(missao.getIdMissao(), missao.getNmMissao(), missao.getDsMissao(), missao.getSelo(), missao.getQtPontosGerados(), missao.getDtMissao());
-                    taDetalhesPerfil.setText(usuario.detalhesPerfil());
-                    JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
-                }  catch (SQLException e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
-                } catch (NumberFormatException e) {
-                    JOptionPane.showMessageDialog(null, "Erro numérico: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
-                }
             }
         });
         btRegistrarQuiz.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                Quiz quiz;
-                try {
-                    quizController = new QuizController();
-                    quiz = new Quiz();
-
-                    int numQuestoes = Integer.parseInt(JOptionPane.showInputDialog("Digite o número de questões: "));
-                    int numAcertos = Integer.parseInt(JOptionPane.showInputDialog("Digite o número de acertos: "));
-                    int pontosPorQuestao = Integer.parseInt(JOptionPane.showInputDialog("Digite os pontos por questão: "));
-
-                    quiz.setIdQuiz(quizController.criarIdQuiz());
-                    quiz.setIdUsuario(usuario.getIdUsuario());
-                    quiz.setNumQuestoes(numQuestoes);
-                    quiz.setNumAcertos(numAcertos);
-                    quiz.setQtPontosPorQuestao(pontosPorQuestao);
-                    quiz.setQtPontosGerados();
-                    quiz.setDtQuiz(LocalDateTime.now());
-
-                    usuario.registrarAtividade(quiz.detalhesQuiz(),
-                            quiz.getQtPontosGerados());
-
-                    usuarioController = new UsuarioController();
-                    usuarioController.alterarUsuario(usuario.getIdUsuario(), usuario.getNmUsuario(), usuario.getVlMerito(), usuario.getQtSoulCoins());
-
-                    taDetalhesPerfil.setText(usuario.detalhesPerfil());
-                    String resultado = quizController.inserirQuiz(quiz.getIdQuiz(), quiz.getIdUsuario(), quiz.getNumQuestoes(), quiz.getNumAcertos(), quiz.getQtPontosPorQuestao(), quiz.getDtQuiz());
-                    JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
-                }  catch (SQLException e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
-                } catch (NumberFormatException e) {
-                    JOptionPane.showMessageDialog(null, "Erro numérico: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
-                }
+                GUIQuizView frameQuiz = new GUIQuizView(usuario);
+                frameQuiz.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                Dimension tela = Toolkit.getDefaultToolkit().getScreenSize();
+                frameQuiz.setLocation((tela.width - frameQuiz.getSize().width) / 2,(tela.height - frameQuiz.getSize().height) / 2);
+                frameQuiz.setVisible(true);
+                taDetalhesPerfil.setText(usuario.detalhesPerfil());
             }
         });
         btRegistrarPost.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                Post post;
-                try {
-                    postController = new PostController();
-                    post = new Post();
-                    ranking = new RankingUsuario();
-                    rankingUsuarioController = new RankingUsuarioController();
-
-                    String texto = JOptionPane.showInputDialog("Digite o texto do post: (máx. 200 caracteres)");
-                    int upVotes = Integer.parseInt(JOptionPane.showInputDialog("Quantos votos UP recebeu?"));
-                    int downVotes = Integer.parseInt(JOptionPane.showInputDialog("Quantos votos DOWN recebeu?"));
-                    post.setIdPost(postController.criarIdPost());
-                    post.setIdUsuario(usuario.getIdUsuario());
-                    post.setDsPost(texto);
-                    post.setDtPost(LocalDateTime.now());
-                    post.addUpVote(upVotes);
-                    post.addDownVote(downVotes);
-
-                    String resultado = postController.inserirPost(post.getIdPost(), post.getIdUsuario(), post.getDsPost(), post.getDtPost(), post.getNumUpVotes(), post.getNumDownVotes());
-                    ranking = rankingUsuarioController.pegarUmRankingUsuario(usuario.getIdUsuario());
-                    if (ranking != null) {
-                        ranking.addQtVotos(post.getNumSaldoVotes());
-                        rankingUsuarioController.alterarRankingUsuario(ranking.getIdRanking(), ranking.getIdUsuario(), ranking.getQtVotos());
-                    } else {
-                        ranking = new RankingUsuario(rankingUsuarioController.criarIdRanking(),usuario.getIdUsuario(),
-                                post.getNumSaldoVotes());
-                        rankingUsuarioController.inserirRankingUsuario(ranking.getIdRanking(), ranking.getIdUsuario(), ranking.getQtVotos());
-                    }
-                    usuario.registrarAtividade(post.detalhesPost());
-                    taDetalhesPerfil.setText(usuario.detalhesPerfil());
-                    JOptionPane.showMessageDialog(null, resultado, "Posts", JOptionPane.INFORMATION_MESSAGE);
-                }  catch (SQLException e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
-                } catch (NumberFormatException e) {
-                    JOptionPane.showMessageDialog(null, "Erro numérico: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(), "Erro:", JOptionPane.ERROR_MESSAGE);
-                }
+                GUIPostView framePost = new GUIPostView(usuario);
+                framePost.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                Dimension tela = Toolkit.getDefaultToolkit().getScreenSize();
+                framePost.setLocation((tela.width - framePost.getSize().width) / 2,
+                        (tela.height - framePost.getSize().height) / 2);
+                framePost.setVisible(true);
+                taDetalhesPerfil.setText(usuario.detalhesPerfil());
             }
         });
         btRegistrarPenalidade.addActionListener(new ActionListener() {
@@ -459,7 +327,7 @@ public class GUIPrincipal extends JFrame {
                             JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == 0) {
                         usuarioController = new UsuarioController();
                         usuario.registrarPenalidade(valorPenalidade, descOcorrido);
-                        usuarioController.alterarUsuario(usuario.getIdUsuario(), usuario.getNmUsuario(), usuario.getVlMerito(), usuario.getQtSoulCoins());
+                        usuarioController.alterarUsuario(usuario.getIdUsuario(), usuario.getNmUsuario(), usuario.getVlMerito(), usuario.getQtSoulCoins(),usuario.getDsAtividadeRecente(),usuario.getSelosGanhos());
                     }
                 } catch (SQLException e) {
                     JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
@@ -538,7 +406,7 @@ public class GUIPrincipal extends JFrame {
                     novoUsuario.setNmUsuario(nome);
                     novoUsuario.setVlMerito(merito);
                     novoUsuario.setQtSoulCoins(soulCoins);
-                    String resultado = usuarioController.alterarUsuario(novoUsuario.getIdUsuario(), novoUsuario.getNmUsuario(), novoUsuario.getVlMerito(), novoUsuario.getQtSoulCoins());
+                    String resultado = usuarioController.alterarUsuario(novoUsuario.getIdUsuario(), novoUsuario.getNmUsuario(), novoUsuario.getVlMerito(), novoUsuario.getQtSoulCoins(), novoUsuario.getDsAtividadeRecente(), novoUsuario.getSelosGanhos());
                     JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
                     //Se atualizar o usuário atual
                     usuario = usuarioController.pegarUmUsuario(usuario.getIdUsuario());
@@ -574,38 +442,7 @@ public class GUIPrincipal extends JFrame {
         miCriarMissao.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                try {
-                    missao = new Missao();
-                    missaoController = new MissaoController();
-                    String nome = JOptionPane.showInputDialog("Digite o nome da missão: ");
-                    String descricao = JOptionPane.showInputDialog("Digite a descrição da missão: ");
-                    String selo = JOptionPane.showInputDialog("Digite o selo da missão: ");
-                    int pontos = Integer.parseInt(JOptionPane.showInputDialog("Digite a qtde. de pontos gerados: "));
-
-                    missao.setIdMissao(missaoController.criarIdMissao());
-                    missao.setNmMissao(nome);
-                    missao.setDsMissao(descricao);
-                    missao.setSelo(selo);
-                    missao.setQtPontosGerados(pontos);
-                    missao.setDtMissao(LocalDateTime.now());
-
-                    usuario.registrarAtividade(missao.detalhesMissao(),
-                            missao.getQtPontosGerados(),
-                            missao.getSelo());
-
-                    usuarioController = new UsuarioController();
-                    usuarioController.alterarUsuario(usuario.getIdUsuario(), usuario.getNmUsuario(), usuario.getVlMerito(), usuario.getQtSoulCoins());
-
-                    String resultado = missaoController.inserirMissao(missao.getIdMissao(), missao.getNmMissao(), missao.getDsMissao(), missao.getSelo(), missao.getQtPontosGerados(), missao.getDtMissao());
-                    taDetalhesPerfil.setText(usuario.detalhesPerfil());
-                    JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
-                } catch (SQLException e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
-                } catch (NumberFormatException e) {
-                    JOptionPane.showMessageDialog(null, "Erro numérico: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
-                }
+                btRegistrarMissao.doClick();
             }
         });
         miLerMissao.addActionListener(new ActionListener() {
@@ -686,61 +523,7 @@ public class GUIPrincipal extends JFrame {
         miCriarAcao.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                try {
-                    acaoController = new AcaoController();
-                    acao = new Acao();
-
-                    String[] tipos = {"Natureza", "Carbono", "Água", "Reciclagem", "Cancelar"};
-
-                    int escolha = JOptionPane.showOptionDialog(null,"Digite o tipo de ação",
-                            "Escolha",JOptionPane.DEFAULT_OPTION,
-                            JOptionPane.QUESTION_MESSAGE,null,tipos,tipos[0]);
-                    switch (escolha) {
-                        case 0:
-                            int dificuldade = Integer.parseInt(JOptionPane.showInputDialog("Qual é a dificuldade da ação realizada? Digite (entre 1 a 5): "));
-                            acao.registrarPontos(calculadora.pontosNatureza(dificuldade));
-                            break;
-                        case 1:
-                            float kgCarbono = Float.parseFloat(JOptionPane.showInputDialog("Qual é a qtde. de carbono? Digite (um número): "));
-                            acao.registrarPontos(calculadora.pontosCarbono(kgCarbono));
-                            break;
-                        case 2:
-                            float litros = Float.parseFloat(JOptionPane.showInputDialog("Qual é a qtde. de litros economizados? Digite (um número): "));
-                            acao.registrarPontos(calculadora.pontosAgua(litros));
-                            break;
-                        case 3:
-                            float kgReciclados = Float.parseFloat(JOptionPane.showInputDialog("Qual é a qtde. de KG reciclados? Digite (um número): "));
-                            acao.registrarPontos(calculadora.pontosReciclagem(kgReciclados));
-                            break;
-                        case 4:
-                            break;
-                        default:
-                            throw new Exception("Opção inválida (0-4)");
-                    }
-                    if (escolha != 4){
-                        String descricao = JOptionPane.showInputDialog("Digite a descrição da ação: ");
-                        acao.setIdAcao(acaoController.criarIdAcao());
-                        acao.setIdUsuario(usuario.getIdUsuario());
-                        acao.setDsAcao(descricao);
-                        acao.setDtAcao(LocalDateTime.now());
-
-                        usuario.registrarAtividade(acao.detalhesAcao(),
-                                acao.getQtPontosGerados());
-                        String resultado = acaoController.inserirAcao(acao.getIdAcao(), acao.getIdUsuario(), acao.getDsAcao(), acao.getQtPontosGerados(), acao.getDtAcao());
-
-                        usuarioController = new UsuarioController();
-                        usuarioController.alterarUsuario(usuario.getIdUsuario(), usuario.getNmUsuario(), usuario.getVlMerito(), usuario.getQtSoulCoins());
-
-                        taDetalhesPerfil.setText(usuario.detalhesPerfil());
-                        JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
-                    }
-                } catch (SQLException e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
-                } catch (NumberFormatException e) {
-                    JOptionPane.showMessageDialog(null, "Erro numérico: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
-                }
+                btRegistrarAcao.doClick(); // vai disparar a ação do botão, só pra evitar código, eu ia copiar e colar o que tava lá aqui
             }
         });
         miLerAcao.addActionListener(new ActionListener() {
@@ -819,36 +602,7 @@ public class GUIPrincipal extends JFrame {
         miCriarPost.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                try {
-                    postController = new PostController();
-                    post = new Post();
-                    rankingUsuarioController = new RankingUsuarioController();
-                    ranking = new RankingUsuario();
-
-                    String texto = JOptionPane.showInputDialog("Digite o texto do post: (máx. 200 caracteres)");
-                    int upVotes = Integer.parseInt(JOptionPane.showInputDialog("Quantos votos UP recebeu?"));
-                    int downVotes = Integer.parseInt(JOptionPane.showInputDialog("Quantos votos DOWN recebeu?"));
-                    post.setIdPost(postController.criarIdPost());
-                    post.setIdUsuario(usuario.getIdUsuario());
-                    post.setDsPost(texto);
-                    post.setDtPost(LocalDateTime.now());
-                    post.setNumUpVotes(upVotes);
-                    post.setNumDownVotes(downVotes);
-
-                    String resultado = postController.inserirPost(post.getIdPost(), post.getIdUsuario(), post.getDsPost(), post.getDtPost(), post.getNumUpVotes(), post.getNumDownVotes());
-                    ranking = rankingUsuarioController.pegarUmRankingUsuario(usuario.getIdUsuario());
-                    ranking.addQtVotos(post.getNumSaldoVotes());
-                    rankingUsuarioController.alterarRankingUsuario(ranking.getIdRanking(), ranking.getIdUsuario(), ranking.getQtVotos());
-                    usuario.registrarAtividade(post.detalhesPost());
-                    taDetalhesPerfil.setText(usuario.detalhesPerfil());
-                    JOptionPane.showMessageDialog(null, resultado, "Posts", JOptionPane.INFORMATION_MESSAGE);
-                } catch (SQLException e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
-                } catch (NumberFormatException e) {
-                    JOptionPane.showMessageDialog(null, "Erro numérico: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
-                }
+                btRegistrarPost.doClick();
             }
         });
         miLerPost.addActionListener(new ActionListener() {
@@ -931,38 +685,7 @@ public class GUIPrincipal extends JFrame {
         miCriarQuiz.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                try {
-                    quizController = new QuizController();
-                    quiz = new Quiz();
-
-                    int numQuestoes = Integer.parseInt(JOptionPane.showInputDialog("Digite o número de questões: "));
-                    int numAcertos = Integer.parseInt(JOptionPane.showInputDialog("Digite o número de acertos: "));
-                    int pontosPorQuestao = Integer.parseInt(JOptionPane.showInputDialog("Digite os pontos por questão: "));
-
-                    quiz.setIdQuiz(quizController.criarIdQuiz());
-                    quiz.setIdUsuario(usuario.getIdUsuario());
-                    quiz.setNumQuestoes(numQuestoes);
-                    quiz.setNumAcertos(numAcertos);
-                    quiz.setQtPontosPorQuestao(pontosPorQuestao);
-                    quiz.setQtPontosGerados();
-                    quiz.setDtQuiz(LocalDateTime.now());
-
-                    usuario.registrarAtividade(quiz.detalhesQuiz(),
-                            quiz.getQtPontosGerados());
-
-                    usuarioController = new UsuarioController();
-                    usuarioController.alterarUsuario(usuario.getIdUsuario(), usuario.getNmUsuario(), usuario.getVlMerito(), usuario.getQtSoulCoins());
-
-                    taDetalhesPerfil.setText(usuario.detalhesPerfil());
-                    String resultado = quizController.inserirQuiz(quiz.getIdQuiz(), quiz.getIdUsuario(), quiz.getNumQuestoes(), quiz.getNumAcertos(), quiz.getQtPontosPorQuestao(), quiz.getDtQuiz());
-                    JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
-                } catch (SQLException e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
-                } catch (NumberFormatException e) {
-                    JOptionPane.showMessageDialog(null, "Erro numérico: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage(), "Erro!", JOptionPane.ERROR_MESSAGE);
-                }
+                btRegistrarQuiz.doClick();
             }
         });
         miLerQuiz.addActionListener(new ActionListener() {
@@ -1065,14 +788,5 @@ public class GUIPrincipal extends JFrame {
                 }
             }
         });
-    }
-
-    public static void main(String[] args) {
-        GUIPrincipal frame = new GUIPrincipal();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        Dimension tela = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setLocation((tela.width - frame.getSize().width) / 2,
-                (tela.height - frame.getSize().height) / 2);
-        frame.setVisible(true);
     }
 }

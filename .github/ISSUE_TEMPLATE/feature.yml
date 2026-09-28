@@ -78,13 +78,7 @@ body:
       label: Definição de Pronto para Iniciar
       description: Todos os itens devem ser confirmados antes de mover a demanda para Pronta para iniciar.
       options:
-        - label: O conteúdo necessário já foi apresentado ou autorizado pelo professor.
-          required: true
-        - label: O Milestone do CP foi definido.
-          required: true
-        - label: A squad, o esforço e a data limite foram preenchidos no Project.
-          required: true
-        - label: O responsável principal e o QA foram definidos.
+        - label: O Milestone e o projeto foi definido.
           required: true
         - label: Os critérios de aceite podem ser testados.
           required: true
