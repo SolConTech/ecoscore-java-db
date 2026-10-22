@@ -1,38 +1,41 @@
 package br.com.fiap.dao;
 
-import javax.swing.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConnectionFactory {
-    public static Connection abrirConexao() throws ClassNotFoundException, SQLException{
-        Connection con = null;
+    private static Connection connection;
+
+    public static Connection abrirConexao() {
         try {
+            if (connection != null && !connection.isClosed()) {
+                return connection;
+            }
             Class.forName("oracle.jdbc.driver.OracleDriver");
-            String url = "jdbc:oracle:thin:@oracle.fiap.com.br:1521:ORCL";
-            final String USER = "rm573977";
-            final String PASS = "200208";
-            con = DriverManager.getConnection(url, USER, PASS);
-            System.out.println("Conectado ao Ecoscore");
-        } catch (ClassNotFoundException e) {
-            throw new ClassNotFoundException("Erro: A classe digitada não foi encontrada. " + e.getMessage());
+            //busca dados de conexão nas variaveis de ambiente
+            String url = System.getenv("DB_URL");
+            String user = System.getenv("DB_USER");
+            String pass = System.getenv("DB_PASSWORD");
+            if (url == null || user == null || pass == null) {
+                throw new RuntimeException("Variáveis de ambiente do banco não configuradas");
+            }
+            connection = DriverManager.getConnection(url, user, pass);
         } catch (SQLException e) {
-            throw new SQLException("Erro de SQL:" + e.getMessage());
+            System.out.println("Erro de SQL: " + e.getMessage());
+        } catch (ClassNotFoundException e) {
+            System.out.println("Erro nome da classe: " + e.getMessage());
         }
-        return con;
+        return connection;
     }
 
-    public static void fecharConexao(Connection con) throws SQLException{
-        if (con == null){
-            JOptionPane.showMessageDialog(null, "Essa conexão já está fechada");
-            return;
-        }
+    public static void fecharConexao() throws SQLException{
         try {
-            con.close();
-            System.out.println("Desconectado do Ecoscore");
-        } catch (SQLException e) {
-            throw new SQLException("Erro de SQL:" + e.getMessage());
+            if (!connection.isClosed()) {
+                connection.close();
+            }
+        } catch (Exception e) {
+            System.out.println("Erro: " + e.getMessage());
         }
     }
 

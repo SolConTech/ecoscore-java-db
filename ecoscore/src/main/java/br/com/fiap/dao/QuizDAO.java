@@ -22,7 +22,7 @@ public class QuizDAO implements IDAO{
     public String inserir(Object object) throws SQLException {
         QuizTO quizTO = (QuizTO) object;
         String sql = "insert into quiz(ID_QUIZ,USUARIO_ID_USUARIO,NUM_QUESTOES,NUM_ACERTOS,QT_PONTOSPORQUESTAO,QT_PONTOSGERADOS,DT_QUIZ) values(?,?,?,?,?,?,?)";
-        try (PreparedStatement ps = getCon().prepareStatement(sql)) {
+        try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
             ps.setInt(1, quizTO.getIdQuiz());
             ps.setString(2, quizTO.getIdUsuario());
             ps.setInt(3, quizTO.getNumQuestoes());
@@ -44,7 +44,7 @@ public class QuizDAO implements IDAO{
     public String alterar(Object object) throws SQLException {
         QuizTO quizTO = (QuizTO) object;
         String sql = "update quiz set USUARIO_ID_USUARIO=?, NUM_QUESTOES=?, NUM_ACERTOS=?, QT_PONTOSPORQUESTAO=?, QT_PONTOSGERADOS=?, DT_QUIZ=? where ID_QUIZ=?";
-        try (PreparedStatement ps = getCon().prepareStatement(sql)) {
+        try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
             ps.setString(1, quizTO.getIdUsuario());
             ps.setInt(2, quizTO.getNumQuestoes());
             ps.setInt(3, quizTO.getNumAcertos());
@@ -60,13 +60,15 @@ public class QuizDAO implements IDAO{
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
+        } finally {
+            ConnectionFactory.fecharConexao();
         }
     }
 
     public String excluir(Object object) throws SQLException {
         QuizTO quizTO = (QuizTO) object;
         String sql = "delete from quiz where ID_QUIZ=?";
-        try (PreparedStatement ps = getCon().prepareStatement(sql)) {
+        try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
             ps.setInt(1, quizTO.getIdQuiz());
 
             if (ps.executeUpdate() > 0) {
@@ -76,6 +78,8 @@ public class QuizDAO implements IDAO{
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
+        } finally {
+            ConnectionFactory.fecharConexao();
         }
     }
 
@@ -83,7 +87,7 @@ public class QuizDAO implements IDAO{
         String sql = "select * from quiz order by ID_QUIZ";
         ArrayList<Object> listaQuiz = new ArrayList<>();
 
-        try (PreparedStatement ps = getCon().prepareStatement(sql);
+        try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql);
              ResultSet rs = ps.executeQuery()){
 
             if (rs != null){
@@ -110,13 +114,15 @@ public class QuizDAO implements IDAO{
 
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
+        } finally {
+            ConnectionFactory.fecharConexao();
         }
     }
 
     public Integer criarId() throws SQLException{
         String sql = "SELECT ID_QUIZ FROM QUIZ";
         ArrayList<Integer> listaIds = new ArrayList<Integer>();
-        try (PreparedStatement ps = getCon().prepareStatement(sql);
+        try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             if (rs != null) {
                 while (rs.next()) {
@@ -131,12 +137,14 @@ public class QuizDAO implements IDAO{
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
+        } finally {
+            ConnectionFactory.fecharConexao();
         }
     }
 
-    public QuizTO pegarUm(Object object) throws SQLException {
+    public QuizTO listarUm(Object object) throws SQLException {
         String sql = "SELECT * FROM QUIZ WHERE ID_QUIZ = ?";
-        try (PreparedStatement ps = getCon().prepareStatement(sql)){
+        try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)){
             ps.setObject(1,object);
             try (ResultSet rs = ps.executeQuery()){
                 if (rs.next()){
@@ -157,6 +165,8 @@ public class QuizDAO implements IDAO{
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
+        } finally {
+            ConnectionFactory.fecharConexao();
         }
     }
 }

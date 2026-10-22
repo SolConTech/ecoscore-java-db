@@ -21,7 +21,7 @@ public class RankingUsuarioDAO implements IDAO{
     public String inserir(Object object) throws SQLException {
         RankingUsuarioTO rankingUsuarioTO = (RankingUsuarioTO) object;
         String sql = "insert into ranking_usuario(ID_RANKING,ID_USUARIO,QT_VOTOS) values(?,?,?)";
-        try (PreparedStatement ps = getCon().prepareStatement(sql)) {
+        try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
             ps.setInt(1, rankingUsuarioTO.getIdRanking());
             ps.setString(2, rankingUsuarioTO.getIdUsuario());
             ps.setInt(3, rankingUsuarioTO.getQtVotos());
@@ -33,13 +33,15 @@ public class RankingUsuarioDAO implements IDAO{
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
+        } finally {
+            ConnectionFactory.fecharConexao();
         }
     }
 
     public String alterar(Object object) throws SQLException {
         RankingUsuarioTO rankingUsuarioTO = (RankingUsuarioTO) object;
         String sql = "update ranking_usuario set ID_USUARIO=?, QT_VOTOS=? where ID_RANKING=?";
-        try (PreparedStatement ps = getCon().prepareStatement(sql)) {
+        try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
             ps.setString(1, rankingUsuarioTO.getIdUsuario());
             ps.setInt(2, rankingUsuarioTO.getQtVotos());
             ps.setInt(3, rankingUsuarioTO.getIdRanking());
@@ -51,13 +53,15 @@ public class RankingUsuarioDAO implements IDAO{
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
+        } finally {
+            ConnectionFactory.fecharConexao();
         }
     }
 
     public String excluir(Object object) throws SQLException {
         RankingUsuarioTO rankingUsuarioTO = (RankingUsuarioTO) object;
         String sql = "delete from ranking_usuario where ID_RANKING=?";
-        try (PreparedStatement ps = getCon().prepareStatement(sql)) {
+        try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
             ps.setInt(1, rankingUsuarioTO.getIdRanking());
 
             if (ps.executeUpdate() > 0) {
@@ -67,6 +71,8 @@ public class RankingUsuarioDAO implements IDAO{
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
+        } finally {
+            ConnectionFactory.fecharConexao();
         }
     }
 
@@ -74,7 +80,7 @@ public class RankingUsuarioDAO implements IDAO{
         String sql = "select * from ranking_usuario order by QT_VOTOS DESC";
         ArrayList<Object> listaRankingUsuario = new ArrayList<>();
 
-        try (PreparedStatement ps = getCon().prepareStatement(sql);
+        try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql);
              ResultSet rs = ps.executeQuery()){
 
             if (rs != null){
@@ -95,12 +101,14 @@ public class RankingUsuarioDAO implements IDAO{
 
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
+        } finally {
+            ConnectionFactory.fecharConexao();
         }
     }
 
-    public RankingUsuarioTO pegarUm(Object object) throws SQLException {
+    public RankingUsuarioTO listarUm(Object object) throws SQLException {
         String sql = "SELECT * FROM RANKING_USUARIO WHERE ID_USUARIO = ?";
-        try (PreparedStatement ps = getCon().prepareStatement(sql)){
+        try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)){
             ps.setObject(1,object);
             try (ResultSet rs = ps.executeQuery()){
                 if (rs.next()){
@@ -115,13 +123,15 @@ public class RankingUsuarioDAO implements IDAO{
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
+        } finally {
+            ConnectionFactory.fecharConexao();
         }
     }
 
     public Object criarId() throws SQLException{
         String sql = "SELECT ID_RANKING FROM RANKING_USUARIO";
         ArrayList<Integer> listaIds = new ArrayList<Integer>();
-        try (PreparedStatement ps = getCon().prepareStatement(sql);
+        try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             if (rs != null) {
                 while (rs.next()) {
@@ -136,6 +146,8 @@ public class RankingUsuarioDAO implements IDAO{
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
+        } finally {
+            ConnectionFactory.fecharConexao();
         }
     }
     

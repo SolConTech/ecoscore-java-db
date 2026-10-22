@@ -22,7 +22,7 @@ public class PostDAO implements IDAO{
     public String inserir(Object object) throws SQLException {
         PostTO postTO = (PostTO) object;
         String sql = "insert into post(ID_POST,USUARIO_ID_USUARIO,DS_POST,DT_POST,NUM_UPVOTES,NUM_DOWNVOTES,NUM_SALDOVOTES) values(?,?,?,?,?,?,?)";
-        try (PreparedStatement ps = getCon().prepareStatement(sql)) {
+        try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
             ps.setInt(1, postTO.getIdPost());
             ps.setString(2, postTO.getIdUsuario());
             ps.setString(3, postTO.getDsPost());
@@ -44,7 +44,7 @@ public class PostDAO implements IDAO{
     public String alterar(Object object) throws SQLException {
         PostTO postTO = (PostTO) object;
         String sql = "update post set USUARIO_ID_USUARIO=?, DS_POST=?, DT_POST=?, NUM_UPVOTES=?, NUM_DOWNVOTES=?, NUM_SALDOVOTES=? where ID_POST=?";
-        try (PreparedStatement ps = getCon().prepareStatement(sql)) {
+        try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
             ps.setString(1, postTO.getIdUsuario());
             ps.setString(2, postTO.getDsPost());
             ps.setObject(3, postTO.getDtPost());
@@ -60,13 +60,15 @@ public class PostDAO implements IDAO{
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
+        } finally {
+            ConnectionFactory.fecharConexao();
         }
     }
 
     public String excluir(Object object) throws SQLException {
         PostTO postTO = (PostTO) object;
         String sql = "delete from post where ID_POST=?";
-        try (PreparedStatement ps = getCon().prepareStatement(sql)) {
+        try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
             ps.setInt(1, postTO.getIdPost());
 
             if (ps.executeUpdate() > 0) {
@@ -76,6 +78,8 @@ public class PostDAO implements IDAO{
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
+        } finally {
+            ConnectionFactory.fecharConexao();
         }
     }
 
@@ -83,7 +87,7 @@ public class PostDAO implements IDAO{
         String sql = "select * from post order by ID_POST";
         ArrayList<Object> listaPost = new ArrayList<>();
 
-        try (PreparedStatement ps = getCon().prepareStatement(sql);
+        try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql);
              ResultSet rs = ps.executeQuery()){
 
             if (rs != null){
@@ -108,13 +112,15 @@ public class PostDAO implements IDAO{
 
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
+        } finally {
+            ConnectionFactory.fecharConexao();
         }
     }
 
     public Integer criarId() throws SQLException {
         String sql = "SELECT ID_post FROM POST";
         ArrayList<Integer> listaIds = new ArrayList<Integer>();
-        try (PreparedStatement ps = getCon().prepareStatement(sql);
+        try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             if (rs != null) {
                 while (rs.next()) {
@@ -129,12 +135,14 @@ public class PostDAO implements IDAO{
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
+        } finally {
+            ConnectionFactory.fecharConexao();
         }
     }
 
-    public PostTO pegarUm(Object object) throws SQLException {
+    public PostTO listarUm(Object object) throws SQLException {
         String sql = "SELECT * FROM POST WHERE ID_POST = ?";
-        try (PreparedStatement ps = getCon().prepareStatement(sql)){
+        try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)){
             ps.setObject(1,object);
             try (ResultSet rs = ps.executeQuery()){
                 if (rs.next()){
@@ -155,6 +163,8 @@ public class PostDAO implements IDAO{
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
+        } finally {
+            ConnectionFactory.fecharConexao();
         }
     }
 }

@@ -37,6 +37,6 @@ public interface IDAO {
      * @param object O valor da chave primária
      * @return O objeto com registro da tabela correspondente à chave informada
      */
-    public Object pegarUm(Object object) throws SQLException;
+    public Object listarUm(Object object) throws SQLException;
 
 }

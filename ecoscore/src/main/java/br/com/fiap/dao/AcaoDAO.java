@@ -7,21 +7,12 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 public class AcaoDAO implements IDAO{
-    private Connection con;
-
     public AcaoDAO() {}
-    public AcaoDAO(Connection con) {
-        this.con = con;
-    }
-
-    public Connection getCon() {
-        return con;
-    }
 
     public String inserir(Object object) throws SQLException {
         AcaoTO acaoTO = (AcaoTO) object;
         String sql = "insert into acao(ID_ACAO,usuario_id_usuario, ds_acao, qt_pontosGerados, dt_acao) values(?,?,?,?,?)";
-        try (PreparedStatement ps = getCon().prepareStatement(sql)) {
+        try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
             ps.setInt(1, acaoTO.getIdAcao());
             ps.setString(2, acaoTO.getIdUsuario());
             ps.setString(3, acaoTO.getDsAcao());
@@ -35,13 +26,15 @@ public class AcaoDAO implements IDAO{
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
+        } finally {
+            ConnectionFactory.fecharConexao();
         }
     }
 
     public String alterar(Object object) throws SQLException {
         AcaoTO acaoTO = (AcaoTO) object;
         String sql = "update acao set USUARIO_ID_USUARIO=?, DS_ACAO=?, QT_PONTOSGERADOS=?, DT_ACAO=? where ID_ACAO=?";
-        try (PreparedStatement ps = getCon().prepareStatement(sql)) {
+        try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
             ps.setString(1, acaoTO.getIdUsuario());
             ps.setString(2, acaoTO.getDsAcao());
             ps.setInt(3, acaoTO.getQtPontosGerados());
@@ -54,13 +47,15 @@ public class AcaoDAO implements IDAO{
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
+        } finally {
+            ConnectionFactory.fecharConexao();
         }
     }
 
     public String excluir(Object object) throws SQLException {
         AcaoTO acaoTO = (AcaoTO) object;
         String sql = "delete from acao where ID_ACAO=?";
-        try (PreparedStatement ps = getCon().prepareStatement(sql)) {
+        try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
             ps.setInt(1, acaoTO.getIdAcao());
             if (ps.executeUpdate() > 0) {
                 return "Excluido com sucesso";
@@ -69,13 +64,15 @@ public class AcaoDAO implements IDAO{
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
+        } finally {
+            ConnectionFactory.fecharConexao();
         }
     }
 
     public ArrayList<Object> listarTodos() throws SQLException {
         String sql = "select * from acao order by USUARIO_ID_USUARIO";
         ArrayList<Object> listaAcao = new ArrayList<>();
-        try (PreparedStatement ps = getCon().prepareStatement(sql);
+        try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             if (rs != null) {
                 while (rs.next()) {
@@ -96,13 +93,15 @@ public class AcaoDAO implements IDAO{
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
+        } finally {
+            ConnectionFactory.fecharConexao();
         }
     }
 
     public Object criarId() throws SQLException {
         String sql = "SELECT ID_ACAO FROM ACAO";
         ArrayList<Integer> listaIds = new ArrayList<Integer>();
-        try (PreparedStatement ps = getCon().prepareStatement(sql);
+        try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             if (rs != null) {
                 while (rs.next()) {
@@ -117,12 +116,14 @@ public class AcaoDAO implements IDAO{
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
+        } finally {
+            ConnectionFactory.fecharConexao();
         }
     }
 
-    public AcaoTO pegarUm(Object object) throws SQLException {
+    public AcaoTO listarUm(Object object) throws SQLException {
         String sql = "SELECT * FROM ACAO WHERE ID_ACAO = ?";
-        try (PreparedStatement ps = getCon().prepareStatement(sql)){
+        try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)){
             ps.setObject(1,object);
             try (ResultSet rs = ps.executeQuery()){
                 if (rs.next()){
@@ -140,6 +141,8 @@ public class AcaoDAO implements IDAO{
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
+        } finally {
+            ConnectionFactory.fecharConexao();
         }
     }
 }

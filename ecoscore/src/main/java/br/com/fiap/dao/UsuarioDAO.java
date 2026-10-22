@@ -25,7 +25,7 @@ public class UsuarioDAO implements IDAO{
     public String inserir(Object object) throws SQLException {
         UsuarioTO usuarioTO = (UsuarioTO) object;
         String sql = "insert into usuario(ID_USUARIO,NM_USUARIO,VL_MERITO,QT_SOULCOINS,DS_DESCRICAO,SELOS_GANHOS) values(?,?,?,?,?,?)";
-        try (PreparedStatement ps = getCon().prepareStatement(sql)) {
+        try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
             ps.setString(1, usuarioTO.getIdUsuario());
             ps.setString(2, usuarioTO.getNmUsuario());
             ps.setFloat(3, usuarioTO.getVlMerito());
@@ -40,13 +40,15 @@ public class UsuarioDAO implements IDAO{
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
+        } finally {
+            ConnectionFactory.fecharConexao();
         }
     }
 
     public String alterar(Object object) throws SQLException {
         UsuarioTO usuarioTO = (UsuarioTO) object;
         String sql = "update usuario set NM_USUARIO=?, VL_MERITO=?, QT_SOULCOINS=?,DS_DESCRICAO=?,SELOS_GANHOS=? where ID_USUARIO=?";
-        try (PreparedStatement ps = getCon().prepareStatement(sql)) {
+        try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
             ps.setString(1, usuarioTO.getNmUsuario());
             ps.setFloat(2, usuarioTO.getVlMerito());
             ps.setInt(3, usuarioTO.getQtSoulCoins());
@@ -61,13 +63,15 @@ public class UsuarioDAO implements IDAO{
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
+        } finally {
+            ConnectionFactory.fecharConexao();
         }
     }
 
     public String excluir(Object object) throws SQLException {
         UsuarioTO usuarioTO = (UsuarioTO) object;
         String sql = "delete from usuario where ID_USUARIO=?";
-        try (PreparedStatement ps = getCon().prepareStatement(sql)) {
+        try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
             ps.setString(1, usuarioTO.getIdUsuario());
 
             if (ps.executeUpdate() > 0) {
@@ -77,6 +81,8 @@ public class UsuarioDAO implements IDAO{
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
+        } finally {
+            ConnectionFactory.fecharConexao();
         }
     }
 
@@ -84,7 +90,7 @@ public class UsuarioDAO implements IDAO{
         String sql = "select * from usuario order by ID_USUARIO";
         ArrayList<Object> listaUsuario = new ArrayList<>();
 
-        try (PreparedStatement ps = getCon().prepareStatement(sql);
+        try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql);
              ResultSet rs = ps.executeQuery()){
 
             if (rs != null){
@@ -108,13 +114,15 @@ public class UsuarioDAO implements IDAO{
 
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
+        } finally {
+            ConnectionFactory.fecharConexao();
         }
     }
 
-    public Object pegarUm(Object object) throws SQLException {
+    public Object listarUm(Object object) throws SQLException {
         UsuarioTO usuarioTO = (UsuarioTO) object;
         String sql = "SELECT * FROM USUARIO WHERE ID_USUARIO = ?";
-        try (PreparedStatement ps = getCon().prepareStatement(sql)){
+        try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)){
             ps.setObject(1, usuarioTO.getIdUsuario());
             try (ResultSet rs = ps.executeQuery()){
                 if (rs.next()){
@@ -133,13 +141,15 @@ public class UsuarioDAO implements IDAO{
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
+        } finally {
+            ConnectionFactory.fecharConexao();
         }
     }
 
     public Object criarId()throws SQLException{
         String sql = "SELECT ID_USUARIO FROM USUARIO";
         ArrayList<Integer> listaIds = new ArrayList<Integer>();
-        try (PreparedStatement ps = getCon().prepareStatement(sql);
+        try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             if (rs != null) {
                 while (rs.next()) {
@@ -154,6 +164,8 @@ public class UsuarioDAO implements IDAO{
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
+        } finally {
+            ConnectionFactory.fecharConexao();
         }
     }
 }

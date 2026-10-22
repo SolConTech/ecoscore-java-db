@@ -22,7 +22,7 @@ public class MissaoDAO implements IDAO{
     public String inserir(Object objeto) throws SQLException {
         MissaoTO missaoTO = (MissaoTO) objeto;
         String sql = "insert into missao(ID_MISSAO,nm_missao, DS_MISSAO, SELO, qt_pontosGerados, dt_missao) values(?,?,?,?,?,?)";
-        try (PreparedStatement ps = getCon().prepareStatement(sql)) {
+        try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
             ps.setInt(1, missaoTO.getIdMissao());
             ps.setString(2, missaoTO.getNmMissao());
             ps.setString(3, missaoTO.getDsMissao());
@@ -36,13 +36,15 @@ public class MissaoDAO implements IDAO{
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
+        } finally {
+            ConnectionFactory.fecharConexao();
         }
     }
 
     public String alterar(Object objeto) throws SQLException {
         MissaoTO missaoTO = (MissaoTO) objeto;
         String sql = "update missao set NM_MISSAO=?, DS_MISSAO=?, SELO=?, QT_PONTOSGERADOS=?, DT_MISSAO=? where ID_MISSAO=?";
-        try (PreparedStatement ps = getCon().prepareStatement(sql)) {
+        try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
             ps.setString(1, missaoTO.getNmMissao());
             ps.setString(2, missaoTO.getDsMissao());
             ps.setString(3, missaoTO.getSelo());
@@ -56,13 +58,15 @@ public class MissaoDAO implements IDAO{
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
+        } finally {
+            ConnectionFactory.fecharConexao();
         }
     }
 
     public String excluir(Object objeto) throws SQLException {
         MissaoTO missaoTO = (MissaoTO) objeto;
         String sql = "delete from missao where ID_MISSAO=?";
-        try (PreparedStatement ps = getCon().prepareStatement(sql)) {
+        try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
             ps.setInt(1, missaoTO.getIdMissao());
             if (ps.executeUpdate() > 0) {
                 return "Excluido com sucesso";
@@ -71,13 +75,15 @@ public class MissaoDAO implements IDAO{
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
+        } finally {
+            ConnectionFactory.fecharConexao();
         }
     }
 
     public ArrayList<Object> listarTodos() throws SQLException {
         String sql = "select * from missao order by ID_MISSAO";
         ArrayList<Object> listaMissao = new ArrayList<>();
-        try (PreparedStatement ps = getCon().prepareStatement(sql);
+        try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql);
              ResultSet rs = ps.executeQuery()){
             if (rs != null){
                 while (rs.next()){
@@ -98,12 +104,14 @@ public class MissaoDAO implements IDAO{
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
+        } finally {
+            ConnectionFactory.fecharConexao();
         }
     }
 
-    public Object pegarUm(Object object) throws SQLException {
+    public Object listarUm(Object object) throws SQLException {
         String sql = "SELECT * FROM MISSAO WHERE ID_MISSAO = ?";
-        try (PreparedStatement ps = getCon().prepareStatement(sql)){
+        try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)){
             ps.setObject(1,object);
             try (ResultSet rs = ps.executeQuery()){
                 if (rs.next()){
@@ -122,13 +130,15 @@ public class MissaoDAO implements IDAO{
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
+        } finally {
+            ConnectionFactory.fecharConexao();
         }
     }
 
     public Object criarId() throws SQLException {
         String sql = "SELECT ID_MISSAO FROM MISSAO";
         ArrayList<Integer> listaIds = new ArrayList<Integer>();
-        try (PreparedStatement ps = getCon().prepareStatement(sql);
+        try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             if (rs != null) {
                 while (rs.next()) {
@@ -143,6 +153,8 @@ public class MissaoDAO implements IDAO{
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
+        } finally {
+            ConnectionFactory.fecharConexao();
         }
     }
 }
