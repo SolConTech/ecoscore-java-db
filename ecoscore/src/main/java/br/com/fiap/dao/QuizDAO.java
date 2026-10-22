@@ -41,8 +41,9 @@ public class QuizDAO implements IDAO{
         }
     }
 
-    public String alterar(Object object) throws SQLException {
+    public String alterar(Object id, Object object) throws SQLException {
         QuizTO quizTO = (QuizTO) object;
+        Integer idQuiz = (Integer) id;
         String sql = "update quiz set USUARIO_ID_USUARIO=?, NUM_QUESTOES=?, NUM_ACERTOS=?, QT_PONTOSPORQUESTAO=?, QT_PONTOSGERADOS=?, DT_QUIZ=? where ID_QUIZ=?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
             ps.setString(1, quizTO.getIdUsuario());
@@ -51,7 +52,7 @@ public class QuizDAO implements IDAO{
             ps.setInt(4, quizTO.getQtPontosPorQuestao());
             ps.setInt(5, quizTO.getQtPontosGerados());
             ps.setObject(6, quizTO.getDtQuiz());
-            ps.setInt(7, quizTO.getIdQuiz());
+            ps.setInt(7, idQuiz);
 
             if (ps.executeUpdate() > 0) {
                 return "Alterado com sucesso";
@@ -142,10 +143,10 @@ public class QuizDAO implements IDAO{
         }
     }
 
-    public QuizTO listarUm(Object object) throws SQLException {
+    public QuizTO listarUm(Object id) throws SQLException {
         String sql = "SELECT * FROM QUIZ WHERE ID_QUIZ = ?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)){
-            ps.setObject(1,object);
+            ps.setObject(1, id);
             try (ResultSet rs = ps.executeQuery()){
                 if (rs.next()){
                     QuizTO quizTO = new QuizTO();

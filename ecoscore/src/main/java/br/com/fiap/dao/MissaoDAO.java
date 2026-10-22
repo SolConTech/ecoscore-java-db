@@ -41,8 +41,9 @@ public class MissaoDAO implements IDAO{
         }
     }
 
-    public String alterar(Object objeto) throws SQLException {
+    public String alterar(Object id, Object objeto) throws SQLException {
         MissaoTO missaoTO = (MissaoTO) objeto;
+        Integer idMissao = (Integer) id;
         String sql = "update missao set NM_MISSAO=?, DS_MISSAO=?, SELO=?, QT_PONTOSGERADOS=?, DT_MISSAO=? where ID_MISSAO=?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
             ps.setString(1, missaoTO.getNmMissao());
@@ -50,7 +51,7 @@ public class MissaoDAO implements IDAO{
             ps.setString(3, missaoTO.getSelo());
             ps.setInt(4, missaoTO.getQtPontosGerados());
             ps.setObject(5, missaoTO.getDtMissao());
-            ps.setInt(6, missaoTO.getIdMissao());
+            ps.setInt(6, idMissao);
             if (ps.executeUpdate() > 0) {
                 return "Alterado com sucesso";
             } else {
@@ -109,10 +110,10 @@ public class MissaoDAO implements IDAO{
         }
     }
 
-    public Object listarUm(Object object) throws SQLException {
+    public Object listarUm(Object id) throws SQLException {
         String sql = "SELECT * FROM MISSAO WHERE ID_MISSAO = ?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)){
-            ps.setObject(1,object);
+            ps.setObject(1, id);
             try (ResultSet rs = ps.executeQuery()){
                 if (rs.next()){
                     MissaoTO missaoTO = new MissaoTO();

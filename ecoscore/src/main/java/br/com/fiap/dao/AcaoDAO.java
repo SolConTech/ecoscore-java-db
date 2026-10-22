@@ -31,15 +31,16 @@ public class AcaoDAO implements IDAO{
         }
     }
 
-    public String alterar(Object object) throws SQLException {
+    public String alterar(Object id, Object object) throws SQLException {
         AcaoTO acaoTO = (AcaoTO) object;
+        Integer idAcao = (Integer) id;
         String sql = "update acao set USUARIO_ID_USUARIO=?, DS_ACAO=?, QT_PONTOSGERADOS=?, DT_ACAO=? where ID_ACAO=?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
             ps.setString(1, acaoTO.getIdUsuario());
             ps.setString(2, acaoTO.getDsAcao());
             ps.setInt(3, acaoTO.getQtPontosGerados());
             ps.setObject(4, acaoTO.getDtAcao());
-            ps.setInt(5, acaoTO.getIdAcao());
+            ps.setInt(5, idAcao);
             if (ps.executeUpdate() > 0) {
                 return "Alterado com sucesso";
             } else {
@@ -121,10 +122,10 @@ public class AcaoDAO implements IDAO{
         }
     }
 
-    public AcaoTO listarUm(Object object) throws SQLException {
+    public AcaoTO listarUm(Object id) throws SQLException {
         String sql = "SELECT * FROM ACAO WHERE ID_ACAO = ?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)){
-            ps.setObject(1,object);
+            ps.setObject(1, id);
             try (ResultSet rs = ps.executeQuery()){
                 if (rs.next()){
                     AcaoTO acaoTO = new AcaoTO();

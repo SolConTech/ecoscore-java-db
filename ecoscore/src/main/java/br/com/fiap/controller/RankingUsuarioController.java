@@ -24,7 +24,7 @@ public class RankingUsuarioController {
         RankingUsuarioDAO rankingUsuarioDAO = new RankingUsuarioDAO(con);
         resultado = rankingUsuarioDAO.inserir(rankingUsuarioTO);
 
-        ConnectionFactory.fecharConexao(con);
+        ConnectionFactory.fecharConexao();
         return resultado;
     }
 
@@ -40,9 +40,9 @@ public class RankingUsuarioController {
         rankingUsuarioTO.setQtVotos(qtVotos);
 
         RankingUsuarioDAO rankingUsuarioDAO = new RankingUsuarioDAO(con);
-        resultado = rankingUsuarioDAO.alterar(rankingUsuarioTO);
+        resultado = rankingUsuarioDAO.alterar(, rankingUsuarioTO);
 
-        ConnectionFactory.fecharConexao(con);
+        ConnectionFactory.fecharConexao();
         return resultado;
     }
 
@@ -57,7 +57,7 @@ public class RankingUsuarioController {
         RankingUsuarioDAO rankingUsuarioDAO = new RankingUsuarioDAO(con);
         resultado = rankingUsuarioDAO.excluir(rankingUsuarioTO);
 
-        ConnectionFactory.fecharConexao(con);
+        ConnectionFactory.fecharConexao();
         return resultado;
     }
 
@@ -69,7 +69,7 @@ public class RankingUsuarioController {
         RankingUsuarioDAO rankingUsuarioDAO = new RankingUsuarioDAO(con);
         resultado = rankingUsuarioDAO.listarTodos();
 
-        ConnectionFactory.fecharConexao(con);
+        ConnectionFactory.fecharConexao();
         return resultado;
     }
 
@@ -80,9 +80,9 @@ public class RankingUsuarioController {
 
         RankingUsuarioDAO rankingUsuarioDAO = new RankingUsuarioDAO(con);
         // Note que no seu DAO, a query filtra usando WHERE ID_USUARIO = ?, por isso o parâmetro aqui é String
-        resultado = (RankingUsuarioTO) rankingUsuarioDAO.pegarUm(idUsuario);
+        resultado = (RankingUsuarioTO) rankingUsuarioDAO.listarUm(idUsuario);
 
-        ConnectionFactory.fecharConexao(con);
+        ConnectionFactory.fecharConexao();
         return resultado;
     }
 
@@ -91,7 +91,7 @@ public class RankingUsuarioController {
         Connection con = ConnectionFactory.abrirConexao();
         RankingUsuarioDAO rankingUsuarioDAO = new RankingUsuarioDAO(con);
         resultado = (int) rankingUsuarioDAO.criarId();
-        ConnectionFactory.fecharConexao(con);
+        ConnectionFactory.fecharConexao();
         return resultado;
     }
 }

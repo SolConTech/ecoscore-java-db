@@ -28,7 +28,7 @@ public class MissaoController {
         MissaoDAO missaoDAO = new MissaoDAO(con);
         resultado = missaoDAO.inserir(missaoTO);
 
-        ConnectionFactory.fecharConexao(con);
+        ConnectionFactory.fecharConexao();
         return resultado;
     }
 
@@ -47,9 +47,9 @@ public class MissaoController {
         missaoTO.setDtMissao(dtMissao);
 
         MissaoDAO missaoDAO = new MissaoDAO(con);
-        resultado = missaoDAO.alterar(missaoTO);
+        resultado = missaoDAO.alterar(, missaoTO);
 
-        ConnectionFactory.fecharConexao(con);
+        ConnectionFactory.fecharConexao();
         return resultado;
     }
 
@@ -64,7 +64,7 @@ public class MissaoController {
         MissaoDAO missaoDAO = new MissaoDAO(con);
         resultado = missaoDAO.excluir(missaoTO);
 
-        ConnectionFactory.fecharConexao(con);
+        ConnectionFactory.fecharConexao();
         return resultado;
     }
 
@@ -76,7 +76,7 @@ public class MissaoController {
         MissaoDAO missaoDAO = new MissaoDAO(con);
         resultado = missaoDAO.listarTodos();
 
-        ConnectionFactory.fecharConexao(con);
+        ConnectionFactory.fecharConexao();
         return resultado;
     }
 
@@ -86,9 +86,9 @@ public class MissaoController {
         Connection con = ConnectionFactory.abrirConexao();
 
         MissaoDAO missaoDAO = new MissaoDAO(con);
-        resultado = (MissaoTO) missaoDAO.pegarUm(idMissao);
+        resultado = (MissaoTO) missaoDAO.listarUm(idMissao);
 
-        ConnectionFactory.fecharConexao(con);
+        ConnectionFactory.fecharConexao();
         return resultado;
     }
 
@@ -97,7 +97,7 @@ public class MissaoController {
         Connection con = ConnectionFactory.abrirConexao();
         MissaoDAO missaoDAO = new MissaoDAO(con);
         resultado = (int) missaoDAO.criarId();
-        ConnectionFactory.fecharConexao(con);
+        ConnectionFactory.fecharConexao();
         return resultado;
     }
 }

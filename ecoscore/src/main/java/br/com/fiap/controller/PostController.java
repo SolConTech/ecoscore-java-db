@@ -29,7 +29,7 @@ public class PostController {
         PostDAO postDAO = new PostDAO(con);
         resultado = postDAO.inserir(postTO);
 
-        ConnectionFactory.fecharConexao(con);
+        ConnectionFactory.fecharConexao();
         return resultado;
     }
 
@@ -49,9 +49,9 @@ public class PostController {
         postTO.setNumSaldoVotes(); // Atualiza internamente o saldo antes de persistir
 
         PostDAO postDAO = new PostDAO(con);
-        resultado = postDAO.alterar(postTO);
+        resultado = postDAO.alterar(, postTO);
 
-        ConnectionFactory.fecharConexao(con);
+        ConnectionFactory.fecharConexao();
         return resultado;
     }
 
@@ -66,7 +66,7 @@ public class PostController {
         PostDAO postDAO = new PostDAO(con);
         resultado = postDAO.excluir(postTO);
 
-        ConnectionFactory.fecharConexao(con);
+        ConnectionFactory.fecharConexao();
         return resultado;
     }
 
@@ -78,7 +78,7 @@ public class PostController {
         PostDAO postDAO = new PostDAO(con);
         resultado = postDAO.listarTodos();
 
-        ConnectionFactory.fecharConexao(con);
+        ConnectionFactory.fecharConexao();
         return resultado;
     }
 
@@ -88,9 +88,9 @@ public class PostController {
         Connection con = ConnectionFactory.abrirConexao();
 
         PostDAO postDAO = new PostDAO(con);
-        resultado = (PostTO) postDAO.pegarUm(idPost);
+        resultado = (PostTO) postDAO.listarUm(idPost);
 
-        ConnectionFactory.fecharConexao(con);
+        ConnectionFactory.fecharConexao();
         return resultado;
     }
 
@@ -99,7 +99,7 @@ public class PostController {
         Connection con = ConnectionFactory.abrirConexao();
         PostDAO postDAO = new PostDAO(con);
         resultado = postDAO.criarId();
-        ConnectionFactory.fecharConexao(con);
+        ConnectionFactory.fecharConexao();
         return resultado;
     }
 }

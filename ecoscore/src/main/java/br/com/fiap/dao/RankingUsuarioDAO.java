@@ -38,13 +38,14 @@ public class RankingUsuarioDAO implements IDAO{
         }
     }
 
-    public String alterar(Object object) throws SQLException {
+    public String alterar(Object id, Object object) throws SQLException {
         RankingUsuarioTO rankingUsuarioTO = (RankingUsuarioTO) object;
+        Integer idRanking = (Integer) id;
         String sql = "update ranking_usuario set ID_USUARIO=?, QT_VOTOS=? where ID_RANKING=?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
             ps.setString(1, rankingUsuarioTO.getIdUsuario());
             ps.setInt(2, rankingUsuarioTO.getQtVotos());
-            ps.setInt(3, rankingUsuarioTO.getIdRanking());
+            ps.setInt(3, idRanking);
 
             if (ps.executeUpdate() > 0) {
                 return "Alterado com sucesso";
@@ -106,10 +107,10 @@ public class RankingUsuarioDAO implements IDAO{
         }
     }
 
-    public RankingUsuarioTO listarUm(Object object) throws SQLException {
+    public RankingUsuarioTO listarUm(Object id) throws SQLException {
         String sql = "SELECT * FROM RANKING_USUARIO WHERE ID_USUARIO = ?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)){
-            ps.setObject(1,object);
+            ps.setObject(1, id);
             try (ResultSet rs = ps.executeQuery()){
                 if (rs.next()){
                     RankingUsuarioTO ranking = new RankingUsuarioTO();

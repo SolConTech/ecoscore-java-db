@@ -14,10 +14,11 @@ public interface IDAO {
 
     /**
      * Altera um registro na tabela do banco de dados
+     * @param id O identificador do objeto a ser alterado
      * @param objeto Um objeto de uma tabela correspondente
      * @return Mensagem de resultado da operação
      */
-    public String alterar(Object objeto) throws SQLException;
+    public String alterar(Object id, Object objeto) throws SQLException;
 
     /**
      * Exclui um registro na tabela do banco de dados
@@ -34,9 +35,9 @@ public interface IDAO {
 
     /**
      * Atribui a um objeto o registro da tabela no banco
-     * @param object O valor da chave primária
+     * @param id O valor da chave primária
      * @return O objeto com registro da tabela correspondente à chave informada
      */
-    public Object listarUm(Object object) throws SQLException;
+    public Object listarUm(Object id) throws SQLException;
 
 }

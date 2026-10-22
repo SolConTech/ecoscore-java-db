@@ -41,8 +41,9 @@ public class PostDAO implements IDAO{
         }
     }
 
-    public String alterar(Object object) throws SQLException {
+    public String alterar(Object id, Object object) throws SQLException {
         PostTO postTO = (PostTO) object;
+        Integer idPost = (Integer) id;
         String sql = "update post set USUARIO_ID_USUARIO=?, DS_POST=?, DT_POST=?, NUM_UPVOTES=?, NUM_DOWNVOTES=?, NUM_SALDOVOTES=? where ID_POST=?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
             ps.setString(1, postTO.getIdUsuario());
@@ -51,7 +52,7 @@ public class PostDAO implements IDAO{
             ps.setInt(4, postTO.getNumUpVotes());
             ps.setInt(5, postTO.getNumDownVotes());
             ps.setInt(6, postTO.getNumSaldoVotes());
-            ps.setInt(7, postTO.getIdPost());
+            ps.setInt(7, idPost);
 
             if (ps.executeUpdate() > 0) {
                 return "Alterado com sucesso";
@@ -140,10 +141,10 @@ public class PostDAO implements IDAO{
         }
     }
 
-    public PostTO listarUm(Object object) throws SQLException {
+    public PostTO listarUm(Object id) throws SQLException {
         String sql = "SELECT * FROM POST WHERE ID_POST = ?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)){
-            ps.setObject(1,object);
+            ps.setObject(1, id);
             try (ResultSet rs = ps.executeQuery()){
                 if (rs.next()){
                     PostTO postTO = new PostTO();

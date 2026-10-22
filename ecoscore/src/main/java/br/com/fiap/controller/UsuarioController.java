@@ -27,7 +27,7 @@ public class UsuarioController {
         UsuarioDAO usuarioDAO = new UsuarioDAO(con);
         resultado = usuarioDAO.inserir(usuarioTO);
 
-        ConnectionFactory.fecharConexao(con);
+        ConnectionFactory.fecharConexao();
         return resultado;
     }
 
@@ -46,9 +46,9 @@ public class UsuarioController {
         usuarioTO.setSelosGanhos(selosGanhos);
 
         UsuarioDAO usuarioDAO = new UsuarioDAO(con);
-        resultado = usuarioDAO.alterar(usuarioTO);
+        resultado = usuarioDAO.alterar(, usuarioTO);
 
-        ConnectionFactory.fecharConexao(con);
+        ConnectionFactory.fecharConexao();
         return resultado;
     }
 
@@ -63,7 +63,7 @@ public class UsuarioController {
         UsuarioDAO usuarioDAO = new UsuarioDAO(con);
         resultado = usuarioDAO.excluir(usuarioTO);
 
-        ConnectionFactory.fecharConexao(con);
+        ConnectionFactory.fecharConexao();
         return resultado;
     }
 
@@ -75,7 +75,7 @@ public class UsuarioController {
         UsuarioDAO usuarioDAO = new UsuarioDAO(con);
         resultado = usuarioDAO.listarTodos();
 
-        ConnectionFactory.fecharConexao(con);
+        ConnectionFactory.fecharConexao();
         return resultado;
     }
 
@@ -89,9 +89,9 @@ public class UsuarioController {
         usuarioTOBusca.setIdUsuario(idUsuario);
 
         UsuarioDAO usuarioDAO = new UsuarioDAO(con);
-        resultado = (UsuarioTO) usuarioDAO.pegarUm(usuarioTOBusca);
+        resultado = (UsuarioTO) usuarioDAO.listarUm(usuarioTOBusca);
 
-        ConnectionFactory.fecharConexao(con);
+        ConnectionFactory.fecharConexao();
         return resultado;
     }
 }

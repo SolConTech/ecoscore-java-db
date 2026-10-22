@@ -45,8 +45,9 @@ public class UsuarioDAO implements IDAO{
         }
     }
 
-    public String alterar(Object object) throws SQLException {
+    public String alterar(Object id, Object object) throws SQLException {
         UsuarioTO usuarioTO = (UsuarioTO) object;
+        String idUsuario = (String) id;
         String sql = "update usuario set NM_USUARIO=?, VL_MERITO=?, QT_SOULCOINS=?,DS_DESCRICAO=?,SELOS_GANHOS=? where ID_USUARIO=?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
             ps.setString(1, usuarioTO.getNmUsuario());
@@ -54,7 +55,7 @@ public class UsuarioDAO implements IDAO{
             ps.setInt(3, usuarioTO.getQtSoulCoins());
             ps.setString(4, usuarioTO.getIdUsuario());
             ps.setString(5, usuarioTO.getDsAtividadeRecente());
-            ps.setString(6, usuarioTO.getSelosGanhos());
+            ps.setString(6, idUsuario);
 
             if (ps.executeUpdate() > 0) {
                 return "Alterado com sucesso";
@@ -119,8 +120,8 @@ public class UsuarioDAO implements IDAO{
         }
     }
 
-    public Object listarUm(Object object) throws SQLException {
-        UsuarioTO usuarioTO = (UsuarioTO) object;
+    public Object listarUm(Object id) throws SQLException {
+        UsuarioTO usuarioTO = (UsuarioTO) id;
         String sql = "SELECT * FROM USUARIO WHERE ID_USUARIO = ?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)){
             ps.setObject(1, usuarioTO.getIdUsuario());
