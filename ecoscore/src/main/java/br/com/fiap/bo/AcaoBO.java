@@ -33,7 +33,7 @@ public class AcaoBO implements IBO{
     public Object update(Object id, Object body) throws SQLException {
         acaoDAO = new AcaoDAO();
         AcaoTO acaoTO = (AcaoTO) body;
-        return acaoDAO.alterar(id, body);
+        return acaoDAO.alterar(id, acaoTO);
     }
 
     @Override
