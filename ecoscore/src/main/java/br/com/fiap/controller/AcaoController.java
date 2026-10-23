@@ -13,10 +13,6 @@ public class AcaoController {
 
     public String inserirAcao(int idAcao, String idUsuario, String dsAcao, int qtPontosGerados, LocalDateTime dtAcao)
             throws ClassNotFoundException, SQLException {
-
-        String resultado;
-        Connection con = ConnectionFactory.abrirConexao();
-
         AcaoTO acaoTO = new AcaoTO();
         acaoTO.setIdAcao(idAcao);
         acaoTO.setIdUsuario(idUsuario);
@@ -24,17 +20,18 @@ public class AcaoController {
         acaoTO.setQtPontosGerados(qtPontosGerados);
         acaoTO.setDtAcao(dtAcao);
 
-        AcaoDAO acaoDAO = new AcaoDAO(con);
-        resultado = acaoDAO.save(acaoTO);
-
-        ConnectionFactory.fecharConexao();
-        return resultado;
+        AcaoDAO acaoDAO = new AcaoDAO();
+        AcaoTO resultado = acaoDAO.save(acaoTO);
+        System.out.println("LOG: " + resultado);
+        if (resultado != null) {
+            return "Inserido com sucesso";
+        } else {
+            return "Erro a inserir";
+        }
     }
 
     public String alterarAcao(int idAcao, String idUsuario, String dsAcao, int qtPontosGerados, LocalDateTime dtAcao)
             throws ClassNotFoundException, SQLException {
-
-        String resultado;
         Connection con = ConnectionFactory.abrirConexao();
 
         AcaoTO acaoTO = new AcaoTO();
@@ -45,10 +42,13 @@ public class AcaoController {
         acaoTO.setDtAcao(dtAcao);
 
         AcaoDAO acaoDAO = new AcaoDAO(con);
-        resultado = acaoDAO.update(acaoTO.getIdUsuario(), acaoTO);
-
-        ConnectionFactory.fecharConexao();
-        return resultado;
+        AcaoTO resultado = acaoDAO.update(acaoTO.getIdUsuario(), acaoTO);
+        System.out.println("LOG: " + resultado);
+        if (resultado != null) {
+            return "Inserido com sucesso";
+        } else {
+            return "Erro a inserir";
+        }
     }
 
     public String excluirAcao(int idAcao) throws ClassNotFoundException, SQLException {

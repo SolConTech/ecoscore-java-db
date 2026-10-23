@@ -12,10 +12,6 @@ public class UsuarioController {
 
     public String inserirUsuario(String idUsuario, String nmUsuario, float vlMerito, int qtSoulCoins,String dsAtividadeRecente,String selosGanhos)
             throws ClassNotFoundException, SQLException {
-
-        String resultado;
-        Connection con = ConnectionFactory.abrirConexao();
-
         UsuarioTO usuarioTO = new UsuarioTO();
         usuarioTO.setIdUsuario(idUsuario);
         usuarioTO.setNmUsuario(nmUsuario);
@@ -24,19 +20,18 @@ public class UsuarioController {
         usuarioTO.setDsAtividadeRecente(dsAtividadeRecente);
         usuarioTO.setSelosGanhos(selosGanhos);
 
-        UsuarioDAO usuarioDAO = new UsuarioDAO(con);
-        resultado = usuarioDAO.save(usuarioTO);
-
-        ConnectionFactory.fecharConexao();
-        return resultado;
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
+        UsuarioTO resultado = usuarioDAO.save(usuarioTO);
+        System.out.println("LOG: " + resultado);
+        if (resultado != null) {
+            return "Inserido com sucesso";
+        } else {
+            return "Erro a inserir";
+        }
     }
 
     public String alterarUsuario(String idUsuario, String nmUsuario, float vlMerito, int qtSoulCoins, String dsAtividadeRecente, String selosGanhos)
             throws ClassNotFoundException, SQLException {
-
-        String resultado;
-        Connection con = ConnectionFactory.abrirConexao();
-
         UsuarioTO usuarioTO = new UsuarioTO();
         usuarioTO.setIdUsuario(idUsuario);
         usuarioTO.setNmUsuario(nmUsuario);
@@ -45,11 +40,14 @@ public class UsuarioController {
         usuarioTO.setDsAtividadeRecente(dsAtividadeRecente);
         usuarioTO.setSelosGanhos(selosGanhos);
 
-        UsuarioDAO usuarioDAO = new UsuarioDAO(con);
-        resultado = usuarioDAO.update(usuarioTO.getIdUsuario(), usuarioTO);
-
-        ConnectionFactory.fecharConexao();
-        return resultado;
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
+        UsuarioTO resultado = usuarioDAO.update(usuarioTO.getIdUsuario(), usuarioTO);
+        System.out.println("LOG: " + resultado);
+        if (resultado != null) {
+            return "Inserido com sucesso";
+        } else {
+            return "Erro a inserir";
+        }
     }
 
     public String excluirUsuario(String idUsuario) throws ClassNotFoundException, SQLException {

@@ -12,38 +12,36 @@ public class RankingUsuarioController {
 
     public String inserirRankingUsuario(int idRanking, String idUsuario, int qtVotos)
             throws ClassNotFoundException, SQLException {
-
-        String resultado;
-        Connection con = ConnectionFactory.abrirConexao();
-
         RankingUsuarioTO rankingUsuarioTO = new RankingUsuarioTO();
         rankingUsuarioTO.setIdRanking(idRanking);
         rankingUsuarioTO.setIdUsuario(idUsuario);
         rankingUsuarioTO.setQtVotos(qtVotos);
 
-        RankingUsuarioDAO rankingUsuarioDAO = new RankingUsuarioDAO(con);
-        resultado = rankingUsuarioDAO.save(rankingUsuarioTO);
-
-        ConnectionFactory.fecharConexao();
-        return resultado;
+        RankingUsuarioDAO rankingUsuarioDAO = new RankingUsuarioDAO();
+        RankingUsuarioTO resultado = rankingUsuarioDAO.save(rankingUsuarioTO);
+        System.out.println("LOG: " + resultado);
+        if (resultado != null) {
+            return "Inserido com sucesso";
+        } else {
+            return "Erro a inserir";
+        }
     }
 
     public String alterarRankingUsuario(int idRanking, String idUsuario, int qtVotos)
             throws ClassNotFoundException, SQLException {
-
-        String resultado;
-        Connection con = ConnectionFactory.abrirConexao();
-
         RankingUsuarioTO rankingUsuarioTO = new RankingUsuarioTO();
         rankingUsuarioTO.setIdRanking(idRanking);
         rankingUsuarioTO.setIdUsuario(idUsuario);
         rankingUsuarioTO.setQtVotos(qtVotos);
 
-        RankingUsuarioDAO rankingUsuarioDAO = new RankingUsuarioDAO(con);
-        resultado = rankingUsuarioDAO.update(rankingUsuarioTO.getIdUsuario(), rankingUsuarioTO);
-
-        ConnectionFactory.fecharConexao();
-        return resultado;
+        RankingUsuarioDAO rankingUsuarioDAO = new RankingUsuarioDAO();
+        RankingUsuarioTO resultado = rankingUsuarioDAO.update(rankingUsuarioTO.getIdUsuario(), rankingUsuarioTO);
+        System.out.println("LOG: " + resultado);
+        if (resultado != null) {
+            return "Inserido com sucesso";
+        } else {
+            return "Erro a inserir";
+        }
     }
 
     public String excluirRankingUsuario(int idRanking) throws ClassNotFoundException, SQLException {

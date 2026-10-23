@@ -2,6 +2,7 @@ package br.com.fiap.controller;
 
 import br.com.fiap.dao.ConnectionFactory;
 import br.com.fiap.dao.PostDAO;
+import br.com.fiap.to.AcaoTO;
 import br.com.fiap.to.PostTO;
 
 import java.sql.Connection;
@@ -13,10 +14,6 @@ public class PostController {
 
     public String inserirPost(int idPost, String idUsuario, String dsPost, LocalDateTime dtPost, int numUpVotes, int numDownVotes)
             throws ClassNotFoundException, SQLException {
-
-        String resultado;
-        Connection con = ConnectionFactory.abrirConexao();
-
         PostTO postTO = new PostTO();
         postTO.setIdPost(idPost);
         postTO.setIdUsuario(idUsuario);
@@ -26,19 +23,18 @@ public class PostController {
         postTO.setNumDownVotes(numDownVotes);
         postTO.setNumSaldoVotes(); // Atualiza internamente o saldo com base nos up/down votes passados
 
-        PostDAO postDAO = new PostDAO(con);
-        resultado = postDAO.save(postTO);
-
-        ConnectionFactory.fecharConexao();
-        return resultado;
+        PostDAO postDAO = new PostDAO();
+        PostTO resultado = postDAO.save(postTO);
+        System.out.println("LOG: " + resultado);
+        if (resultado != null) {
+            return "Inserido com sucesso";
+        } else {
+            return "Erro a inserir";
+        }
     }
 
     public String alterarPost(int idPost, String idUsuario, String dsPost, LocalDateTime dtPost, int numUpVotes, int numDownVotes)
             throws ClassNotFoundException, SQLException {
-
-        String resultado;
-        Connection con = ConnectionFactory.abrirConexao();
-
         PostTO postTO = new PostTO();
         postTO.setIdPost(idPost);
         postTO.setIdUsuario(idUsuario);
@@ -48,11 +44,14 @@ public class PostController {
         postTO.setNumDownVotes(numDownVotes);
         postTO.setNumSaldoVotes(); // Atualiza internamente o saldo antes de persistir
 
-        PostDAO postDAO = new PostDAO(con);
-        resultado = postDAO.update(postTO.getIdPost(), postTO);
-
-        ConnectionFactory.fecharConexao();
-        return resultado;
+        PostDAO postDAO = new PostDAO();
+        PostTO resultado = postDAO.update(postTO.getIdPost(), postTO);
+        System.out.println("LOG: " + resultado);
+        if (resultado != null) {
+            return "Inserido com sucesso";
+        } else {
+            return "Erro a inserir";
+        }
     }
 
     public String excluirPost(int idPost) throws ClassNotFoundException, SQLException {

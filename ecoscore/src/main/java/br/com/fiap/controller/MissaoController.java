@@ -2,6 +2,7 @@ package br.com.fiap.controller;
 
 import br.com.fiap.dao.ConnectionFactory;
 import br.com.fiap.dao.MissaoDAO; // Certifique-se de que o nome da sua DAO é este
+import br.com.fiap.to.AcaoTO;
 import br.com.fiap.to.MissaoTO;
 
 import java.sql.Connection;
@@ -13,10 +14,6 @@ public class MissaoController {
 
     public String inserirMissao(int idMissao, String nmMissao, String dsMissao, String selo, int qtPontosGerados, LocalDateTime dtMissao)
             throws ClassNotFoundException, SQLException {
-
-        String resultado;
-        Connection con = ConnectionFactory.abrirConexao();
-
         MissaoTO missaoTO = new MissaoTO();
         missaoTO.setIdMissao(idMissao);
         missaoTO.setNmMissao(nmMissao);
@@ -25,19 +22,18 @@ public class MissaoController {
         missaoTO.setQtPontosGerados(qtPontosGerados);
         missaoTO.setDtMissao(dtMissao);
 
-        MissaoDAO missaoDAO = new MissaoDAO(con);
-        resultado = missaoDAO.save(missaoTO);
-
-        ConnectionFactory.fecharConexao();
-        return resultado;
+        MissaoDAO missaoDAO = new MissaoDAO();
+        MissaoTO resultado = missaoDAO.save(missaoTO);
+        System.out.println("LOG: " + resultado);
+        if (resultado != null) {
+            return "Inserido com sucesso";
+        } else {
+            return "Erro a inserir";
+        }
     }
 
     public String alterarMissao(int idMissao, String nmMissao, String dsMissao, String selo, int qtPontosGerados, LocalDateTime dtMissao)
             throws ClassNotFoundException, SQLException {
-
-        String resultado;
-        Connection con = ConnectionFactory.abrirConexao();
-
         MissaoTO missaoTO = new MissaoTO();
         missaoTO.setIdMissao(idMissao);
         missaoTO.setNmMissao(nmMissao);
@@ -46,11 +42,14 @@ public class MissaoController {
         missaoTO.setQtPontosGerados(qtPontosGerados);
         missaoTO.setDtMissao(dtMissao);
 
-        MissaoDAO missaoDAO = new MissaoDAO(con);
-        resultado = missaoDAO.update(missaoTO.getIdMissao(), missaoTO);
-
-        ConnectionFactory.fecharConexao();
-        return resultado;
+        MissaoDAO missaoDAO = new MissaoDAO();
+        MissaoTO resultado = missaoDAO.update(missaoTO.getIdMissao(), missaoTO);
+        System.out.println("LOG: " + resultado);
+        if (resultado != null) {
+            return "Inserido com sucesso";
+        } else {
+            return "Erro a inserir";
+        }
     }
 
     public String excluirMissao(int idMissao) throws ClassNotFoundException, SQLException {

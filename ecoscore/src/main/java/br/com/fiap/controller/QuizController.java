@@ -2,6 +2,7 @@ package br.com.fiap.controller;
 
 import br.com.fiap.dao.ConnectionFactory;
 import br.com.fiap.dao.QuizDAO;
+import br.com.fiap.to.PostTO;
 import br.com.fiap.to.QuizTO;
 
 import java.sql.Connection;
@@ -13,10 +14,6 @@ public class QuizController {
 
     public String inserirQuiz(int idQuiz, String idUsuario, int numQuestoes, int numAcertos, int qtPontosPorQuestao, LocalDateTime dtQuiz)
             throws ClassNotFoundException, SQLException {
-
-        String resultado;
-        Connection con = ConnectionFactory.abrirConexao();
-
         QuizTO quizTO = new QuizTO();
         quizTO.setIdQuiz(idQuiz);
         quizTO.setIdUsuario(idUsuario);
@@ -26,19 +23,18 @@ public class QuizController {
         quizTO.setQtPontosGerados(); // Executa o cálculo interno do DTO antes do insert
         quizTO.setDtQuiz(dtQuiz);
 
-        QuizDAO quizDAO = new QuizDAO(con);
-        resultado = quizDAO.save(quizTO);
-
-        ConnectionFactory.fecharConexao();
-        return resultado;
+        QuizDAO quizDAO = new QuizDAO();
+        QuizTO resultado = quizDAO.save(quizTO);
+        System.out.println("LOG: " + resultado);
+        if (resultado != null) {
+            return "Inserido com sucesso";
+        } else {
+            return "Erro a inserir";
+        }
     }
 
     public String alterarQuiz(int idQuiz, String idUsuario, int numQuestoes, int numAcertos, int qtPontosPorQuestao, LocalDateTime dtQuiz)
             throws ClassNotFoundException, SQLException {
-
-        String resultado;
-        Connection con = ConnectionFactory.abrirConexao();
-
         QuizTO quizTO = new QuizTO();
         quizTO.setIdQuiz(idQuiz);
         quizTO.setIdUsuario(idUsuario);
@@ -48,11 +44,14 @@ public class QuizController {
         quizTO.setQtPontosGerados(); // Atualiza os pontos caso as questões ou acertos tenham mudado
         quizTO.setDtQuiz(dtQuiz);
 
-        QuizDAO quizDAO = new QuizDAO(con);
-        resultado = quizDAO.update(quizTO.getIdQuiz(), quizTO);
-
-        ConnectionFactory.fecharConexao();
-        return resultado;
+        QuizDAO quizDAO = new QuizDAO();
+        QuizTO resultado = quizDAO.update(quizTO.getIdQuiz(), quizTO);
+        System.out.println("LOG: " + resultado);
+        if (resultado != null) {
+            return "Inserido com sucesso";
+        } else {
+            return "Erro a inserir";
+        }
     }
 
     public String excluirQuiz(int idQuiz) throws ClassNotFoundException, SQLException {
