@@ -9,6 +9,10 @@ import java.util.Comparator;
 public class AcaoDAO implements IDAO{
     public AcaoDAO() {}
 
+    public AcaoDAO(Connection con) {
+
+    }
+
     public String inserir(Object object) throws SQLException {
         AcaoTO acaoTO = (AcaoTO) object;
         String sql = "insert into acao(ID_ACAO,usuario_id_usuario, ds_acao, qt_pontosGerados, dt_acao) values(?,?,?,?,?)";
@@ -53,15 +57,15 @@ public class AcaoDAO implements IDAO{
         }
     }
 
-    public String excluir(Object object) throws SQLException {
+    public Boolean excluir(Object object) throws SQLException {
         AcaoTO acaoTO = (AcaoTO) object;
         String sql = "delete from acao where ID_ACAO=?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
             ps.setInt(1, acaoTO.getIdAcao());
             if (ps.executeUpdate() > 0) {
-                return "Excluido com sucesso";
+                return true;
             } else {
-                return "Erro ao excluir";
+                return false;
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());

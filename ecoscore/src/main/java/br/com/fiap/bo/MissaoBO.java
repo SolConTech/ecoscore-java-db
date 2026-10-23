@@ -36,7 +36,7 @@ public class MissaoBO implements IBO{
     }
 
     @Override
-    public Object delete(Object id) throws SQLException {
+    public Boolean delete(Object id) throws SQLException {
         MissaoDAO = new MissaoDAO();
         return MissaoDAO.excluir(id);
     }

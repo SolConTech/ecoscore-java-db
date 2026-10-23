@@ -59,16 +59,16 @@ public class RankingUsuarioDAO implements IDAO{
         }
     }
 
-    public String excluir(Object object) throws SQLException {
+    public Boolean excluir(Object object) throws SQLException {
         RankingUsuarioTO rankingUsuarioTO = (RankingUsuarioTO) object;
         String sql = "delete from ranking_usuario where ID_RANKING=?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
             ps.setInt(1, rankingUsuarioTO.getIdRanking());
 
             if (ps.executeUpdate() > 0) {
-                return "Excluido com sucesso";
+                return true;
             } else {
-                return "Erro ao excluir";
+                return false;
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());

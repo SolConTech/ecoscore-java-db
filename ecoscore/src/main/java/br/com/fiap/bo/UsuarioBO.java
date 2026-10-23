@@ -1,8 +1,6 @@
 package br.com.fiap.bo;
 
-import br.com.fiap.dao.MissaoDAO;
 import br.com.fiap.dao.UsuarioDAO;
-import br.com.fiap.to.MissaoTO;
 import br.com.fiap.to.UsuarioTO;
 
 import java.sql.SQLException;
@@ -38,7 +36,7 @@ public class UsuarioBO implements IBO{
     }
 
     @Override
-    public Object delete(Object id) throws SQLException {
+    public Boolean delete(Object id) throws SQLException {
         UsuarioDAO = new UsuarioDAO();
         return UsuarioDAO.excluir(id);
     }

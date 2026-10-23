@@ -36,7 +36,7 @@ public class QuizBO implements IBO{
     }
 
     @Override
-    public Object delete(Object id) throws SQLException {
+    public Boolean delete(Object id) throws SQLException {
         QuizDAO = new QuizDAO();
         return QuizDAO.excluir(id);
     }

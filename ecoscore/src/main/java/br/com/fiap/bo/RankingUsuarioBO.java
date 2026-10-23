@@ -36,7 +36,7 @@ public class RankingUsuarioBO implements IBO{
     }
 
     @Override
-    public Object delete(Object id) throws SQLException {
+    public Boolean delete(Object id) throws SQLException {
         RankingUsuarioDAO = new RankingUsuarioDAO();
         return RankingUsuarioDAO.excluir(id);
     }

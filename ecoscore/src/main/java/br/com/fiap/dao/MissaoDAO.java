@@ -64,15 +64,15 @@ public class MissaoDAO implements IDAO{
         }
     }
 
-    public String excluir(Object objeto) throws SQLException {
+    public Boolean excluir(Object objeto) throws SQLException {
         MissaoTO missaoTO = (MissaoTO) objeto;
         String sql = "delete from missao where ID_MISSAO=?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
             ps.setInt(1, missaoTO.getIdMissao());
             if (ps.executeUpdate() > 0) {
-                return "Excluido com sucesso";
+                return true;
             } else {
-                return "Erro ao excluir";
+                return false;
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());

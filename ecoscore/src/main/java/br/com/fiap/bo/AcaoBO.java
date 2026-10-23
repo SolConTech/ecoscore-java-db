@@ -37,7 +37,7 @@ public class AcaoBO implements IBO{
     }
 
     @Override
-    public Object delete(Object id) throws SQLException {
+    public Boolean delete(Object id) throws SQLException {
         acaoDAO = new AcaoDAO();
         return acaoDAO.excluir(id);
     }

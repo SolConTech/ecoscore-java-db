@@ -66,16 +66,16 @@ public class QuizDAO implements IDAO{
         }
     }
 
-    public String excluir(Object object) throws SQLException {
+    public Boolean excluir(Object object) throws SQLException {
         QuizTO quizTO = (QuizTO) object;
         String sql = "delete from quiz where ID_QUIZ=?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
             ps.setInt(1, quizTO.getIdQuiz());
 
             if (ps.executeUpdate() > 0) {
-                return "Excluido com sucesso";
+                return true;
             } else {
-                return "Erro ao excluir";
+                return false;
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());

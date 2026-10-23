@@ -66,16 +66,16 @@ public class PostDAO implements IDAO{
         }
     }
 
-    public String excluir(Object object) throws SQLException {
+    public Boolean excluir(Object object) throws SQLException {
         PostTO postTO = (PostTO) object;
         String sql = "delete from post where ID_POST=?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
             ps.setInt(1, postTO.getIdPost());
 
             if (ps.executeUpdate() > 0) {
-                return "Excluido com sucesso";
+                return true;
             } else {
-                return "Erro ao excluir";
+                return false;
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());

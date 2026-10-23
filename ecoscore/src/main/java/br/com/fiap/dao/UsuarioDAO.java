@@ -69,16 +69,16 @@ public class UsuarioDAO implements IDAO{
         }
     }
 
-    public String excluir(Object object) throws SQLException {
+    public Boolean excluir(Object object) throws SQLException {
         UsuarioTO usuarioTO = (UsuarioTO) object;
         String sql = "delete from usuario where ID_USUARIO=?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
             ps.setString(1, usuarioTO.getIdUsuario());
 
             if (ps.executeUpdate() > 0) {
-                return "Excluido com sucesso";
+                return true;
             } else {
-                return "Erro ao excluir";
+                return false;
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
