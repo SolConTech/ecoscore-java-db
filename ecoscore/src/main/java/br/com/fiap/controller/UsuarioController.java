@@ -46,25 +46,27 @@ public class UsuarioController {
         usuarioTO.setSelosGanhos(selosGanhos);
 
         UsuarioDAO usuarioDAO = new UsuarioDAO(con);
-        resultado = usuarioDAO.alterar(, usuarioTO);
+        resultado = usuarioDAO.alterar(usuarioTO.getIdUsuario(), usuarioTO);
 
         ConnectionFactory.fecharConexao();
         return resultado;
     }
 
     public String excluirUsuario(String idUsuario) throws ClassNotFoundException, SQLException {
+        String resultado = "Erro";
 
-        String resultado;
         Connection con = ConnectionFactory.abrirConexao();
 
         UsuarioTO usuarioTO = new UsuarioTO();
         usuarioTO.setIdUsuario(idUsuario);
 
         UsuarioDAO usuarioDAO = new UsuarioDAO(con);
-        resultado = usuarioDAO.excluir(usuarioTO);
 
-        ConnectionFactory.fecharConexao();
-        return resultado;
+        if (usuarioDAO.excluir(usuarioTO.getIdUsuario())){
+            resultado = "Excluido com sucesso";
+        }
+            ConnectionFactory.fecharConexao();
+            return resultado;
     }
 
     public ArrayList<Object> listarTodosUsuario() throws ClassNotFoundException, SQLException {

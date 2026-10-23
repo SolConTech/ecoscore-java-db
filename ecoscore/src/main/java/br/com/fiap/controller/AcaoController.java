@@ -45,7 +45,7 @@ public class AcaoController {
         acaoTO.setDtAcao(dtAcao);
 
         AcaoDAO acaoDAO = new AcaoDAO(con);
-        resultado = acaoDAO.alterar(, acaoTO);
+        resultado = acaoDAO.alterar(acaoTO.getIdUsuario(), acaoTO);
 
         ConnectionFactory.fecharConexao();
         return resultado;
@@ -53,14 +53,14 @@ public class AcaoController {
 
     public String excluirAcao(int idAcao) throws ClassNotFoundException, SQLException {
 
-        String resultado;
+        String resultado = "";
         Connection con = ConnectionFactory.abrirConexao();
 
         AcaoTO acaoTO = new AcaoTO();
         acaoTO.setIdAcao(idAcao);
 
         AcaoDAO acaoDAO = new AcaoDAO(con);
-        resultado = acaoDAO.excluir(acaoTO);
+        acaoDAO.excluir(acaoTO.getIdAcao());
 
         ConnectionFactory.fecharConexao();
         return resultado;

@@ -47,7 +47,7 @@ public class MissaoController {
         missaoTO.setDtMissao(dtMissao);
 
         MissaoDAO missaoDAO = new MissaoDAO(con);
-        resultado = missaoDAO.alterar(, missaoTO);
+        resultado = missaoDAO.alterar(missaoTO.getIdMissao(), missaoTO);
 
         ConnectionFactory.fecharConexao();
         return resultado;
@@ -55,14 +55,14 @@ public class MissaoController {
 
     public String excluirMissao(int idMissao) throws ClassNotFoundException, SQLException {
 
-        String resultado;
+        String resultado = "";
         Connection con = ConnectionFactory.abrirConexao();
 
         MissaoTO missaoTO = new MissaoTO();
         missaoTO.setIdMissao(idMissao);
 
         MissaoDAO missaoDAO = new MissaoDAO(con);
-        resultado = missaoDAO.excluir(missaoTO);
+        missaoDAO.excluir(missaoTO.getIdMissao());
 
         ConnectionFactory.fecharConexao();
         return resultado;

@@ -49,7 +49,7 @@ public class PostController {
         postTO.setNumSaldoVotes(); // Atualiza internamente o saldo antes de persistir
 
         PostDAO postDAO = new PostDAO(con);
-        resultado = postDAO.alterar(, postTO);
+        resultado = postDAO.alterar(postTO.getIdPost(), postTO);
 
         ConnectionFactory.fecharConexao();
         return resultado;
@@ -57,14 +57,14 @@ public class PostController {
 
     public String excluirPost(int idPost) throws ClassNotFoundException, SQLException {
 
-        String resultado;
+        String resultado = "";
         Connection con = ConnectionFactory.abrirConexao();
 
         PostTO postTO = new PostTO();
         postTO.setIdPost(idPost);
 
         PostDAO postDAO = new PostDAO(con);
-        resultado = postDAO.excluir(postTO);
+        postDAO.excluir(postTO.getIdPost());
 
         ConnectionFactory.fecharConexao();
         return resultado;

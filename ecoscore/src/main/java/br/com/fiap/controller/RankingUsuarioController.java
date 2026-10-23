@@ -40,7 +40,7 @@ public class RankingUsuarioController {
         rankingUsuarioTO.setQtVotos(qtVotos);
 
         RankingUsuarioDAO rankingUsuarioDAO = new RankingUsuarioDAO(con);
-        resultado = rankingUsuarioDAO.alterar(, rankingUsuarioTO);
+        resultado = rankingUsuarioDAO.alterar(rankingUsuarioTO.getIdUsuario(), rankingUsuarioTO);
 
         ConnectionFactory.fecharConexao();
         return resultado;
@@ -48,16 +48,16 @@ public class RankingUsuarioController {
 
     public String excluirRankingUsuario(int idRanking) throws ClassNotFoundException, SQLException {
 
-        String resultado;
-        Connection con = ConnectionFactory.abrirConexao();
+        String resultado = "Erro";
 
         RankingUsuarioTO rankingUsuarioTO = new RankingUsuarioTO();
         rankingUsuarioTO.setIdRanking(idRanking);
 
-        RankingUsuarioDAO rankingUsuarioDAO = new RankingUsuarioDAO(con);
-        resultado = rankingUsuarioDAO.excluir(rankingUsuarioTO);
+        RankingUsuarioDAO rankingUsuarioDAO = new RankingUsuarioDAO();
 
-        ConnectionFactory.fecharConexao();
+        if (rankingUsuarioDAO.excluir(rankingUsuarioTO.getIdRanking())){
+            resultado = "Excluido com sucesso";
+        }
         return resultado;
     }
 

@@ -49,7 +49,7 @@ public class QuizController {
         quizTO.setDtQuiz(dtQuiz);
 
         QuizDAO quizDAO = new QuizDAO(con);
-        resultado = quizDAO.alterar(, quizTO);
+        resultado = quizDAO.alterar(quizTO.getIdQuiz(), quizTO);
 
         ConnectionFactory.fecharConexao();
         return resultado;
@@ -57,14 +57,14 @@ public class QuizController {
 
     public String excluirQuiz(int idQuiz) throws ClassNotFoundException, SQLException {
 
-        String resultado;
+        String resultado = "";
         Connection con = ConnectionFactory.abrirConexao();
 
         QuizTO quizTO = new QuizTO();
         quizTO.setIdQuiz(idQuiz);
 
         QuizDAO quizDAO = new QuizDAO(con);
-        resultado = quizDAO.excluir(quizTO);
+        quizDAO.excluir(quizTO.getIdQuiz());
 
         ConnectionFactory.fecharConexao();
         return resultado;
