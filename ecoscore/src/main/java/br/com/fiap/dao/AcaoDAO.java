@@ -13,7 +13,7 @@ public class AcaoDAO implements IDAO{
 
     }
 
-    public String inserir(Object object) throws SQLException {
+    public String save(Object object) throws SQLException {
         AcaoTO acaoTO = (AcaoTO) object;
         String sql = "insert into acao(ID_ACAO,usuario_id_usuario, ds_acao, qt_pontosGerados, dt_acao) values(?,?,?,?,?)";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
@@ -26,7 +26,7 @@ public class AcaoDAO implements IDAO{
             if (ps.executeUpdate() > 0) {
                 return "Inserido com sucesso";
             } else {
-                return "Erro ao inserir";
+                return "Erro ao save";
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
@@ -35,7 +35,7 @@ public class AcaoDAO implements IDAO{
         }
     }
 
-    public String alterar(Object id, Object object) throws SQLException {
+    public String update(Object id, Object object) throws SQLException {
         AcaoTO acaoTO = (AcaoTO) object;
         Integer idAcao = (Integer) id;
         String sql = "update acao set USUARIO_ID_USUARIO=?, DS_ACAO=?, QT_PONTOSGERADOS=?, DT_ACAO=? where ID_ACAO=?";
@@ -48,7 +48,7 @@ public class AcaoDAO implements IDAO{
             if (ps.executeUpdate() > 0) {
                 return "Alterado com sucesso";
             } else {
-                return "Erro ao alterar";
+                return "Erro ao update";
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
@@ -57,7 +57,7 @@ public class AcaoDAO implements IDAO{
         }
     }
 
-    public Boolean excluir(Object object) throws SQLException {
+    public Boolean delete(Object object) throws SQLException {
         AcaoTO acaoTO = (AcaoTO) object;
         String sql = "delete from acao where ID_ACAO=?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
@@ -74,7 +74,7 @@ public class AcaoDAO implements IDAO{
         }
     }
 
-    public ArrayList<Object> listarTodos() throws SQLException {
+    public ArrayList<Object> findAll() throws SQLException {
         String sql = "select * from acao order by USUARIO_ID_USUARIO";
         ArrayList<Object> listaAcao = new ArrayList<>();
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql);
@@ -126,7 +126,7 @@ public class AcaoDAO implements IDAO{
         }
     }
 
-    public AcaoTO listarUm(Object id) throws SQLException {
+    public AcaoTO findById(Object id) throws SQLException {
         String sql = "SELECT * FROM ACAO WHERE ID_ACAO = ?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)){
             ps.setObject(1, id);

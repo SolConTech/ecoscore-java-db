@@ -22,7 +22,7 @@ public class RankingUsuarioController {
         rankingUsuarioTO.setQtVotos(qtVotos);
 
         RankingUsuarioDAO rankingUsuarioDAO = new RankingUsuarioDAO(con);
-        resultado = rankingUsuarioDAO.inserir(rankingUsuarioTO);
+        resultado = rankingUsuarioDAO.save(rankingUsuarioTO);
 
         ConnectionFactory.fecharConexao();
         return resultado;
@@ -40,7 +40,7 @@ public class RankingUsuarioController {
         rankingUsuarioTO.setQtVotos(qtVotos);
 
         RankingUsuarioDAO rankingUsuarioDAO = new RankingUsuarioDAO(con);
-        resultado = rankingUsuarioDAO.alterar(rankingUsuarioTO.getIdUsuario(), rankingUsuarioTO);
+        resultado = rankingUsuarioDAO.update(rankingUsuarioTO.getIdUsuario(), rankingUsuarioTO);
 
         ConnectionFactory.fecharConexao();
         return resultado;
@@ -55,7 +55,7 @@ public class RankingUsuarioController {
 
         RankingUsuarioDAO rankingUsuarioDAO = new RankingUsuarioDAO();
 
-        if (rankingUsuarioDAO.excluir(rankingUsuarioTO.getIdRanking())){
+        if (rankingUsuarioDAO.delete(rankingUsuarioTO.getIdRanking())){
             resultado = "Excluido com sucesso";
         }
         return resultado;
@@ -67,7 +67,7 @@ public class RankingUsuarioController {
         Connection con = ConnectionFactory.abrirConexao();
 
         RankingUsuarioDAO rankingUsuarioDAO = new RankingUsuarioDAO(con);
-        resultado = rankingUsuarioDAO.listarTodos();
+        resultado = rankingUsuarioDAO.findAll();
 
         ConnectionFactory.fecharConexao();
         return resultado;
@@ -80,7 +80,7 @@ public class RankingUsuarioController {
 
         RankingUsuarioDAO rankingUsuarioDAO = new RankingUsuarioDAO(con);
         // Note que no seu DAO, a query filtra usando WHERE ID_USUARIO = ?, por isso o parâmetro aqui é String
-        resultado = (RankingUsuarioTO) rankingUsuarioDAO.listarUm(idUsuario);
+        resultado = (RankingUsuarioTO) rankingUsuarioDAO.findById(idUsuario);
 
         ConnectionFactory.fecharConexao();
         return resultado;

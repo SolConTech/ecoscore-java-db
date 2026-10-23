@@ -25,7 +25,7 @@ public class AcaoController {
         acaoTO.setDtAcao(dtAcao);
 
         AcaoDAO acaoDAO = new AcaoDAO(con);
-        resultado = acaoDAO.inserir(acaoTO);
+        resultado = acaoDAO.save(acaoTO);
 
         ConnectionFactory.fecharConexao();
         return resultado;
@@ -45,7 +45,7 @@ public class AcaoController {
         acaoTO.setDtAcao(dtAcao);
 
         AcaoDAO acaoDAO = new AcaoDAO(con);
-        resultado = acaoDAO.alterar(acaoTO.getIdUsuario(), acaoTO);
+        resultado = acaoDAO.update(acaoTO.getIdUsuario(), acaoTO);
 
         ConnectionFactory.fecharConexao();
         return resultado;
@@ -60,7 +60,7 @@ public class AcaoController {
         acaoTO.setIdAcao(idAcao);
 
         AcaoDAO acaoDAO = new AcaoDAO(con);
-        acaoDAO.excluir(acaoTO.getIdAcao());
+        acaoDAO.delete(acaoTO.getIdAcao());
 
         ConnectionFactory.fecharConexao();
         return resultado;
@@ -72,7 +72,7 @@ public class AcaoController {
         Connection con = ConnectionFactory.abrirConexao();
 
         AcaoDAO acaoDAO = new AcaoDAO(con);
-        resultado = acaoDAO.listarTodos();
+        resultado = acaoDAO.findAll();
 
         ConnectionFactory.fecharConexao();
         return resultado;
@@ -85,7 +85,7 @@ public class AcaoController {
 
         AcaoDAO acaoDAO = new AcaoDAO(con);
         // Passa o idAcao diretamente como o Object esperado pelo seu DAO
-        resultado = (AcaoTO) acaoDAO.listarUm(idAcao);
+        resultado = (AcaoTO) acaoDAO.findById(idAcao);
 
         ConnectionFactory.fecharConexao();
         return resultado;

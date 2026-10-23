@@ -18,7 +18,7 @@ public class RankingUsuarioDAO implements IDAO{
         return con;
     }
 
-    public String inserir(Object object) throws SQLException {
+    public String save(Object object) throws SQLException {
         RankingUsuarioTO rankingUsuarioTO = (RankingUsuarioTO) object;
         String sql = "insert into ranking_usuario(ID_RANKING,ID_USUARIO,QT_VOTOS) values(?,?,?)";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
@@ -29,7 +29,7 @@ public class RankingUsuarioDAO implements IDAO{
             if (ps.executeUpdate() > 0) {
                 return "Inserido com sucesso";
             } else {
-                return "Erro ao inserir";
+                return "Erro ao save";
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
@@ -38,7 +38,7 @@ public class RankingUsuarioDAO implements IDAO{
         }
     }
 
-    public String alterar(Object id, Object object) throws SQLException {
+    public String update(Object id, Object object) throws SQLException {
         RankingUsuarioTO rankingUsuarioTO = (RankingUsuarioTO) object;
         Integer idRanking = (Integer) id;
         String sql = "update ranking_usuario set ID_USUARIO=?, QT_VOTOS=? where ID_RANKING=?";
@@ -50,7 +50,7 @@ public class RankingUsuarioDAO implements IDAO{
             if (ps.executeUpdate() > 0) {
                 return "Alterado com sucesso";
             } else {
-                return "Erro ao alterar";
+                return "Erro ao update";
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
@@ -59,7 +59,7 @@ public class RankingUsuarioDAO implements IDAO{
         }
     }
 
-    public Boolean excluir(Object object) throws SQLException {
+    public Boolean delete(Object object) throws SQLException {
         RankingUsuarioTO rankingUsuarioTO = (RankingUsuarioTO) object;
         String sql = "delete from ranking_usuario where ID_RANKING=?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
@@ -77,7 +77,7 @@ public class RankingUsuarioDAO implements IDAO{
         }
     }
 
-    public ArrayList<Object> listarTodos() throws SQLException {
+    public ArrayList<Object> findAll() throws SQLException {
         String sql = "select * from ranking_usuario order by QT_VOTOS DESC";
         ArrayList<Object> listaRankingUsuario = new ArrayList<>();
 
@@ -107,7 +107,7 @@ public class RankingUsuarioDAO implements IDAO{
         }
     }
 
-    public RankingUsuarioTO listarUm(Object id) throws SQLException {
+    public RankingUsuarioTO findById(Object id) throws SQLException {
         String sql = "SELECT * FROM RANKING_USUARIO WHERE ID_USUARIO = ?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)){
             ps.setObject(1, id);

@@ -13,32 +13,32 @@ public class AcaoBO implements IBO{
     @Override
     public ArrayList<Object> findAll() throws SQLException {
         acaoDAO = new AcaoDAO();
-        return acaoDAO.listarTodos();
+        return acaoDAO.findAll();
     }
 
     @Override
     public Object findById(Object id) throws SQLException {
         acaoDAO = new AcaoDAO();
-        return acaoDAO.listarUm(id);
+        return acaoDAO.findById(id);
     }
 
     @Override
     public Object save(Object body) throws SQLException {
         acaoDAO = new AcaoDAO();
         AcaoTO acaoTO = (AcaoTO) body;
-        return acaoDAO.inserir(acaoTO);
+        return acaoDAO.save(acaoTO);
     }
 
     @Override
     public Object update(Object id, Object body) throws SQLException {
         acaoDAO = new AcaoDAO();
         AcaoTO acaoTO = (AcaoTO) body;
-        return acaoDAO.alterar(id, acaoTO);
+        return acaoDAO.update(id, acaoTO);
     }
 
     @Override
     public Boolean delete(Object id) throws SQLException {
         acaoDAO = new AcaoDAO();
-        return acaoDAO.excluir(id);
+        return acaoDAO.delete(id);
     }
 }

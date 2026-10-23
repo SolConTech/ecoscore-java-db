@@ -19,7 +19,7 @@ public class PostDAO implements IDAO{
         return con;
     }
 
-    public String inserir(Object object) throws SQLException {
+    public String save(Object object) throws SQLException {
         PostTO postTO = (PostTO) object;
         String sql = "insert into post(ID_POST,USUARIO_ID_USUARIO,DS_POST,DT_POST,NUM_UPVOTES,NUM_DOWNVOTES,NUM_SALDOVOTES) values(?,?,?,?,?,?,?)";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
@@ -34,14 +34,14 @@ public class PostDAO implements IDAO{
             if (ps.executeUpdate() > 0) {
                 return "Inserido com sucesso";
             } else {
-                return "Erro ao inserir";
+                return "Erro ao save";
             }
         } catch (SQLException e) {
             return "Erro de SQL: " + e.getMessage();
         }
     }
 
-    public String alterar(Object id, Object object) throws SQLException {
+    public String update(Object id, Object object) throws SQLException {
         PostTO postTO = (PostTO) object;
         Integer idPost = (Integer) id;
         String sql = "update post set USUARIO_ID_USUARIO=?, DS_POST=?, DT_POST=?, NUM_UPVOTES=?, NUM_DOWNVOTES=?, NUM_SALDOVOTES=? where ID_POST=?";
@@ -57,7 +57,7 @@ public class PostDAO implements IDAO{
             if (ps.executeUpdate() > 0) {
                 return "Alterado com sucesso";
             } else {
-                return "Erro ao alterar";
+                return "Erro ao update";
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
@@ -66,7 +66,7 @@ public class PostDAO implements IDAO{
         }
     }
 
-    public Boolean excluir(Object object) throws SQLException {
+    public Boolean delete(Object object) throws SQLException {
         PostTO postTO = (PostTO) object;
         String sql = "delete from post where ID_POST=?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
@@ -84,7 +84,7 @@ public class PostDAO implements IDAO{
         }
     }
 
-    public ArrayList<Object> listarTodos() throws SQLException {
+    public ArrayList<Object> findAll() throws SQLException {
         String sql = "select * from post order by ID_POST";
         ArrayList<Object> listaPost = new ArrayList<>();
 
@@ -141,7 +141,7 @@ public class PostDAO implements IDAO{
         }
     }
 
-    public PostTO listarUm(Object id) throws SQLException {
+    public PostTO findById(Object id) throws SQLException {
         String sql = "SELECT * FROM POST WHERE ID_POST = ?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)){
             ps.setObject(1, id);

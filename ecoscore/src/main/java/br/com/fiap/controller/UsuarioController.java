@@ -25,7 +25,7 @@ public class UsuarioController {
         usuarioTO.setSelosGanhos(selosGanhos);
 
         UsuarioDAO usuarioDAO = new UsuarioDAO(con);
-        resultado = usuarioDAO.inserir(usuarioTO);
+        resultado = usuarioDAO.save(usuarioTO);
 
         ConnectionFactory.fecharConexao();
         return resultado;
@@ -46,7 +46,7 @@ public class UsuarioController {
         usuarioTO.setSelosGanhos(selosGanhos);
 
         UsuarioDAO usuarioDAO = new UsuarioDAO(con);
-        resultado = usuarioDAO.alterar(usuarioTO.getIdUsuario(), usuarioTO);
+        resultado = usuarioDAO.update(usuarioTO.getIdUsuario(), usuarioTO);
 
         ConnectionFactory.fecharConexao();
         return resultado;
@@ -62,7 +62,7 @@ public class UsuarioController {
 
         UsuarioDAO usuarioDAO = new UsuarioDAO(con);
 
-        if (usuarioDAO.excluir(usuarioTO.getIdUsuario())){
+        if (usuarioDAO.delete(usuarioTO.getIdUsuario())){
             resultado = "Excluido com sucesso";
         }
             ConnectionFactory.fecharConexao();
@@ -75,7 +75,7 @@ public class UsuarioController {
         Connection con = ConnectionFactory.abrirConexao();
 
         UsuarioDAO usuarioDAO = new UsuarioDAO(con);
-        resultado = usuarioDAO.listarTodos();
+        resultado = usuarioDAO.findAll();
 
         ConnectionFactory.fecharConexao();
         return resultado;
@@ -91,7 +91,7 @@ public class UsuarioController {
         usuarioTOBusca.setIdUsuario(idUsuario);
 
         UsuarioDAO usuarioDAO = new UsuarioDAO(con);
-        resultado = (UsuarioTO) usuarioDAO.listarUm(usuarioTOBusca);
+        resultado = (UsuarioTO) usuarioDAO.findById(usuarioTOBusca);
 
         ConnectionFactory.fecharConexao();
         return resultado;

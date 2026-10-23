@@ -22,7 +22,7 @@ public class UsuarioDAO implements IDAO{
         return con;
     }
 
-    public String inserir(Object object) throws SQLException {
+    public String save(Object object) throws SQLException {
         UsuarioTO usuarioTO = (UsuarioTO) object;
         String sql = "insert into usuario(ID_USUARIO,NM_USUARIO,VL_MERITO,QT_SOULCOINS,DS_DESCRICAO,SELOS_GANHOS) values(?,?,?,?,?,?)";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
@@ -36,7 +36,7 @@ public class UsuarioDAO implements IDAO{
             if (ps.executeUpdate() > 0) {
                 return "Inserido com sucesso";
             } else {
-                return "Erro ao inserir";
+                return "Erro ao save";
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
@@ -45,7 +45,7 @@ public class UsuarioDAO implements IDAO{
         }
     }
 
-    public String alterar(Object id, Object object) throws SQLException {
+    public String update(Object id, Object object) throws SQLException {
         UsuarioTO usuarioTO = (UsuarioTO) object;
         String idUsuario = (String) id;
         String sql = "update usuario set NM_USUARIO=?, VL_MERITO=?, QT_SOULCOINS=?,DS_DESCRICAO=?,SELOS_GANHOS=? where ID_USUARIO=?";
@@ -60,7 +60,7 @@ public class UsuarioDAO implements IDAO{
             if (ps.executeUpdate() > 0) {
                 return "Alterado com sucesso";
             } else {
-                return "Erro ao alterar";
+                return "Erro ao update";
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
@@ -69,7 +69,7 @@ public class UsuarioDAO implements IDAO{
         }
     }
 
-    public Boolean excluir(Object object) throws SQLException {
+    public Boolean delete(Object object) throws SQLException {
         UsuarioTO usuarioTO = (UsuarioTO) object;
         String sql = "delete from usuario where ID_USUARIO=?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
@@ -87,7 +87,7 @@ public class UsuarioDAO implements IDAO{
         }
     }
 
-    public ArrayList<Object> listarTodos() throws SQLException {
+    public ArrayList<Object> findAll() throws SQLException {
         String sql = "select * from usuario order by ID_USUARIO";
         ArrayList<Object> listaUsuario = new ArrayList<>();
 
@@ -120,7 +120,7 @@ public class UsuarioDAO implements IDAO{
         }
     }
 
-    public Object listarUm(Object id) throws SQLException {
+    public Object findById(Object id) throws SQLException {
         UsuarioTO usuarioTO = (UsuarioTO) id;
         String sql = "SELECT * FROM USUARIO WHERE ID_USUARIO = ?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)){

@@ -27,7 +27,7 @@ public class PostController {
         postTO.setNumSaldoVotes(); // Atualiza internamente o saldo com base nos up/down votes passados
 
         PostDAO postDAO = new PostDAO(con);
-        resultado = postDAO.inserir(postTO);
+        resultado = postDAO.save(postTO);
 
         ConnectionFactory.fecharConexao();
         return resultado;
@@ -49,7 +49,7 @@ public class PostController {
         postTO.setNumSaldoVotes(); // Atualiza internamente o saldo antes de persistir
 
         PostDAO postDAO = new PostDAO(con);
-        resultado = postDAO.alterar(postTO.getIdPost(), postTO);
+        resultado = postDAO.update(postTO.getIdPost(), postTO);
 
         ConnectionFactory.fecharConexao();
         return resultado;
@@ -64,7 +64,7 @@ public class PostController {
         postTO.setIdPost(idPost);
 
         PostDAO postDAO = new PostDAO(con);
-        postDAO.excluir(postTO.getIdPost());
+        postDAO.delete(postTO.getIdPost());
 
         ConnectionFactory.fecharConexao();
         return resultado;
@@ -76,7 +76,7 @@ public class PostController {
         Connection con = ConnectionFactory.abrirConexao();
 
         PostDAO postDAO = new PostDAO(con);
-        resultado = postDAO.listarTodos();
+        resultado = postDAO.findAll();
 
         ConnectionFactory.fecharConexao();
         return resultado;
@@ -88,7 +88,7 @@ public class PostController {
         Connection con = ConnectionFactory.abrirConexao();
 
         PostDAO postDAO = new PostDAO(con);
-        resultado = (PostTO) postDAO.listarUm(idPost);
+        resultado = (PostTO) postDAO.findById(idPost);
 
         ConnectionFactory.fecharConexao();
         return resultado;

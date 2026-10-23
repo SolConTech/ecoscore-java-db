@@ -12,32 +12,32 @@ public class MissaoBO implements IBO{
     @Override
     public ArrayList<Object> findAll() throws SQLException {
         MissaoDAO = new MissaoDAO();
-        return MissaoDAO.listarTodos();
+        return MissaoDAO.findAll();
     }
 
     @Override
     public Object findById(Object id) throws SQLException {
         MissaoDAO = new MissaoDAO();
-        return MissaoDAO.listarUm(id);
+        return MissaoDAO.findById(id);
     }
 
     @Override
     public Object save(Object body) throws SQLException {
         MissaoDAO = new MissaoDAO();
         MissaoTO missaoTO = (MissaoTO) body;
-        return MissaoDAO.inserir(missaoTO);
+        return MissaoDAO.save(missaoTO);
     }
 
     @Override
     public Object update(Object id, Object body) throws SQLException {
         MissaoDAO = new MissaoDAO();
         MissaoTO missaoTO = (MissaoTO) body;
-        return MissaoDAO.alterar(id, missaoTO);
+        return MissaoDAO.update(id, missaoTO);
     }
 
     @Override
     public Boolean delete(Object id) throws SQLException {
         MissaoDAO = new MissaoDAO();
-        return MissaoDAO.excluir(id);
+        return MissaoDAO.delete(id);
     }
 }

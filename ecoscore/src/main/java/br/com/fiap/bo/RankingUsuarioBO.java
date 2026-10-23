@@ -12,32 +12,32 @@ public class RankingUsuarioBO implements IBO{
     @Override
     public ArrayList<Object> findAll() throws SQLException {
         RankingUsuarioDAO = new RankingUsuarioDAO();
-        return RankingUsuarioDAO.listarTodos();
+        return RankingUsuarioDAO.findAll();
     }
 
     @Override
     public Object findById(Object id) throws SQLException {
         RankingUsuarioDAO = new RankingUsuarioDAO();
-        return RankingUsuarioDAO.listarUm(id);
+        return RankingUsuarioDAO.findById(id);
     }
 
     @Override
     public Object save(Object body) throws SQLException {
         RankingUsuarioDAO = new RankingUsuarioDAO();
         RankingUsuarioTO rankingTO = (RankingUsuarioTO) body;
-        return RankingUsuarioDAO.inserir(rankingTO);
+        return RankingUsuarioDAO.save(rankingTO);
     }
 
     @Override
     public Object update(Object id, Object body) throws SQLException {
         RankingUsuarioDAO = new RankingUsuarioDAO();
         RankingUsuarioTO rankingTO = (RankingUsuarioTO) body;
-        return RankingUsuarioDAO.alterar(id, rankingTO);
+        return RankingUsuarioDAO.update(id, rankingTO);
     }
 
     @Override
     public Boolean delete(Object id) throws SQLException {
         RankingUsuarioDAO = new RankingUsuarioDAO();
-        return RankingUsuarioDAO.excluir(id);
+        return RankingUsuarioDAO.delete(id);
     }
 }

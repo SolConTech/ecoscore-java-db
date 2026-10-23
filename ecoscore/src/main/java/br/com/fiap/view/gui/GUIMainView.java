@@ -426,7 +426,7 @@ public class GUIMainView extends JFrame {
                 try {
                     usuarioController = new UsuarioController();
                     usuarioTO = new UsuarioTO();
-                    String id = JOptionPane.showInputDialog("Digite o ID do usuário a excluir: ");
+                    String id = JOptionPane.showInputDialog("Digite o ID do usuário a delete: ");
                     usuarioTO.setIdUsuario(id);
 
                     String resultado = usuarioController.excluirUsuario(usuarioTO.getIdUsuario());
@@ -506,7 +506,7 @@ public class GUIMainView extends JFrame {
                 try {
                     missaoTO = new MissaoTO();
                     missaoController = new MissaoController();
-                    int id = Integer.parseInt(JOptionPane.showInputDialog("Digite o ID da missão a excluir: "));
+                    int id = Integer.parseInt(JOptionPane.showInputDialog("Digite o ID da missão a delete: "));
                     missaoTO.setIdMissao(id);
                     String resultado = missaoController.excluirMissao(missaoTO.getIdMissao());
                     JOptionPane.showMessageDialog(null, resultado, "Missão", JOptionPane.INFORMATION_MESSAGE);
@@ -584,7 +584,7 @@ public class GUIMainView extends JFrame {
                     acaoController = new AcaoController();
                     acaoTO = new AcaoTO();
 
-                    int id = Integer.parseInt(JOptionPane.showInputDialog("Digite o ID da ação a excluir: "));
+                    int id = Integer.parseInt(JOptionPane.showInputDialog("Digite o ID da ação a delete: "));
                     acaoTO.setIdAcao(id);
 
                     String resultado = acaoController.excluirAcao(acaoTO.getIdAcao());
@@ -667,7 +667,7 @@ public class GUIMainView extends JFrame {
                     postController = new PostController();
                     postTO = new PostTO();
 
-                    int id = Integer.parseInt(JOptionPane.showInputDialog("Digite o ID do postTO a excluir: "));
+                    int id = Integer.parseInt(JOptionPane.showInputDialog("Digite o ID do postTO a delete: "));
                     postTO.setIdPost(id);
 
                     String resultado = postController.excluirPost(postTO.getIdPost());
@@ -750,7 +750,7 @@ public class GUIMainView extends JFrame {
                     quizController = new QuizController();
                     quizTO = new QuizTO();
 
-                    int id = Integer.parseInt(JOptionPane.showInputDialog("Digite o ID do quizTO a excluir: "));
+                    int id = Integer.parseInt(JOptionPane.showInputDialog("Digite o ID do quizTO a delete: "));
                     quizTO.setIdQuiz(id);
 
                     String resultado = quizController.excluirQuiz(quizTO.getIdQuiz());

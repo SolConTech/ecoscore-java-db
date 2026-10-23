@@ -19,7 +19,7 @@ public class MissaoDAO implements IDAO{
         return con;
     }
 
-    public String inserir(Object objeto) throws SQLException {
+    public String save(Object objeto) throws SQLException {
         MissaoTO missaoTO = (MissaoTO) objeto;
         String sql = "insert into missao(ID_MISSAO,nm_missao, DS_MISSAO, SELO, qt_pontosGerados, dt_missao) values(?,?,?,?,?,?)";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
@@ -32,7 +32,7 @@ public class MissaoDAO implements IDAO{
             if (ps.executeUpdate() > 0) {
                 return "Inserido com sucesso";
             } else {
-                return "Erro ao inserir";
+                return "Erro ao save";
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
@@ -41,7 +41,7 @@ public class MissaoDAO implements IDAO{
         }
     }
 
-    public String alterar(Object id, Object objeto) throws SQLException {
+    public String update(Object id, Object objeto) throws SQLException {
         MissaoTO missaoTO = (MissaoTO) objeto;
         Integer idMissao = (Integer) id;
         String sql = "update missao set NM_MISSAO=?, DS_MISSAO=?, SELO=?, QT_PONTOSGERADOS=?, DT_MISSAO=? where ID_MISSAO=?";
@@ -55,7 +55,7 @@ public class MissaoDAO implements IDAO{
             if (ps.executeUpdate() > 0) {
                 return "Alterado com sucesso";
             } else {
-                return "Erro ao alterar";
+                return "Erro ao update";
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
@@ -64,7 +64,7 @@ public class MissaoDAO implements IDAO{
         }
     }
 
-    public Boolean excluir(Object objeto) throws SQLException {
+    public Boolean delete(Object objeto) throws SQLException {
         MissaoTO missaoTO = (MissaoTO) objeto;
         String sql = "delete from missao where ID_MISSAO=?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
@@ -81,7 +81,7 @@ public class MissaoDAO implements IDAO{
         }
     }
 
-    public ArrayList<Object> listarTodos() throws SQLException {
+    public ArrayList<Object> findAll() throws SQLException {
         String sql = "select * from missao order by ID_MISSAO";
         ArrayList<Object> listaMissao = new ArrayList<>();
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql);
@@ -110,7 +110,7 @@ public class MissaoDAO implements IDAO{
         }
     }
 
-    public Object listarUm(Object id) throws SQLException {
+    public Object findById(Object id) throws SQLException {
         String sql = "SELECT * FROM MISSAO WHERE ID_MISSAO = ?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)){
             ps.setObject(1, id);

@@ -120,7 +120,7 @@ public class UsuarioTO {
         if (dsAtividade == null || dsAtividade.isBlank()) {
             throw new IllegalArgumentException("A descrição da ação não pode ser vazia");
         }
-        // a vlMerito do usuário deve alterar o recebimento de pontos
+        // a vlMerito do usuário deve update o recebimento de pontos
         if (vlMerito <= 30) {
             // Divide pela metade os pontos recebidos e então arredonda para o inteiro mais próximo pra depois transformar em Inteiro.
             int vlSolconReduzidos = (int) Math.round(qtSoulCoins * 0.5);
@@ -149,7 +149,7 @@ public class UsuarioTO {
         if (selo == null && selo.isBlank()) {
             selo = "N/A"; //não aplicável
         }
-        // a vlMerito do usuário deve alterar o recebimento de pontos
+        // a vlMerito do usuário deve update o recebimento de pontos
         if (vlMerito <= 30) {
             // Divide pela metade os pontos recebidos e então arredonda para o inteiro mais próximo pra depois transformar em Inteiro.
             int vlSolconReduzidos = (int) Math.round(qtSoulCoins * 0.5);

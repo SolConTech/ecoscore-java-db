@@ -12,32 +12,32 @@ public class PostBO implements IBO{
     @Override
     public ArrayList<Object> findAll() throws SQLException {
         PostDAO = new PostDAO();
-        return PostDAO.listarTodos();
+        return PostDAO.findAll();
     }
 
     @Override
     public Object findById(Object id) throws SQLException {
         PostDAO = new PostDAO();
-        return PostDAO.listarUm(id);
+        return PostDAO.findById(id);
     }
 
     @Override
     public Object save(Object body) throws SQLException {
         PostDAO = new PostDAO();
         PostTO postTO = (PostTO) body;
-        return PostDAO.inserir(postTO);
+        return PostDAO.save(postTO);
     }
 
     @Override
     public Object update(Object id, Object body) throws SQLException {
         PostDAO = new PostDAO();
         PostTO postTO = (PostTO) body;
-        return PostDAO.alterar(id, postTO);
+        return PostDAO.update(id, postTO);
     }
 
     @Override
     public Boolean delete(Object id) throws SQLException {
         PostDAO = new PostDAO();
-        return PostDAO.excluir(id);
+        return PostDAO.delete(id);
     }
 }

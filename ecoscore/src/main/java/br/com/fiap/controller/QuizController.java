@@ -27,7 +27,7 @@ public class QuizController {
         quizTO.setDtQuiz(dtQuiz);
 
         QuizDAO quizDAO = new QuizDAO(con);
-        resultado = quizDAO.inserir(quizTO);
+        resultado = quizDAO.save(quizTO);
 
         ConnectionFactory.fecharConexao();
         return resultado;
@@ -49,7 +49,7 @@ public class QuizController {
         quizTO.setDtQuiz(dtQuiz);
 
         QuizDAO quizDAO = new QuizDAO(con);
-        resultado = quizDAO.alterar(quizTO.getIdQuiz(), quizTO);
+        resultado = quizDAO.update(quizTO.getIdQuiz(), quizTO);
 
         ConnectionFactory.fecharConexao();
         return resultado;
@@ -64,7 +64,7 @@ public class QuizController {
         quizTO.setIdQuiz(idQuiz);
 
         QuizDAO quizDAO = new QuizDAO(con);
-        quizDAO.excluir(quizTO.getIdQuiz());
+        quizDAO.delete(quizTO.getIdQuiz());
 
         ConnectionFactory.fecharConexao();
         return resultado;
@@ -76,7 +76,7 @@ public class QuizController {
         Connection con = ConnectionFactory.abrirConexao();
 
         QuizDAO quizDAO = new QuizDAO(con);
-        resultado = quizDAO.listarTodos();
+        resultado = quizDAO.findAll();
 
         ConnectionFactory.fecharConexao();
         return resultado;
@@ -88,7 +88,7 @@ public class QuizController {
         Connection con = ConnectionFactory.abrirConexao();
 
         QuizDAO quizDAO = new QuizDAO(con);
-        resultado = (QuizTO) quizDAO.listarUm(idQuiz);
+        resultado = (QuizTO) quizDAO.findById(idQuiz);
 
         ConnectionFactory.fecharConexao();
         return resultado;

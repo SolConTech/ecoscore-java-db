@@ -19,7 +19,7 @@ public class QuizDAO implements IDAO{
         return con;
     }
 
-    public String inserir(Object object) throws SQLException {
+    public String save(Object object) throws SQLException {
         QuizTO quizTO = (QuizTO) object;
         String sql = "insert into quiz(ID_QUIZ,USUARIO_ID_USUARIO,NUM_QUESTOES,NUM_ACERTOS,QT_PONTOSPORQUESTAO,QT_PONTOSGERADOS,DT_QUIZ) values(?,?,?,?,?,?,?)";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
@@ -34,14 +34,14 @@ public class QuizDAO implements IDAO{
             if (ps.executeUpdate() > 0) {
                 return "Inserido com sucesso";
             } else {
-                return "Erro ao inserir";
+                return "Erro ao save";
             }
         } catch (SQLException e) {
             return "Erro de SQL: " + e.getMessage();
         }
     }
 
-    public String alterar(Object id, Object object) throws SQLException {
+    public String update(Object id, Object object) throws SQLException {
         QuizTO quizTO = (QuizTO) object;
         Integer idQuiz = (Integer) id;
         String sql = "update quiz set USUARIO_ID_USUARIO=?, NUM_QUESTOES=?, NUM_ACERTOS=?, QT_PONTOSPORQUESTAO=?, QT_PONTOSGERADOS=?, DT_QUIZ=? where ID_QUIZ=?";
@@ -57,7 +57,7 @@ public class QuizDAO implements IDAO{
             if (ps.executeUpdate() > 0) {
                 return "Alterado com sucesso";
             } else {
-                return "Erro ao alterar";
+                return "Erro ao update";
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
@@ -66,7 +66,7 @@ public class QuizDAO implements IDAO{
         }
     }
 
-    public Boolean excluir(Object object) throws SQLException {
+    public Boolean delete(Object object) throws SQLException {
         QuizTO quizTO = (QuizTO) object;
         String sql = "delete from quiz where ID_QUIZ=?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
@@ -84,7 +84,7 @@ public class QuizDAO implements IDAO{
         }
     }
 
-    public ArrayList<Object> listarTodos() throws SQLException {
+    public ArrayList<Object> findAll() throws SQLException {
         String sql = "select * from quiz order by ID_QUIZ";
         ArrayList<Object> listaQuiz = new ArrayList<>();
 
@@ -143,7 +143,7 @@ public class QuizDAO implements IDAO{
         }
     }
 
-    public QuizTO listarUm(Object id) throws SQLException {
+    public QuizTO findById(Object id) throws SQLException {
         String sql = "SELECT * FROM QUIZ WHERE ID_QUIZ = ?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)){
             ps.setObject(1, id);
