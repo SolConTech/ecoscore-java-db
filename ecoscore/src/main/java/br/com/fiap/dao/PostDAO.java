@@ -19,7 +19,7 @@ public class PostDAO implements IDAO{
         return con;
     }
 
-    public String save(Object object) throws SQLException {
+    public PostTO save(Object object) throws SQLException {
         PostTO postTO = (PostTO) object;
         String sql = "insert into post(ID_POST,USUARIO_ID_USUARIO,DS_POST,DT_POST,NUM_UPVOTES,NUM_DOWNVOTES,NUM_SALDOVOTES) values(?,?,?,?,?,?,?)";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
@@ -32,16 +32,18 @@ public class PostDAO implements IDAO{
             ps.setInt(7, postTO.getNumSaldoVotes());
 
             if (ps.executeUpdate() > 0) {
-                return "Inserido com sucesso";
+                return postTO;
             } else {
-                return "Erro ao save";
+                return null;
             }
         } catch (SQLException e) {
-            return "Erro de SQL: " + e.getMessage();
+            throw new SQLException("Erro de SQL: " + e.getMessage());
+        } finally {
+            ConnectionFactory.fecharConexao();
         }
     }
 
-    public String update(Object id, Object object) throws SQLException {
+    public PostTO update(Object id, Object object) throws SQLException {
         PostTO postTO = (PostTO) object;
         Integer idPost = (Integer) id;
         String sql = "update post set USUARIO_ID_USUARIO=?, DS_POST=?, DT_POST=?, NUM_UPVOTES=?, NUM_DOWNVOTES=?, NUM_SALDOVOTES=? where ID_POST=?";
@@ -55,9 +57,9 @@ public class PostDAO implements IDAO{
             ps.setInt(7, idPost);
 
             if (ps.executeUpdate() > 0) {
-                return "Alterado com sucesso";
+                return postTO;
             } else {
-                return "Erro ao update";
+                return null;
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());

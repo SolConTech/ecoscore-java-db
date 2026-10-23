@@ -18,7 +18,7 @@ public class RankingUsuarioDAO implements IDAO{
         return con;
     }
 
-    public String save(Object object) throws SQLException {
+    public RankingUsuarioTO save(Object object) throws SQLException {
         RankingUsuarioTO rankingUsuarioTO = (RankingUsuarioTO) object;
         String sql = "insert into ranking_usuario(ID_RANKING,ID_USUARIO,QT_VOTOS) values(?,?,?)";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
@@ -27,9 +27,9 @@ public class RankingUsuarioDAO implements IDAO{
             ps.setInt(3, rankingUsuarioTO.getQtVotos());
 
             if (ps.executeUpdate() > 0) {
-                return "Inserido com sucesso";
+                return rankingUsuarioTO;
             } else {
-                return "Erro ao save";
+                return null;
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
@@ -38,7 +38,7 @@ public class RankingUsuarioDAO implements IDAO{
         }
     }
 
-    public String update(Object id, Object object) throws SQLException {
+    public RankingUsuarioTO update(Object id, Object object) throws SQLException {
         RankingUsuarioTO rankingUsuarioTO = (RankingUsuarioTO) object;
         Integer idRanking = (Integer) id;
         String sql = "update ranking_usuario set ID_USUARIO=?, QT_VOTOS=? where ID_RANKING=?";
@@ -48,9 +48,9 @@ public class RankingUsuarioDAO implements IDAO{
             ps.setInt(3, idRanking);
 
             if (ps.executeUpdate() > 0) {
-                return "Alterado com sucesso";
+                return rankingUsuarioTO;
             } else {
-                return "Erro ao update";
+                return null;
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());

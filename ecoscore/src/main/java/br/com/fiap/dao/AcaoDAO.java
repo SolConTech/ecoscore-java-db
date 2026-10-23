@@ -13,7 +13,7 @@ public class AcaoDAO implements IDAO{
 
     }
 
-    public String save(Object object) throws SQLException {
+    public AcaoTO save(Object object) throws SQLException {
         AcaoTO acaoTO = (AcaoTO) object;
         String sql = "insert into acao(ID_ACAO,usuario_id_usuario, ds_acao, qt_pontosGerados, dt_acao) values(?,?,?,?,?)";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
@@ -24,9 +24,9 @@ public class AcaoDAO implements IDAO{
             //pesquisei e esse é o melhor para datas com horas e minutos o driver vai transformar em data, tentei dar parse e não foi
             ps.setObject(5, acaoTO.getDtAcao());
             if (ps.executeUpdate() > 0) {
-                return "Inserido com sucesso";
+                return acaoTO;
             } else {
-                return "Erro ao save";
+                return null;
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
@@ -35,7 +35,7 @@ public class AcaoDAO implements IDAO{
         }
     }
 
-    public String update(Object id, Object object) throws SQLException {
+    public AcaoTO update(Object id, Object object) throws SQLException {
         AcaoTO acaoTO = (AcaoTO) object;
         Integer idAcao = (Integer) id;
         String sql = "update acao set USUARIO_ID_USUARIO=?, DS_ACAO=?, QT_PONTOSGERADOS=?, DT_ACAO=? where ID_ACAO=?";
@@ -46,9 +46,9 @@ public class AcaoDAO implements IDAO{
             ps.setObject(4, acaoTO.getDtAcao());
             ps.setInt(5, idAcao);
             if (ps.executeUpdate() > 0) {
-                return "Alterado com sucesso";
+                return acaoTO;
             } else {
-                return "Erro ao update";
+                return null;
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());

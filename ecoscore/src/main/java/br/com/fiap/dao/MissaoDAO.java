@@ -19,7 +19,7 @@ public class MissaoDAO implements IDAO{
         return con;
     }
 
-    public String save(Object objeto) throws SQLException {
+    public MissaoTO save(Object objeto) throws SQLException {
         MissaoTO missaoTO = (MissaoTO) objeto;
         String sql = "insert into missao(ID_MISSAO,nm_missao, DS_MISSAO, SELO, qt_pontosGerados, dt_missao) values(?,?,?,?,?,?)";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
@@ -30,9 +30,9 @@ public class MissaoDAO implements IDAO{
             ps.setInt(5, missaoTO.getQtPontosGerados());
             ps.setObject(6, missaoTO.getDtMissao());
             if (ps.executeUpdate() > 0) {
-                return "Inserido com sucesso";
+                return missaoTO;
             } else {
-                return "Erro ao save";
+                return null;
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
@@ -41,7 +41,7 @@ public class MissaoDAO implements IDAO{
         }
     }
 
-    public String update(Object id, Object objeto) throws SQLException {
+    public MissaoTO update(Object id, Object objeto) throws SQLException {
         MissaoTO missaoTO = (MissaoTO) objeto;
         Integer idMissao = (Integer) id;
         String sql = "update missao set NM_MISSAO=?, DS_MISSAO=?, SELO=?, QT_PONTOSGERADOS=?, DT_MISSAO=? where ID_MISSAO=?";
@@ -53,9 +53,9 @@ public class MissaoDAO implements IDAO{
             ps.setObject(5, missaoTO.getDtMissao());
             ps.setInt(6, idMissao);
             if (ps.executeUpdate() > 0) {
-                return "Alterado com sucesso";
+                return missaoTO;
             } else {
-                return "Erro ao update";
+                return null;
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());

@@ -19,7 +19,7 @@ public class QuizDAO implements IDAO{
         return con;
     }
 
-    public String save(Object object) throws SQLException {
+    public QuizTO save(Object object) throws SQLException {
         QuizTO quizTO = (QuizTO) object;
         String sql = "insert into quiz(ID_QUIZ,USUARIO_ID_USUARIO,NUM_QUESTOES,NUM_ACERTOS,QT_PONTOSPORQUESTAO,QT_PONTOSGERADOS,DT_QUIZ) values(?,?,?,?,?,?,?)";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
@@ -32,16 +32,18 @@ public class QuizDAO implements IDAO{
             ps.setObject(7, quizTO.getDtQuiz());
 
             if (ps.executeUpdate() > 0) {
-                return "Inserido com sucesso";
+                return quizTO;
             } else {
-                return "Erro ao save";
+                return null;
             }
         } catch (SQLException e) {
-            return "Erro de SQL: " + e.getMessage();
+            throw new SQLException("Erro de SQL: " + e.getMessage());
+        } finally {
+            ConnectionFactory.fecharConexao();
         }
     }
 
-    public String update(Object id, Object object) throws SQLException {
+    public QuizTO update(Object id, Object object) throws SQLException {
         QuizTO quizTO = (QuizTO) object;
         Integer idQuiz = (Integer) id;
         String sql = "update quiz set USUARIO_ID_USUARIO=?, NUM_QUESTOES=?, NUM_ACERTOS=?, QT_PONTOSPORQUESTAO=?, QT_PONTOSGERADOS=?, DT_QUIZ=? where ID_QUIZ=?";
@@ -55,9 +57,9 @@ public class QuizDAO implements IDAO{
             ps.setInt(7, idQuiz);
 
             if (ps.executeUpdate() > 0) {
-                return "Alterado com sucesso";
+                return quizTO;
             } else {
-                return "Erro ao update";
+                return null;
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());

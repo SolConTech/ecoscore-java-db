@@ -22,7 +22,7 @@ public class UsuarioDAO implements IDAO{
         return con;
     }
 
-    public String save(Object object) throws SQLException {
+    public UsuarioTO save(Object object) throws SQLException {
         UsuarioTO usuarioTO = (UsuarioTO) object;
         String sql = "insert into usuario(ID_USUARIO,NM_USUARIO,VL_MERITO,QT_SOULCOINS,DS_DESCRICAO,SELOS_GANHOS) values(?,?,?,?,?,?)";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
@@ -34,9 +34,9 @@ public class UsuarioDAO implements IDAO{
             ps.setString(6, usuarioTO.getSelosGanhos());
 
             if (ps.executeUpdate() > 0) {
-                return "Inserido com sucesso";
+                return usuarioTO;
             } else {
-                return "Erro ao save";
+                return null;
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
@@ -45,7 +45,7 @@ public class UsuarioDAO implements IDAO{
         }
     }
 
-    public String update(Object id, Object object) throws SQLException {
+    public UsuarioTO update(Object id, Object object) throws SQLException {
         UsuarioTO usuarioTO = (UsuarioTO) object;
         String idUsuario = (String) id;
         String sql = "update usuario set NM_USUARIO=?, VL_MERITO=?, QT_SOULCOINS=?,DS_DESCRICAO=?,SELOS_GANHOS=? where ID_USUARIO=?";
@@ -58,9 +58,9 @@ public class UsuarioDAO implements IDAO{
             ps.setString(6, idUsuario);
 
             if (ps.executeUpdate() > 0) {
-                return "Alterado com sucesso";
+                return usuarioTO;
             } else {
-                return "Erro ao update";
+                return null;
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
