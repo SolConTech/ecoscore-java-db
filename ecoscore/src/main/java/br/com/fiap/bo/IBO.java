@@ -1,5 +1,8 @@
 package br.com.fiap.bo;
 
+import br.com.fiap.dao.IDAO;
+import br.com.fiap.resource.IResource;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -8,6 +11,8 @@ import java.util.ArrayList;
  * Define as operações padrão de CRUD para classe Business Object (BO).
  * @author murilo-a-souza
  * @since Java 21
+ * @see IDAO
+ * @see br.com.fiap.resource.IResource
  */
 public interface IBO {
 
@@ -15,6 +20,8 @@ public interface IBO {
      * Recupera todos os registros cadastrados daquele TO.
      * @return Uma lista contendo os objetos TO encontrados |
      * lista vazia se não houverem objetos correspondentes.
+     * @see IDAO#listarTodos()
+     * @see IResource#findAll() 
      */
     public ArrayList<Object> findAll() throws SQLException;
 
@@ -23,6 +30,8 @@ public interface IBO {
      *
      * @param id O identificador (chave primária no banco) do registro.
      * @return O objeto TO correspondente ao ID informado.
+     * @see IDAO#listarUm(Object)
+     * @see IResource#findById(Object) 
      */
     public Object findById(Object id) throws SQLException;
 
@@ -30,6 +39,8 @@ public interface IBO {
      * Salva um novo registro na base de dados.
      * @param body O objeto TO contendo os dados a serem registrado.
      * @return O objeto salvo, com o ID gerado, se tudo deu certo.
+     * @see IDAO#inserir(Object)
+     * @see IResource#save(Object) 
      */
     public Object save(Object body) throws SQLException;
 
@@ -38,6 +49,8 @@ public interface IBO {
      * @param id O identificador do registro que será atualizado (PK no banco).
      * @param body O objeto TO com os novos dados estruturados.
      * @return O objeto atualizado com sucesso.
+     * @see IDAO#alterar(Object, Object)
+     * @see IResource#update(Object, Object) 
      */
     public Object update(Object id, Object body) throws SQLException;
 
@@ -45,6 +58,8 @@ public interface IBO {
      * Remove um registro da base de dados.
      * @param id O identificador do registro a ser excluído (PK no banco).
      * @return O objeto TO que foi removido.
+     * @see IDAO#excluir(Object)
+     * @see IResource#delete(Object)
      */
-    public Object delete(Object id) throws SQLException;
+    public Boolean delete(Object id) throws SQLException;
 }

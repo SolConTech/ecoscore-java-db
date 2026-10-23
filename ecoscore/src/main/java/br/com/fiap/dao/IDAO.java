@@ -25,7 +25,7 @@ public interface IDAO {
      * @param objeto Um objeto de uma tabela correspondente
      * @return Mensagem de resultado da operação
      */
-    public String excluir(Object objeto) throws SQLException;
+    public Boolean excluir(Object objeto) throws SQLException;
 
     /**
      * Lista todos os registros do banco
