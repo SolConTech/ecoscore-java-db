@@ -1,5 +1,7 @@
 package br.com.fiap.dao;
 
+import io.github.cdimascio.dotenv.Dotenv;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -13,10 +15,12 @@ public class ConnectionFactory {
                 return connection;
             }
             Class.forName("oracle.jdbc.driver.OracleDriver");
-            //busca dados de conexão nas variaveis de ambiente
-            String url = System.getenv("DB_URL");
-            String user = System.getenv("DB_USER");
-            String pass = System.getenv("DB_PASSWORD");
+
+            //busca dados de conexão nas variaveis de ambiente, se .env não existir ignora
+            Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
+            String url = dotenv.get("DB_URL");
+            String user = dotenv.get("DB_USER");
+            String pass = dotenv.get("DB_PASSWORD");
             if (url == null || user == null || pass == null) {
                 throw new RuntimeException("Variáveis de ambiente do banco não configuradas");
             }
@@ -31,11 +35,11 @@ public class ConnectionFactory {
 
     public static void fecharConexao() throws SQLException{
         try {
-            if (!connection.isClosed()) {
+            if (connection != null && !connection.isClosed()) {
                 connection.close();
             }
-        } catch (Exception e) {
-            System.out.println("Erro: " + e.getMessage());
+        } catch (SQLException e) {
+            System.out.println("Erro ao fechar conexão: " + e.getMessage());
         }
     }
 
