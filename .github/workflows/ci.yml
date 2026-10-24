@@ -19,6 +19,10 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    # CORREÇÃO DO ERRO 403: Concede permissão para a API de Dependency Submission
+    permissions:
+      contents: write
+
     steps:
     - uses: actions/checkout@v4
     - name: Set up JDK 21
