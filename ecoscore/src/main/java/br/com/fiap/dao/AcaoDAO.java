@@ -16,7 +16,7 @@ public class AcaoDAO implements IDAO{
             ps.setString(2, acaoTO.getDsAcao());
             ps.setInt(3, acaoTO.getQtPontosGerados());
             //pesquisei e esse é o melhor para datas com horas e minutos o driver vai transformar em data, tentei dar parse e não foi
-            ps.setObject(5, acaoTO.getDtAcao());
+            ps.setObject(4, acaoTO.getDtAcao());
             if (ps.executeUpdate() > 0) {
                 return acaoTO;
             } else {

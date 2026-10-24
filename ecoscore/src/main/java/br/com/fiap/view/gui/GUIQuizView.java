@@ -116,6 +116,10 @@ public class GUIQuizView extends JFrame {
                 usuarioController = new UsuarioController();
 
                 try {
+                    quizTO.setNumQuestoes(Integer.parseInt(tfNumQuestoes.getText()));
+                    quizTO.setNumAcertos(Integer.parseInt(tfNumAcertos.getText()));
+                    quizTO.setQtPontosPorQuestao(Integer.parseInt(tfQtPontosPorQuestao.getText()));
+                    quizTO.setQtPontosGerados();
                     quizTO.setIdUsuario(usuarioTO.getIdUsuario());
 
                     usuarioTO.registrarAtividade(quizTO.detalhesQuiz(),

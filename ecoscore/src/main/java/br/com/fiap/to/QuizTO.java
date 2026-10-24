@@ -16,7 +16,9 @@ public class QuizTO {
     private int qtPontosGerados;
     private LocalDateTime dtQuiz;
 
-    public QuizTO() {}
+    public QuizTO() {
+        this.dtQuiz = LocalDateTime.now();
+    }
     public QuizTO(int idQuiz, String idUsuario, int numQuestoes, int numAcertos, int qtPontosPorQuestao) {
         this.idQuiz = idQuiz;
         this.idUsuario = idUsuario;
