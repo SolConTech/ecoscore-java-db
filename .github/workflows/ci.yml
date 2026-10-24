@@ -27,8 +27,12 @@ jobs:
         java-version: '21'
         distribution: 'temurin'
         cache: maven
+        # CORREÇÃO: Diz ao GitHub onde encontrar o arquivo para gerenciar o cache corretamente
+        cache-dependency-path: 'ecoscore/pom.xml'
     - name: Build with Maven
-      run: mvn -B package --file pom.xml
+      run: |
+        cd ecoscore
+        mvn -B package --file pom.xml
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     - name: Update dependency graph
