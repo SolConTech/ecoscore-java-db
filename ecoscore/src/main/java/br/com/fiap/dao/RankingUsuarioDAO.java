@@ -4,7 +4,6 @@ import br.com.fiap.to.RankingUsuarioTO;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 public class RankingUsuarioDAO implements IDAO{
 
@@ -51,11 +50,11 @@ public class RankingUsuarioDAO implements IDAO{
         }
     }
 
-    public Boolean delete(Object object) throws SQLException {
-        RankingUsuarioTO rankingUsuarioTO = (RankingUsuarioTO) object;
+    public Boolean delete(Object id) throws SQLException {
+        Integer idRanking = (Integer) id;
         String sql = "delete from ranking_usuario where ID_RANKING=?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
-            ps.setInt(1, rankingUsuarioTO.getIdRanking());
+            ps.setInt(1, idRanking);
 
             if (ps.executeUpdate() > 0) {
                 return true;

@@ -55,11 +55,11 @@ public class MissaoDAO implements IDAO{
         }
     }
 
-    public Boolean delete(Object objeto) throws SQLException {
-        MissaoTO missaoTO = (MissaoTO) objeto;
+    public Boolean delete(Object id) throws SQLException {
+        Integer idMissao = (Integer) id;
         String sql = "delete from missao where ID_MISSAO=?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
-            ps.setInt(1, missaoTO.getIdMissao());
+            ps.setInt(1, idMissao);
             if (ps.executeUpdate() > 0) {
                 return true;
             } else {

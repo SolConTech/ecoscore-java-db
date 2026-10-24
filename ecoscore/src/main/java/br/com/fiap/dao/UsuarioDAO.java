@@ -2,12 +2,10 @@ package br.com.fiap.dao;
 
 import br.com.fiap.to.UsuarioTO;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 public class UsuarioDAO implements IDAO{
 
@@ -60,11 +58,11 @@ public class UsuarioDAO implements IDAO{
         }
     }
 
-    public Boolean delete(Object object) throws SQLException {
-        UsuarioTO usuarioTO = (UsuarioTO) object;
+    public Boolean delete(Object id) throws SQLException {
+        String idUsuario = (String) id;
         String sql = "delete from usuario where ID_USUARIO=?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
-            ps.setString(1, usuarioTO.getIdUsuario());
+            ps.setString(1, idUsuario);
 
             if (ps.executeUpdate() > 0) {
                 return true;

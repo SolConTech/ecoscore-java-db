@@ -22,10 +22,10 @@ public interface IDAO {
 
     /**
      * Exclui um registro na tabela do banco de dados
-     * @param objeto Um objeto de uma tabela correspondente
+     * @param id Um id de uma tabela correspondente
      * @return Mensagem de resultado da operação
      */
-    public Boolean delete(Object objeto) throws SQLException;
+    public Boolean delete(Object id) throws SQLException;
 
     /**
      * Lista todos os registros do banco

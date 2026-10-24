@@ -4,7 +4,6 @@ import br.com.fiap.to.PostTO;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 public class PostDAO implements IDAO{
 
@@ -59,11 +58,11 @@ public class PostDAO implements IDAO{
         }
     }
 
-    public Boolean delete(Object object) throws SQLException {
-        PostTO postTO = (PostTO) object;
+    public Boolean delete(Object id) throws SQLException {
+        Integer idPost = (Integer) id;
         String sql = "delete from post where ID_POST=?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
-            ps.setInt(1, postTO.getIdPost());
+            ps.setInt(1, idPost);
 
             if (ps.executeUpdate() > 0) {
                 return true;

@@ -4,7 +4,6 @@ import br.com.fiap.to.QuizTO;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 public class QuizDAO implements IDAO{
 
@@ -59,11 +58,11 @@ public class QuizDAO implements IDAO{
         }
     }
 
-    public Boolean delete(Object object) throws SQLException {
-        QuizTO quizTO = (QuizTO) object;
+    public Boolean delete(Object id) throws SQLException {
+        Integer idQuiz = (Integer) id;
         String sql = "delete from quiz where ID_QUIZ=?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
-            ps.setInt(1, quizTO.getIdQuiz());
+            ps.setInt(1, idQuiz);
 
             if (ps.executeUpdate() > 0) {
                 return true;

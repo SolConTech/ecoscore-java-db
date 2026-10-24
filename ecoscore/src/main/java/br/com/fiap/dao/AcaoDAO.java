@@ -4,7 +4,6 @@ import br.com.fiap.to.AcaoTO;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 public class AcaoDAO implements IDAO{
     public AcaoDAO() {}
@@ -53,11 +52,11 @@ public class AcaoDAO implements IDAO{
         }
     }
 
-    public Boolean delete(Object object) throws SQLException {
-        AcaoTO acaoTO = (AcaoTO) object;
+    public Boolean delete(Object id) throws SQLException {
+        Integer idAcao = (Integer) id;
         String sql = "delete from acao where ID_ACAO=?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
-            ps.setInt(1, acaoTO.getIdAcao());
+            ps.setInt(1, idAcao);
             if (ps.executeUpdate() > 0) {
                 return true;
             } else {
