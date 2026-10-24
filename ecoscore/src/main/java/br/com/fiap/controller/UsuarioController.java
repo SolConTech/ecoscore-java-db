@@ -71,7 +71,7 @@ public class UsuarioController {
     public UsuarioTO pegarUmUsuario(String idUsuario) throws ClassNotFoundException, SQLException {
         UsuarioTO resultado;
         UsuarioDAO usuarioDAO = new UsuarioDAO();
-        resultado = (UsuarioTO) usuarioDAO.findById(idUsuario);
+        resultado = usuarioDAO.findById(idUsuario);
         return resultado;
     }
 }

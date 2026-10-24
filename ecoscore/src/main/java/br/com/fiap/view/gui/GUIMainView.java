@@ -19,7 +19,6 @@ public class GUIMainView extends JFrame {
     private MissaoTO missaoTO;
     private PostTO postTO;
     private QuizTO quizTO;
-    private CalculadoraPontos calculadora = new CalculadoraPontos();
     private RankingUsuarioTO ranking;
     private UsuarioController usuarioController;
     private AcaoController acaoController;

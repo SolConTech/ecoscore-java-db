@@ -111,14 +111,14 @@ public class UsuarioDAO implements IDAO{
         }
     }
 
-    public Object findById(Object id) throws SQLException {
-        UsuarioTO usuarioTO = (UsuarioTO) id;
+    public UsuarioTO findById(Object id) throws SQLException {
+        String idUsuario = (String) id;
         String sql = "SELECT * FROM USUARIO WHERE ID_USUARIO = ?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)){
-            ps.setObject(1, usuarioTO.getIdUsuario());
+            ps.setString(1, idUsuario);
             try (ResultSet rs = ps.executeQuery()){
                 if (rs.next()){
-                    usuarioTO = new UsuarioTO();
+                    UsuarioTO usuarioTO = new UsuarioTO();
                     usuarioTO.setIdUsuario(rs.getString(1));
                     usuarioTO.setNmUsuario(rs.getString(2));
                     usuarioTO.setVlMerito(rs.getFloat(3));
