@@ -91,12 +91,4 @@ public class MissaoController {
         return resultado;
     }
 
-    public int criarIdMissao() throws ClassNotFoundException, SQLException {
-        int resultado;
-        Connection con = ConnectionFactory.abrirConexao();
-        MissaoDAO missaoDAO = new MissaoDAO(con);
-        resultado = (int) missaoDAO.criarId();
-        ConnectionFactory.fecharConexao();
-        return resultado;
-    }
 }

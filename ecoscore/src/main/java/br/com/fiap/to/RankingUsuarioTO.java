@@ -9,7 +9,7 @@ public class RankingUsuarioTO {
     private int qtVotos;
 
     public RankingUsuarioTO() {}
-    public RankingUsuarioTO(int idRanking, String idUsuario, int qtVotos) {
+    public RankingUsuarioTO(String idUsuario, int qtVotos) {
         this.idRanking = idRanking;
         this.idUsuario = idUsuario;
         this.qtVotos = qtVotos;

@@ -116,7 +116,6 @@ public class GUIQuizView extends JFrame {
                 usuarioController = new UsuarioController();
 
                 try {
-                    quizTO.setIdQuiz(quizController.criarIdQuiz());
                     quizTO.setIdUsuario(usuarioTO.getIdUsuario());
 
                     usuarioTO.registrarAtividade(quizTO.detalhesQuiz(),

@@ -122,29 +122,6 @@ public class QuizDAO implements IDAO{
         }
     }
 
-    public Integer criarId() throws SQLException{
-        String sql = "SELECT ID_QUIZ FROM QUIZ";
-        ArrayList<Integer> listaIds = new ArrayList<Integer>();
-        try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-            if (rs != null) {
-                while (rs.next()) {
-                    int id = rs.getInt(1);
-                    listaIds.add(id);
-                }
-                //o orElse serve para não retornar 0«nada se a lista estiver vazia, o max retorna Integer
-                Integer id = listaIds.stream().max(Comparator.naturalOrder()).orElse(null);
-                return id+1;
-            } else {
-                return null;
-            }
-        } catch (SQLException e) {
-            throw new SQLException("Erro de SQL: " + e.getMessage());
-        } finally {
-            ConnectionFactory.fecharConexao();
-        }
-    }
-
     public QuizTO findById(Object id) throws SQLException {
         String sql = "SELECT * FROM QUIZ WHERE ID_QUIZ = ?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)){

@@ -92,13 +92,4 @@ public class QuizController {
         ConnectionFactory.fecharConexao();
         return resultado;
     }
-
-    public int criarIdQuiz() throws ClassNotFoundException, SQLException {
-        int resultado;
-        Connection con = ConnectionFactory.abrirConexao();
-        QuizDAO quizDAO = new QuizDAO(con);
-        resultado = quizDAO.criarId();
-        ConnectionFactory.fecharConexao();
-        return resultado;
-    }
 }

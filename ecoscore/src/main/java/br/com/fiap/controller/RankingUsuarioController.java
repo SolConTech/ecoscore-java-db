@@ -84,12 +84,4 @@ public class RankingUsuarioController {
         return resultado;
     }
 
-    public int criarIdRanking() throws ClassNotFoundException, SQLException {
-        int resultado;
-        Connection con = ConnectionFactory.abrirConexao();
-        RankingUsuarioDAO rankingUsuarioDAO = new RankingUsuarioDAO(con);
-        resultado = (int) rankingUsuarioDAO.criarId();
-        ConnectionFactory.fecharConexao();
-        return resultado;
-    }
 }

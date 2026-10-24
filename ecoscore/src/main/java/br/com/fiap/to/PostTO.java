@@ -17,7 +17,7 @@ public class PostTO {
     private int numSaldoVotes = 0; //começa em zero
 
     public PostTO() {}
-    public PostTO(int idPost, String idUsuario, String dsPost) {
+    public PostTO(String idUsuario, String dsPost) {
         this.idPost = idPost;
         setIdUsuario(idUsuario);
         dtPost = LocalDateTime.now();

@@ -113,7 +113,6 @@ public class GUIAcaoView extends JFrame {
                     //conferir se ds descrição está certa
                     acaoTO.setDsAcao(tfDsAcao.getText());
                     if (! acaoTO.getDsAcao().isBlank()){
-                        acaoTO.setIdAcao(acaoController.criarIdAcao());
                         acaoTO.setIdUsuario(usuarioTO.getIdUsuario());
                         acaoTO.setDtAcao(LocalDateTime.now());
 
