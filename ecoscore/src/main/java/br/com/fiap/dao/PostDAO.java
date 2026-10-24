@@ -7,17 +7,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 public class PostDAO implements IDAO{
-    private Connection con;
 
     public PostDAO() {}
-    public PostDAO(Connection con) {
-        this.con = con;
-    }
-
-    public Connection getCon() {
-
-        return con;
-    }
 
     public PostTO save(Object object) throws SQLException {
         PostTO postTO = (PostTO) object;

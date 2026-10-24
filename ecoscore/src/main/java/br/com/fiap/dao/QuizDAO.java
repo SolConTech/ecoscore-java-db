@@ -7,17 +7,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 public class QuizDAO implements IDAO{
-    private Connection con;
 
     public QuizDAO() {}
-    public QuizDAO(Connection con) {
-        this.con = con;
-    }
-
-    public Connection getCon() {
-
-        return con;
-    }
 
     public QuizTO save(Object object) throws SQLException {
         QuizTO quizTO = (QuizTO) object;

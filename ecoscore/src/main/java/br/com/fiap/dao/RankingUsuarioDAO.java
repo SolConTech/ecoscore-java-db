@@ -7,16 +7,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 public class RankingUsuarioDAO implements IDAO{
-    private Connection con;
 
     public RankingUsuarioDAO() {}
-    public RankingUsuarioDAO(Connection con) {
-        this.con = con;
-    }
-
-    public Connection getCon() {
-        return con;
-    }
 
     public RankingUsuarioTO save(Object object) throws SQLException {
         RankingUsuarioTO rankingUsuarioTO = (RankingUsuarioTO) object;

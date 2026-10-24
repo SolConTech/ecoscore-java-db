@@ -7,17 +7,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 public class MissaoDAO implements IDAO{
-    private Connection con;
 
     public MissaoDAO() {}
-    public MissaoDAO(Connection con) {
-        this.con = con;
-    }
-
-    public Connection getCon() {
-        
-        return con;
-    }
 
     public MissaoTO save(Object objeto) throws SQLException {
         MissaoTO missaoTO = (MissaoTO) objeto;

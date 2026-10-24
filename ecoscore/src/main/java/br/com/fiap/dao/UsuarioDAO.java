@@ -10,17 +10,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 public class UsuarioDAO implements IDAO{
-    private Connection con;
 
     public UsuarioDAO() {}
-    public UsuarioDAO(Connection con) {
-        this.con = con;
-    }
-
-    public Connection getCon() {
-
-        return con;
-    }
 
     public UsuarioTO save(Object object) throws SQLException {
         UsuarioTO usuarioTO = (UsuarioTO) object;

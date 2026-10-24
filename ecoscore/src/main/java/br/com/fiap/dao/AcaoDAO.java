@@ -9,10 +9,6 @@ import java.util.Comparator;
 public class AcaoDAO implements IDAO{
     public AcaoDAO() {}
 
-    public AcaoDAO(Connection con) {
-
-    }
-
     public AcaoTO save(Object object) throws SQLException {
         AcaoTO acaoTO = (AcaoTO) object;
         String sql = "insert into acao(ID_ACAO,usuario_id_usuario, ds_acao, qt_pontosGerados, dt_acao) values(?,?,?,?,?)";
