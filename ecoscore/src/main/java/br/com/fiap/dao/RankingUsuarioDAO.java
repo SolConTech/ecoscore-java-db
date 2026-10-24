@@ -11,11 +11,10 @@ public class RankingUsuarioDAO implements IDAO{
 
     public RankingUsuarioTO save(Object object) throws SQLException {
         RankingUsuarioTO rankingUsuarioTO = (RankingUsuarioTO) object;
-        String sql = "insert into ranking_usuario(ID_RANKING,ID_USUARIO,QT_VOTOS) values(?,?,?)";
+        String sql = "insert into ranking_usuario(ID_USUARIO,QT_VOTOS) values(?,?)";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
-            ps.setInt(1, rankingUsuarioTO.getIdRanking());
-            ps.setString(2, rankingUsuarioTO.getIdUsuario());
-            ps.setInt(3, rankingUsuarioTO.getQtVotos());
+            ps.setString(1, rankingUsuarioTO.getIdUsuario());
+            ps.setInt(2, rankingUsuarioTO.getQtVotos());
 
             if (ps.executeUpdate() > 0) {
                 return rankingUsuarioTO;

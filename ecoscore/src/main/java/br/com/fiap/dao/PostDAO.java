@@ -11,15 +11,14 @@ public class PostDAO implements IDAO{
 
     public PostTO save(Object object) throws SQLException {
         PostTO postTO = (PostTO) object;
-        String sql = "insert into post(ID_POST,USUARIO_ID_USUARIO,DS_POST,DT_POST,NUM_UPVOTES,NUM_DOWNVOTES,NUM_SALDOVOTES) values(?,?,?,?,?,?,?)";
+        String sql = "insert into post(USUARIO_ID_USUARIO,DS_POST,DT_POST,NUM_UPVOTES,NUM_DOWNVOTES,NUM_SALDOVOTES) values(?,?,?,?,?,?)";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
-            ps.setInt(1, postTO.getIdPost());
-            ps.setString(2, postTO.getIdUsuario());
-            ps.setString(3, postTO.getDsPost());
-            ps.setObject(4, postTO.getDtPost());
-            ps.setInt(5, postTO.getNumUpVotes());
-            ps.setInt(6, postTO.getNumDownVotes());
-            ps.setInt(7, postTO.getNumSaldoVotes());
+            ps.setString(1, postTO.getIdUsuario());
+            ps.setString(2, postTO.getDsPost());
+            ps.setObject(3, postTO.getDtPost());
+            ps.setInt(4, postTO.getNumUpVotes());
+            ps.setInt(5, postTO.getNumDownVotes());
+            ps.setInt(6, postTO.getNumSaldoVotes());
 
             if (ps.executeUpdate() > 0) {
                 return postTO;

@@ -12,14 +12,13 @@ public class MissaoDAO implements IDAO{
 
     public MissaoTO save(Object objeto) throws SQLException {
         MissaoTO missaoTO = (MissaoTO) objeto;
-        String sql = "insert into missao(ID_MISSAO,nm_missao, DS_MISSAO, SELO, qt_pontosGerados, dt_missao) values(?,?,?,?,?,?)";
+        String sql = "insert into missao(nm_missao, DS_MISSAO, SELO, qt_pontosGerados, dt_missao) values(?,?,?,?,?)";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
-            ps.setInt(1, missaoTO.getIdMissao());
-            ps.setString(2, missaoTO.getNmMissao());
-            ps.setString(3, missaoTO.getDsMissao());
-            ps.setString(4, missaoTO.getSelo());
-            ps.setInt(5, missaoTO.getQtPontosGerados());
-            ps.setObject(6, missaoTO.getDtMissao());
+            ps.setString(1, missaoTO.getNmMissao());
+            ps.setString(2, missaoTO.getDsMissao());
+            ps.setString(3, missaoTO.getSelo());
+            ps.setInt(4, missaoTO.getQtPontosGerados());
+            ps.setObject(5, missaoTO.getDtMissao());
             if (ps.executeUpdate() > 0) {
                 return missaoTO;
             } else {

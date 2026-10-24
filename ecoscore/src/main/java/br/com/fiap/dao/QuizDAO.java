@@ -11,15 +11,14 @@ public class QuizDAO implements IDAO{
 
     public QuizTO save(Object object) throws SQLException {
         QuizTO quizTO = (QuizTO) object;
-        String sql = "insert into quiz(ID_QUIZ,USUARIO_ID_USUARIO,NUM_QUESTOES,NUM_ACERTOS,QT_PONTOSPORQUESTAO,QT_PONTOSGERADOS,DT_QUIZ) values(?,?,?,?,?,?,?)";
+        String sql = "insert into quiz(USUARIO_ID_USUARIO,NUM_QUESTOES,NUM_ACERTOS,QT_PONTOSPORQUESTAO,QT_PONTOSGERADOS,DT_QUIZ) values(?,?,?,?,?,?)";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
-            ps.setInt(1, quizTO.getIdQuiz());
-            ps.setString(2, quizTO.getIdUsuario());
-            ps.setInt(3, quizTO.getNumQuestoes());
-            ps.setInt(4, quizTO.getNumAcertos());
-            ps.setInt(5, quizTO.getQtPontosPorQuestao());
-            ps.setInt(6, quizTO.getQtPontosGerados());
-            ps.setObject(7, quizTO.getDtQuiz());
+            ps.setString(1, quizTO.getIdUsuario());
+            ps.setInt(2, quizTO.getNumQuestoes());
+            ps.setInt(3, quizTO.getNumAcertos());
+            ps.setInt(4, quizTO.getQtPontosPorQuestao());
+            ps.setInt(5, quizTO.getQtPontosGerados());
+            ps.setObject(6, quizTO.getDtQuiz());
 
             if (ps.executeUpdate() > 0) {
                 return quizTO;

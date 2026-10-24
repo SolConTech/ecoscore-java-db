@@ -10,12 +10,11 @@ public class AcaoDAO implements IDAO{
 
     public AcaoTO save(Object object) throws SQLException {
         AcaoTO acaoTO = (AcaoTO) object;
-        String sql = "insert into acao(ID_ACAO,usuario_id_usuario, ds_acao, qt_pontosGerados, dt_acao) values(?,?,?,?,?)";
+        String sql = "insert into acao(usuario_id_usuario, ds_acao, qt_pontosGerados, dt_acao) values(?,?,?,?)";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
-            ps.setInt(1, acaoTO.getIdAcao());
-            ps.setString(2, acaoTO.getIdUsuario());
-            ps.setString(3, acaoTO.getDsAcao());
-            ps.setInt(4, acaoTO.getQtPontosGerados());
+            ps.setString(1, acaoTO.getIdUsuario());
+            ps.setString(2, acaoTO.getDsAcao());
+            ps.setInt(3, acaoTO.getQtPontosGerados());
             //pesquisei e esse é o melhor para datas com horas e minutos o driver vai transformar em data, tentei dar parse e não foi
             ps.setObject(5, acaoTO.getDtAcao());
             if (ps.executeUpdate() > 0) {
