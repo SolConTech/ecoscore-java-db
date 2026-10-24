@@ -29,7 +29,7 @@ public class AcaoController {
         }
     }
 
-    public String alterarAcao(int idAcao, String idUsuario, String dsAcao, int qtPontosGerados, LocalDateTime dtAcao)
+    public String alterarAcao(Integer idAcao, String idUsuario, String dsAcao, int qtPontosGerados, LocalDateTime dtAcao)
             throws ClassNotFoundException, SQLException {
         AcaoTO acaoTO = new AcaoTO();
         acaoTO.setIdUsuario(idUsuario);
@@ -47,7 +47,7 @@ public class AcaoController {
         }
     }
 
-    public String excluirAcao(int idAcao) throws ClassNotFoundException, SQLException {
+    public String excluirAcao(Integer idAcao) throws ClassNotFoundException, SQLException {
         AcaoDAO acaoDAO = new AcaoDAO();
         boolean resultado = acaoDAO.delete(idAcao);
         System.out.println("LOG: " + resultado);
@@ -65,7 +65,7 @@ public class AcaoController {
         return resultado;
     }
 
-    public AcaoTO pegarUmAcao(int idAcao) throws ClassNotFoundException, SQLException {
+    public AcaoTO pegarUmAcao(Integer idAcao) throws ClassNotFoundException, SQLException {
         AcaoTO resultado;
         AcaoDAO acaoDAO = new AcaoDAO();
         resultado = acaoDAO.findById(idAcao);

@@ -4,7 +4,7 @@ package br.com.fiap.to;
  * Cada registro de um usuário do ranking
  */
 public class RankingUsuarioTO {
-    private int idRanking;
+    private Integer idRanking;
     private String idUsuario;
     private int qtVotos;
 
@@ -15,10 +15,10 @@ public class RankingUsuarioTO {
         this.qtVotos = qtVotos;
     }
 
-    public int getIdRanking() {
+    public Integer getIdRanking() {
         return idRanking;
     }
-    public void setIdRanking(int idRanking) throws IllegalArgumentException{
+    public void setIdRanking(Integer idRanking) throws IllegalArgumentException{
         if (idRanking < 0) { //não pode ser negativo
             throw new IllegalArgumentException("Valor do ID não pode ser negativo.");
         }

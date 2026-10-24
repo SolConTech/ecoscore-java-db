@@ -29,7 +29,7 @@ public class PostController {
         }
     }
 
-    public String alterarPost(int idPost, String idUsuario, String dsPost, LocalDateTime dtPost, int numUpVotes, int numDownVotes)
+    public String alterarPost(Integer idPost, String idUsuario, String dsPost, LocalDateTime dtPost, int numUpVotes, int numDownVotes)
             throws ClassNotFoundException, SQLException {
         PostTO postTO = new PostTO();
         postTO.setIdUsuario(idUsuario);
@@ -49,7 +49,7 @@ public class PostController {
         }
     }
 
-    public String excluirPost(int idPost) throws ClassNotFoundException, SQLException {
+    public String excluirPost(Integer idPost) throws ClassNotFoundException, SQLException {
         PostDAO postDAO = new PostDAO();
         boolean resultado = postDAO.delete(idPost);
         System.out.println("LOG: " + resultado);
@@ -67,7 +67,7 @@ public class PostController {
         return resultado;
     }
 
-    public PostTO pegarUmPost(int idPost) throws ClassNotFoundException, SQLException {
+    public PostTO pegarUmPost(Integer idPost) throws ClassNotFoundException, SQLException {
         PostTO resultado;
         PostDAO postDAO = new PostDAO();
         resultado = postDAO.findById(idPost);

@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
  * @since Java 21
  */
 public class QuizTO {
-    private int idQuiz;
+    private Integer idQuiz;
     private String idUsuario;
     private int numQuestoes;
     private int numAcertos;
@@ -27,10 +27,10 @@ public class QuizTO {
         this.dtQuiz = LocalDateTime.now();
     }
 
-    public int getIdQuiz() {
+    public Integer getIdQuiz() {
         return idQuiz;
     }
-    public void setIdQuiz(int idQuiz) throws IllegalArgumentException{
+    public void setIdQuiz(Integer idQuiz) throws IllegalArgumentException{
         if (idQuiz < 0) { //não pode ser negativo
             throw new IllegalArgumentException("Valor do ID não pode ser negativo.");
         }

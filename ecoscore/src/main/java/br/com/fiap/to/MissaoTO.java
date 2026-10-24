@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
  * @since Java 21
  */
 public class MissaoTO {
-    private int idMissao;
+    private Integer idMissao;
     private String nmMissao;
     private String dsMissao;
     private String selo; //demonstração infelizmente não sei se consigo exibir os selos dps.
@@ -25,10 +25,10 @@ public class MissaoTO {
         dtMissao = LocalDateTime.now();
     }
 
-    public int getIdMissao() {
+    public Integer getIdMissao() {
         return idMissao;
     }
-    public void setIdMissao(int idMissao) throws IllegalArgumentException{
+    public void setIdMissao(Integer idMissao) throws IllegalArgumentException{
         if (idMissao < 0) { //não pode ser negativo
             throw new IllegalArgumentException("Valor do ID não pode ser negativo.");
         }

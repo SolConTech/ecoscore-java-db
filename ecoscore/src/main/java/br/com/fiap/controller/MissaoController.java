@@ -28,7 +28,7 @@ public class MissaoController {
         }
     }
 
-    public String alterarMissao(int idMissao, String nmMissao, String dsMissao, String selo, int qtPontosGerados, LocalDateTime dtMissao)
+    public String alterarMissao(Integer idMissao, String nmMissao, String dsMissao, String selo, int qtPontosGerados, LocalDateTime dtMissao)
             throws ClassNotFoundException, SQLException {
         MissaoTO missaoTO = new MissaoTO();
         missaoTO.setNmMissao(nmMissao);
@@ -47,7 +47,7 @@ public class MissaoController {
         }
     }
 
-    public String excluirMissao(int idMissao) throws ClassNotFoundException, SQLException {
+    public String excluirMissao(Integer idMissao) throws ClassNotFoundException, SQLException {
         MissaoDAO missaoDAO = new MissaoDAO();
         boolean resultado = missaoDAO.delete(idMissao);
         System.out.println("LOG: " + resultado);
@@ -65,7 +65,7 @@ public class MissaoController {
         return resultado;
     }
 
-    public MissaoTO pegarUmMissao(int idMissao) throws ClassNotFoundException, SQLException {
+    public MissaoTO pegarUmMissao(Integer idMissao) throws ClassNotFoundException, SQLException {
         MissaoTO resultado;
         MissaoDAO missaoDAO = new MissaoDAO();
         resultado = missaoDAO.findById(idMissao);

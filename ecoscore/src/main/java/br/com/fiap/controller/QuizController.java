@@ -29,7 +29,7 @@ public class QuizController {
         }
     }
 
-    public String alterarQuiz(int idQuiz, String idUsuario, int numQuestoes, int numAcertos, int qtPontosPorQuestao, LocalDateTime dtQuiz)
+    public String alterarQuiz(Integer idQuiz, String idUsuario, int numQuestoes, int numAcertos, int qtPontosPorQuestao, LocalDateTime dtQuiz)
             throws ClassNotFoundException, SQLException {
         QuizTO quizTO = new QuizTO();
         quizTO.setIdUsuario(idUsuario);
@@ -49,7 +49,7 @@ public class QuizController {
         }
     }
 
-    public String excluirQuiz(int idQuiz) throws ClassNotFoundException, SQLException {
+    public String excluirQuiz(Integer idQuiz) throws ClassNotFoundException, SQLException {
         QuizDAO quizDAO = new QuizDAO();
         boolean resultado = quizDAO.delete(idQuiz);
         System.out.println("LOG: " + resultado);
@@ -67,7 +67,7 @@ public class QuizController {
         return resultado;
     }
 
-    public QuizTO pegarUmQuiz(int idQuiz) throws ClassNotFoundException, SQLException {
+    public QuizTO pegarUmQuiz(Integer idQuiz) throws ClassNotFoundException, SQLException {
         QuizTO resultado;
         QuizDAO quizDAO = new QuizDAO();
         resultado = quizDAO.findById(idQuiz);
