@@ -126,7 +126,7 @@ public class GUIQuizView extends JFrame {
                                                      usuarioTO.getVlMerito(), usuarioTO.getQtSoulCoins(),
                                                      usuarioTO.getDsAtividadeRecente(), usuarioTO.getSelosGanhos());
 
-                    String resultado = quizController.inserirQuiz(quizTO.getIdQuiz(), quizTO.getIdUsuario(), quizTO.getNumQuestoes(), quizTO.getNumAcertos(), quizTO.getQtPontosPorQuestao(), quizTO.getDtQuiz());
+                    String resultado = quizController.inserirQuiz(quizTO.getIdUsuario(), quizTO.getNumQuestoes(), quizTO.getNumAcertos(), quizTO.getQtPontosPorQuestao(), quizTO.getDtQuiz());
                     JOptionPane.showMessageDialog(null, resultado,"Conexão",JOptionPane.INFORMATION_MESSAGE);
                 } catch (SQLException e) {
                     JOptionPane.showMessageDialog(null, e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);

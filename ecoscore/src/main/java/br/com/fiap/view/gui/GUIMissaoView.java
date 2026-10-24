@@ -89,7 +89,7 @@ public class GUIMissaoView extends JFrame {
                         usuarioTO.registrarAtividade(missaoTO.detalhesMissao(),
                                                    missaoTO.getQtPontosGerados(),
                                                    missaoTO.getSelo());
-                        String resultado = missaoController.inserirMissao(missaoTO.getIdMissao(), missaoTO.getNmMissao(),
+                        String resultado = missaoController.inserirMissao(missaoTO.getNmMissao(),
                                                                           missaoTO.getDsMissao(), missaoTO.getSelo(),
                                                                           missaoTO.getQtPontosGerados(), missaoTO.getDtMissao());
 

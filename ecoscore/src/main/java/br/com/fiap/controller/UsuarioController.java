@@ -51,47 +51,27 @@ public class UsuarioController {
     }
 
     public String excluirUsuario(String idUsuario) throws ClassNotFoundException, SQLException {
-        String resultado = "Erro";
-
-        Connection con = ConnectionFactory.abrirConexao();
-
-        UsuarioTO usuarioTO = new UsuarioTO();
-        usuarioTO.setIdUsuario(idUsuario);
-
-        UsuarioDAO usuarioDAO = new UsuarioDAO(con);
-
-        if (usuarioDAO.delete(usuarioTO.getIdUsuario())){
-            resultado = "Excluido com sucesso";
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
+        boolean resultado = usuarioDAO.delete(idUsuario);
+        System.out.println("LOG: " + resultado);
+        if (resultado) {
+            return "Deletado com sucesso";
+        } else {
+            return "Erro ao deletar";
         }
-            ConnectionFactory.fecharConexao();
-            return resultado;
     }
 
     public ArrayList<Object> listarTodosUsuario() throws ClassNotFoundException, SQLException {
-
         ArrayList<Object> resultado;
-        Connection con = ConnectionFactory.abrirConexao();
-
-        UsuarioDAO usuarioDAO = new UsuarioDAO(con);
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
         resultado = usuarioDAO.findAll();
-
-        ConnectionFactory.fecharConexao();
         return resultado;
     }
 
     public UsuarioTO pegarUmUsuario(String idUsuario) throws ClassNotFoundException, SQLException {
-
         UsuarioTO resultado;
-        Connection con = ConnectionFactory.abrirConexao();
-
-        // Criando o objeto contendo o ID exigido pelo cast interno da sua UsuarioDAO
-        UsuarioTO usuarioTOBusca = new UsuarioTO();
-        usuarioTOBusca.setIdUsuario(idUsuario);
-
-        UsuarioDAO usuarioDAO = new UsuarioDAO(con);
-        resultado = (UsuarioTO) usuarioDAO.findById(usuarioTOBusca);
-
-        ConnectionFactory.fecharConexao();
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
+        resultado = (UsuarioTO) usuarioDAO.findById(idUsuario);
         return resultado;
     }
 }

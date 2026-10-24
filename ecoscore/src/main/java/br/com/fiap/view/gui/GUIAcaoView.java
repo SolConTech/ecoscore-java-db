@@ -118,7 +118,7 @@ public class GUIAcaoView extends JFrame {
 
                         usuarioTO.registrarAtividade(acaoTO.detalhesAcao(),
                                 acaoTO.getQtPontosGerados());
-                        String resultado = acaoController.inserirAcao(acaoTO.getIdAcao(), acaoTO.getIdUsuario(), acaoTO.getDsAcao(), acaoTO.getQtPontosGerados(), acaoTO.getDtAcao());
+                        String resultado = acaoController.inserirAcao(acaoTO.getIdUsuario(), acaoTO.getDsAcao(), acaoTO.getQtPontosGerados(), acaoTO.getDtAcao());
 
                         usuarioController = new UsuarioController();
                         usuarioController.alterarUsuario(usuarioTO.getIdUsuario(), usuarioTO.getNmUsuario(), usuarioTO.getVlMerito(), usuarioTO.getQtSoulCoins(), usuarioTO.getDsAtividadeRecente(), usuarioTO.getSelosGanhos());

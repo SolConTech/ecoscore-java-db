@@ -101,7 +101,7 @@ public class MissaoDAO implements IDAO{
         }
     }
 
-    public Object findById(Object id) throws SQLException {
+    public MissaoTO findById(Object id) throws SQLException {
         String sql = "SELECT * FROM MISSAO WHERE ID_MISSAO = ?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)){
             ps.setObject(1, id);
