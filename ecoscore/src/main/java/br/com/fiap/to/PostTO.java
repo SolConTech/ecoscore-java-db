@@ -1,5 +1,7 @@
 package br.com.fiap.to;
 
+import jakarta.validation.constraints.NotBlank;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -19,6 +21,7 @@ public class PostTO {
     public PostTO() {}
     public PostTO(String idUsuario, String dsPost) {
         this.idPost = idPost;
+        this.dsPost = dsPost;
         setIdUsuario(idUsuario);
         dtPost = LocalDateTime.now();
     }
