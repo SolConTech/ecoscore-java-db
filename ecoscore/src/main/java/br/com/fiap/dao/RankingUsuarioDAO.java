@@ -30,12 +30,11 @@ public class RankingUsuarioDAO implements IDAO{
 
     public RankingUsuarioTO update(Object id, Object object) throws SQLException {
         RankingUsuarioTO rankingUsuarioTO = (RankingUsuarioTO) object;
-        Integer idRanking = (Integer) id;
         String sql = "update ranking_usuario set ID_USUARIO=?, QT_VOTOS=? where ID_RANKING=?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
-            ps.setString(1, rankingUsuarioTO.getIdUsuario());
             ps.setInt(2, rankingUsuarioTO.getQtVotos());
-            ps.setInt(3, idRanking);
+            ps.setString(1, rankingUsuarioTO.getIdUsuario());
+            ps.setInt(3, Integer.parseInt((String) id));
 
             if (ps.executeUpdate() > 0) {
                 return rankingUsuarioTO;
@@ -50,10 +49,10 @@ public class RankingUsuarioDAO implements IDAO{
     }
 
     public Boolean delete(Object id) throws SQLException {
-        Integer idRanking = (Integer) id;
-        String sql = "delete from ranking_usuario where ID_RANKING=?";
+        String idUsuario = (String) id;
+        String sql = "delete from ranking_usuario where ID_USUARIO=?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
-            ps.setInt(1, idRanking);
+            ps.setString(1, idUsuario);
 
             if (ps.executeUpdate() > 0) {
                 return true;
@@ -98,9 +97,10 @@ public class RankingUsuarioDAO implements IDAO{
     }
 
     public RankingUsuarioTO findById(Object id) throws SQLException {
+        String idRanking = (String) id;
         String sql = "SELECT * FROM RANKING_USUARIO WHERE ID_USUARIO = ?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)){
-            ps.setObject(1, id);
+            ps.setString(1, idRanking);
             try (ResultSet rs = ps.executeQuery()){
                 if (rs.next()){
                     RankingUsuarioTO ranking = new RankingUsuarioTO();

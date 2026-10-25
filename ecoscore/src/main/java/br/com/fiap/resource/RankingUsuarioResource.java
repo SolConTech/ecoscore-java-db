@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/ranking")
-public class RankingUsuarioResource implements IResource<Integer, RankingUsuarioTO>{
+public class RankingUsuarioResource implements IResource<String, RankingUsuarioTO>{
     RankingUsuarioBO rankingUsuarioBO = new RankingUsuarioBO();
 
     @GetMapping
@@ -31,7 +31,7 @@ public class RankingUsuarioResource implements IResource<Integer, RankingUsuario
 
     @GetMapping("/{id}")
     @Override
-    public ResponseEntity<?> findById(@PathVariable Integer id) {
+    public ResponseEntity<?> findById(@PathVariable String id) {
         try {
             RankingUsuarioTO rankingUsuarioTO = (RankingUsuarioTO) rankingUsuarioBO.findById(id);
             if (rankingUsuarioTO != null) {
@@ -61,7 +61,7 @@ public class RankingUsuarioResource implements IResource<Integer, RankingUsuario
 
     @PutMapping("/{id}")
     @Override
-    public ResponseEntity<?> update(@PathVariable Integer id, @Valid @RequestBody RankingUsuarioTO body) {
+    public ResponseEntity<?> update(@PathVariable String id, @Valid @RequestBody RankingUsuarioTO body) {
         try {
             RankingUsuarioTO rankingUsuario = (RankingUsuarioTO) rankingUsuarioBO.update(id, body);
             if (rankingUsuario != null) {
@@ -76,7 +76,7 @@ public class RankingUsuarioResource implements IResource<Integer, RankingUsuario
 
     @DeleteMapping("/{id}")
     @Override
-    public ResponseEntity<String> delete(@PathVariable Integer id) {
+    public ResponseEntity<String> delete(@PathVariable String id) {
         try {
             if (rankingUsuarioBO.delete(id)) {
                 return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Ranking deletado!");
