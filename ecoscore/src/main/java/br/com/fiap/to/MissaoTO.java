@@ -16,7 +16,7 @@ public class MissaoTO {
     private LocalDateTime dtMissao;
 
     public MissaoTO() {}
-    public MissaoTO(int idMissao, String nmMissao, String dsMissao, String selo, int qtPontosGerados) {
+    public MissaoTO(Integer idMissao, String nmMissao, String dsMissao, String selo, int qtPontosGerados) {
         this.idMissao = idMissao;
         this.nmMissao = nmMissao;
         this.dsMissao = dsMissao;

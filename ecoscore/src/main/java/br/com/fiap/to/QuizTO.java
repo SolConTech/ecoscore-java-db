@@ -19,7 +19,7 @@ public class QuizTO {
     public QuizTO() {
         this.dtQuiz = LocalDateTime.now();
     }
-    public QuizTO(int idQuiz, String idUsuario, int numQuestoes, int numAcertos, int qtPontosPorQuestao) {
+    public QuizTO(Integer idQuiz, String idUsuario, int numQuestoes, int numAcertos, int qtPontosPorQuestao) {
         this.idQuiz = idQuiz;
         this.idUsuario = idUsuario;
         setNumQuestoes(numQuestoes);

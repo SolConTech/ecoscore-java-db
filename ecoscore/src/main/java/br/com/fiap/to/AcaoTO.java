@@ -21,7 +21,7 @@ public class AcaoTO {
         this.dsAcao = dsAcao;
         dtAcao = LocalDateTime.now();
     }
-    public AcaoTO(int idAcao, String idUsuario, String dsAcao) {
+    public AcaoTO(Integer idAcao, String idUsuario, String dsAcao) {
         this.idAcao = idAcao;
         this.idUsuario = idUsuario;
         this.dsAcao = dsAcao;
