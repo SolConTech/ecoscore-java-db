@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/acao")
-public class AcaoResource implements IResource<AcaoTO>{
+public class AcaoResource implements IResource<Integer, AcaoTO>{
     AcaoBO acaoBO = new AcaoBO();
 
     @GetMapping
@@ -31,7 +31,7 @@ public class AcaoResource implements IResource<AcaoTO>{
 
     @GetMapping("/{id}")
     @Override
-    public ResponseEntity<?> findById(@PathVariable Object id) {
+    public ResponseEntity<?> findById(@PathVariable Integer id) {
         try {
             AcaoTO acaoTO = (AcaoTO) acaoBO.findById(id);
             if (acaoTO != null) {
@@ -61,7 +61,7 @@ public class AcaoResource implements IResource<AcaoTO>{
 
     @PutMapping("/{id}")
     @Override
-    public ResponseEntity<?> update(@PathVariable Object id, @Valid @RequestBody AcaoTO body) {
+    public ResponseEntity<?> update(@PathVariable Integer id, @Valid @RequestBody AcaoTO body) {
         try {
             AcaoTO acao = (AcaoTO) acaoBO.update(id, body);
             if (acao != null) {
@@ -76,7 +76,7 @@ public class AcaoResource implements IResource<AcaoTO>{
 
     @DeleteMapping("/{id}")
     @Override
-    public ResponseEntity<String> delete(@PathVariable Object id) {
+    public ResponseEntity<String> delete(@PathVariable Integer id) {
         try {
             if (acaoBO.delete(id)) {
                 return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Ação deletada!");

@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/usuario")
-public class UsuarioResource implements IResource<UsuarioTO>{
+public class UsuarioResource implements IResource<String,UsuarioTO>{
     UsuarioBO usuarioBO = new UsuarioBO();
 
     @GetMapping
@@ -31,7 +31,7 @@ public class UsuarioResource implements IResource<UsuarioTO>{
 
     @GetMapping("/{id}")
     @Override
-    public ResponseEntity<?> findById(@PathVariable Object id) {
+    public ResponseEntity<?> findById(@PathVariable String id) {
         try {
             UsuarioTO usuarioTO = (UsuarioTO) usuarioBO.findById(id);
             if (usuarioTO != null) {
@@ -61,7 +61,7 @@ public class UsuarioResource implements IResource<UsuarioTO>{
 
     @PutMapping("/{id}")
     @Override
-    public ResponseEntity<?> update(@PathVariable Object id, @Valid @RequestBody UsuarioTO body) {
+    public ResponseEntity<?> update(@PathVariable String id, @Valid @RequestBody UsuarioTO body) {
         try {
             UsuarioTO usuario = (UsuarioTO) usuarioBO.update(id, body);
             if (usuario != null) {
@@ -76,7 +76,7 @@ public class UsuarioResource implements IResource<UsuarioTO>{
 
     @DeleteMapping("/{id}")
     @Override
-    public ResponseEntity<String> delete(@PathVariable Object id) {
+    public ResponseEntity<String> delete(@PathVariable String id) {
         try {
             if (usuarioBO.delete(id)) {
                 return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Usuario deletado!");

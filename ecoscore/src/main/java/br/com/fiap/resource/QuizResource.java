@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/quiz")
-public class QuizResource implements IResource<QuizTO>{    
+public class QuizResource implements IResource<Integer,QuizTO>{
     QuizBO quizBO = new QuizBO();
 
     @GetMapping
@@ -31,7 +31,7 @@ public class QuizResource implements IResource<QuizTO>{
 
     @GetMapping("/{id}")
     @Override
-    public ResponseEntity<?> findById(@PathVariable Object id) {
+    public ResponseEntity<?> findById(@PathVariable Integer id) {
         try {
             QuizTO quizTO = (QuizTO) quizBO.findById(id);
             if (quizTO != null) {
@@ -61,7 +61,7 @@ public class QuizResource implements IResource<QuizTO>{
 
     @PutMapping("/{id}")
     @Override
-    public ResponseEntity<?> update(@PathVariable Object id, @Valid @RequestBody QuizTO body) {
+    public ResponseEntity<?> update(@PathVariable Integer id, @Valid @RequestBody QuizTO body) {
         try {
             QuizTO quiz = (QuizTO) quizBO.update(id, body);
             if (quiz != null) {
@@ -76,7 +76,7 @@ public class QuizResource implements IResource<QuizTO>{
 
     @DeleteMapping("/{id}")
     @Override
-    public ResponseEntity<String> delete(@PathVariable Object id) {
+    public ResponseEntity<String> delete(@PathVariable Integer id) {
         try {
             if (quizBO.delete(id)) {
                 return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Quiz deletado!");

@@ -10,12 +10,14 @@ import java.util.List;
 /**
  * Interface controladora genérica para requisição HTTP.
  * Define as operações padrão da API.
+ * @param <I> O tipo do ID
+ * @param <T> O tipo (TO) do objeto para POST e PUT
  * @author murilo-a-souza
  * @since Java 21
  * @see IBO
  * @see IDAO
  */
-public interface IResource<T> {
+public interface IResource<I,T> {
 /*
 O T é de tipo genérico, estou usando apenas porque a interface precisa ter tipos flexiveis,
 no desenvolvimento isso só se tornou um problema na validação com @Valid, se não fosse isso dava pra usar Object normal.
@@ -40,7 +42,7 @@ Tanto que somente o POST e PUT que usam
      * @see IBO#findById(Object)
      */
     @GetMapping("/{id}")
-    ResponseEntity<?> findById(@PathVariable Object id);
+    ResponseEntity<?> findById(@PathVariable I id);
 
     /**
      * Cria e salva um novo registro no sistema.
@@ -63,7 +65,7 @@ Tanto que somente o POST e PUT que usam
      * @see IBO#update(Object, Object)
      */
     @PutMapping("/{id}")
-    ResponseEntity<?> update(@PathVariable Object id, @RequestBody T body);
+    ResponseEntity<?> update(@PathVariable I id, @RequestBody T body);
 
     /**
      * Remove um registro do sistema com base no seu identificador.
@@ -74,6 +76,6 @@ Tanto que somente o POST e PUT que usam
      * @see IBO#delete(Object)
      */
     @DeleteMapping("/{id}")
-    ResponseEntity<String> delete(@PathVariable Object id);
+    ResponseEntity<String> delete(@PathVariable I id);
 
 }
