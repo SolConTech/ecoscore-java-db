@@ -84,13 +84,12 @@ public class GUIMissaoView extends JFrame {
                     missaoTO.setSelo(tfSelo.getText());
                     missaoTO.setQtPontosGerados(Integer.parseInt(tfQtPontosGerados.getText()));
                     if (! missaoTO.getNmMissao().isBlank() && ! missaoTO.getDsMissao().isBlank()){
-                        missaoTO.setIdMissao(missaoController.criarIdMissao());
                         missaoTO.setDtMissao(LocalDateTime.now());
 
                         usuarioTO.registrarAtividade(missaoTO.detalhesMissao(),
                                                    missaoTO.getQtPontosGerados(),
                                                    missaoTO.getSelo());
-                        String resultado = missaoController.inserirMissao(missaoTO.getIdMissao(), missaoTO.getNmMissao(),
+                        String resultado = missaoController.inserirMissao(missaoTO.getNmMissao(),
                                                                           missaoTO.getDsMissao(), missaoTO.getSelo(),
                                                                           missaoTO.getQtPontosGerados(), missaoTO.getDtMissao());
 

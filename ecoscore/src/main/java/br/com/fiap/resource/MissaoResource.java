@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/missao")
-public class MissaoResource implements IResource<MissaoTO> {
+public class MissaoResource implements IResource<Integer,MissaoTO> {
     MissaoBO MissaoBO = new MissaoBO();
 
     @GetMapping
@@ -31,7 +31,7 @@ public class MissaoResource implements IResource<MissaoTO> {
 
     @GetMapping("/{id}")
     @Override
-    public ResponseEntity<?> findById(@PathVariable Object id) {
+    public ResponseEntity<?> findById(@PathVariable Integer id) {
         try {
             MissaoTO missao = (MissaoTO) MissaoBO.findById(id);
             if (missao != null) {
@@ -61,7 +61,7 @@ public class MissaoResource implements IResource<MissaoTO> {
 
     @PutMapping("/{id}")
     @Override
-    public ResponseEntity<?> update(@PathVariable Object id, @Valid @RequestBody MissaoTO body) {
+    public ResponseEntity<?> update(@PathVariable Integer id, @Valid @RequestBody MissaoTO body) {
         try {
             MissaoTO missao = (MissaoTO) MissaoBO.update(id, body);
             if (missao != null) {
@@ -76,7 +76,7 @@ public class MissaoResource implements IResource<MissaoTO> {
 
     @DeleteMapping("/{id}")
     @Override
-    public ResponseEntity<String> delete(@PathVariable Object id) {
+    public ResponseEntity<String> delete(@PathVariable Integer id) {
         try {
             if (MissaoBO.delete(id)) {
                 return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Missão deletada!");

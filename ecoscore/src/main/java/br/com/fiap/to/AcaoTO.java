@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
  * @since Java 21
  */
 public class AcaoTO {
-    private int idAcao;
+    private Integer idAcao;
     private String idUsuario; //FK de UsuarioTO.
     private String dsAcao; //x reciclados
     private int qtPontosGerados;
@@ -21,17 +21,17 @@ public class AcaoTO {
         this.dsAcao = dsAcao;
         dtAcao = LocalDateTime.now();
     }
-    public AcaoTO(int idAcao, String idUsuario, String dsAcao) {
+    public AcaoTO(Integer idAcao, String idUsuario, String dsAcao) {
         this.idAcao = idAcao;
         this.idUsuario = idUsuario;
         this.dsAcao = dsAcao;
         dtAcao = LocalDateTime.now();
     }
 
-    public int getIdAcao() {
+    public Integer getIdAcao() {
         return idAcao;
     }
-    public void setIdAcao(int idAcao) throws IllegalArgumentException{
+    public void setIdAcao(Integer idAcao) throws IllegalArgumentException{
         if (idAcao < 0) { //não pode ser negativo
             throw new IllegalArgumentException("Valor do ID não pode ser negativo.");
         }

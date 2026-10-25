@@ -4,44 +4,35 @@ import br.com.fiap.to.PostTO;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 public class PostDAO implements IDAO{
-    private Connection con;
 
     public PostDAO() {}
-    public PostDAO(Connection con) {
-        this.con = con;
-    }
 
-    public Connection getCon() {
-
-        return con;
-    }
-
-    public String inserir(Object object) throws SQLException {
+    public PostTO save(Object object) throws SQLException {
         PostTO postTO = (PostTO) object;
-        String sql = "insert into post(ID_POST,USUARIO_ID_USUARIO,DS_POST,DT_POST,NUM_UPVOTES,NUM_DOWNVOTES,NUM_SALDOVOTES) values(?,?,?,?,?,?,?)";
+        String sql = "insert into post(USUARIO_ID_USUARIO,DS_POST,DT_POST,NUM_UPVOTES,NUM_DOWNVOTES,NUM_SALDOVOTES) values(?,?,?,?,?,?)";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
-            ps.setInt(1, postTO.getIdPost());
-            ps.setString(2, postTO.getIdUsuario());
-            ps.setString(3, postTO.getDsPost());
-            ps.setObject(4, postTO.getDtPost());
-            ps.setInt(5, postTO.getNumUpVotes());
-            ps.setInt(6, postTO.getNumDownVotes());
-            ps.setInt(7, postTO.getNumSaldoVotes());
+            ps.setString(1, postTO.getIdUsuario());
+            ps.setString(2, postTO.getDsPost());
+            ps.setObject(3, postTO.getDtPost());
+            ps.setInt(4, postTO.getNumUpVotes());
+            ps.setInt(5, postTO.getNumDownVotes());
+            ps.setInt(6, postTO.getNumSaldoVotes());
 
             if (ps.executeUpdate() > 0) {
-                return "Inserido com sucesso";
+                return postTO;
             } else {
-                return "Erro ao inserir";
+                return null;
             }
         } catch (SQLException e) {
-            return "Erro de SQL: " + e.getMessage();
+            throw new SQLException("Erro de SQL: " + e.getMessage());
+        } finally {
+            ConnectionFactory.fecharConexao();
         }
     }
 
-    public String alterar(Object id, Object object) throws SQLException {
+    public PostTO update(Object id, Object object) throws SQLException {
         PostTO postTO = (PostTO) object;
         Integer idPost = (Integer) id;
         String sql = "update post set USUARIO_ID_USUARIO=?, DS_POST=?, DT_POST=?, NUM_UPVOTES=?, NUM_DOWNVOTES=?, NUM_SALDOVOTES=? where ID_POST=?";
@@ -55,9 +46,9 @@ public class PostDAO implements IDAO{
             ps.setInt(7, idPost);
 
             if (ps.executeUpdate() > 0) {
-                return "Alterado com sucesso";
+                return postTO;
             } else {
-                return "Erro ao alterar";
+                return null;
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
@@ -66,11 +57,11 @@ public class PostDAO implements IDAO{
         }
     }
 
-    public Boolean excluir(Object object) throws SQLException {
-        PostTO postTO = (PostTO) object;
+    public Boolean delete(Object id) throws SQLException {
+        Integer idPost = (Integer) id;
         String sql = "delete from post where ID_POST=?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
-            ps.setInt(1, postTO.getIdPost());
+            ps.setInt(1, idPost);
 
             if (ps.executeUpdate() > 0) {
                 return true;
@@ -84,7 +75,7 @@ public class PostDAO implements IDAO{
         }
     }
 
-    public ArrayList<Object> listarTodos() throws SQLException {
+    public ArrayList<Object> findAll() throws SQLException {
         String sql = "select * from post order by ID_POST";
         ArrayList<Object> listaPost = new ArrayList<>();
 
@@ -118,30 +109,7 @@ public class PostDAO implements IDAO{
         }
     }
 
-    public Integer criarId() throws SQLException {
-        String sql = "SELECT ID_post FROM POST";
-        ArrayList<Integer> listaIds = new ArrayList<Integer>();
-        try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-            if (rs != null) {
-                while (rs.next()) {
-                    int id = rs.getInt(1);
-                    listaIds.add(id);
-                }
-                //o orElse serve para não retornar 0«nada se a lista estiver vazia, o max retorna Integer
-                Integer id = listaIds.stream().max(Comparator.naturalOrder()).orElse(null);
-                return id+1;
-            } else {
-                return null;
-            }
-        } catch (SQLException e) {
-            throw new SQLException("Erro de SQL: " + e.getMessage());
-        } finally {
-            ConnectionFactory.fecharConexao();
-        }
-    }
-
-    public PostTO listarUm(Object id) throws SQLException {
+    public PostTO findById(Object id) throws SQLException {
         String sql = "SELECT * FROM POST WHERE ID_POST = ?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)){
             ps.setObject(1, id);

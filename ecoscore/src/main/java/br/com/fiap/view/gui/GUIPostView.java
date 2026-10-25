@@ -110,18 +110,17 @@ public class GUIPostView extends JFrame {
                 try {
                     rankingUsuarioTO = rankingUsuarioController.pegarUmRankingUsuario(usuarioTO.getIdUsuario());
                     postTO.setDsPost(tfDsPost.getText());
-                    postTO.setIdPost(postController.criarIdPost());
                     postTO.setIdUsuario(usuarioTO.getIdUsuario());
                     postTO.setDtPost(LocalDateTime.now());
 
-                    String resultado = postController.inserirPost(postTO.getIdPost(), postTO.getIdUsuario(), postTO.getDsPost(), postTO.getDtPost(), postTO.getNumUpVotes(), postTO.getNumDownVotes());
+                    String resultado = postController.inserirPost(postTO.getIdUsuario(), postTO.getDsPost(), postTO.getDtPost(), postTO.getNumUpVotes(), postTO.getNumDownVotes());
                     if (rankingUsuarioTO != null) {
                         rankingUsuarioTO.addQtVotos(postTO.getNumSaldoVotes());
                         rankingUsuarioController.alterarRankingUsuario(rankingUsuarioTO.getIdRanking(), rankingUsuarioTO.getIdUsuario(), rankingUsuarioTO.getQtVotos());
                     } else {
-                        rankingUsuarioTO = new RankingUsuarioTO(rankingUsuarioController.criarIdRanking(), usuarioTO.getIdUsuario(),
+                        rankingUsuarioTO = new RankingUsuarioTO(usuarioTO.getIdUsuario(),
                                 postTO.getNumSaldoVotes());
-                        rankingUsuarioController.inserirRankingUsuario(rankingUsuarioTO.getIdRanking(), rankingUsuarioTO.getIdUsuario(), rankingUsuarioTO.getQtVotos());
+                        rankingUsuarioController.inserirRankingUsuario(rankingUsuarioTO.getIdUsuario(), rankingUsuarioTO.getQtVotos());
                     }
                     usuarioTO.registrarAtividade(postTO.detalhesPost());
                     usuarioController.alterarUsuario(usuarioTO.getIdUsuario(), usuarioTO.getNmUsuario(), usuarioTO.getVlMerito(), usuarioTO.getQtSoulCoins(), usuarioTO.getDsAtividadeRecente(), usuarioTO.getSelosGanhos());

@@ -12,32 +12,32 @@ public class QuizBO implements IBO{
     @Override
     public ArrayList<Object> findAll() throws SQLException {
         QuizDAO = new QuizDAO();
-        return QuizDAO.listarTodos();
+        return QuizDAO.findAll();
     }
 
     @Override
     public Object findById(Object id) throws SQLException {
         QuizDAO = new QuizDAO();
-        return QuizDAO.listarUm(id);
+        return QuizDAO.findById(id);
     }
 
     @Override
     public Object save(Object body) throws SQLException {
         QuizDAO = new QuizDAO();
         QuizTO quizTO = (QuizTO) body;
-        return QuizDAO.inserir(quizTO);
+        return QuizDAO.save(quizTO);
     }
 
     @Override
     public Object update(Object id, Object body) throws SQLException {
         QuizDAO = new QuizDAO();
         QuizTO quizTO = (QuizTO) body;
-        return QuizDAO.alterar(id, quizTO);
+        return QuizDAO.update(id, quizTO);
     }
 
     @Override
     public Boolean delete(Object id) throws SQLException {
         QuizDAO = new QuizDAO();
-        return QuizDAO.excluir(id);
+        return QuizDAO.delete(id);
     }
 }

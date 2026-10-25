@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/post")
-public class PostResource implements IResource<PostTO>{
+public class PostResource implements IResource<Integer,PostTO>{
     PostBO postBO = new PostBO();
 
     @GetMapping
@@ -31,7 +31,7 @@ public class PostResource implements IResource<PostTO>{
 
     @GetMapping("/{id}")
     @Override
-    public ResponseEntity<?> findById(@PathVariable Object id) {
+    public ResponseEntity<?> findById(@PathVariable Integer id) {
         try {
             PostTO postTO = (PostTO) postBO.findById(id);
             if (postTO != null) {
@@ -61,7 +61,7 @@ public class PostResource implements IResource<PostTO>{
 
     @PutMapping("/{id}")
     @Override
-    public ResponseEntity<?> update(@PathVariable Object id, @Valid @RequestBody PostTO body) {
+    public ResponseEntity<?> update(@PathVariable Integer id, @Valid @RequestBody PostTO body) {
         try {
             PostTO post = (PostTO) postBO.update(id, body);
             if (post != null) {
@@ -76,7 +76,7 @@ public class PostResource implements IResource<PostTO>{
 
     @DeleteMapping("/{id}")
     @Override
-    public ResponseEntity<String> delete(@PathVariable Object id) {
+    public ResponseEntity<String> delete(@PathVariable Integer id) {
         try {
             if (postBO.delete(id)) {
                 return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Post deletado!");

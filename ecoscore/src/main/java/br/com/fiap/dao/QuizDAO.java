@@ -4,44 +4,35 @@ import br.com.fiap.to.QuizTO;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 public class QuizDAO implements IDAO{
-    private Connection con;
 
     public QuizDAO() {}
-    public QuizDAO(Connection con) {
-        this.con = con;
-    }
 
-    public Connection getCon() {
-
-        return con;
-    }
-
-    public String inserir(Object object) throws SQLException {
+    public QuizTO save(Object object) throws SQLException {
         QuizTO quizTO = (QuizTO) object;
-        String sql = "insert into quiz(ID_QUIZ,USUARIO_ID_USUARIO,NUM_QUESTOES,NUM_ACERTOS,QT_PONTOSPORQUESTAO,QT_PONTOSGERADOS,DT_QUIZ) values(?,?,?,?,?,?,?)";
+        String sql = "insert into quiz(USUARIO_ID_USUARIO,NUM_QUESTOES,NUM_ACERTOS,QT_PONTOSPORQUESTAO,QT_PONTOSGERADOS,DT_QUIZ) values(?,?,?,?,?,?)";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
-            ps.setInt(1, quizTO.getIdQuiz());
-            ps.setString(2, quizTO.getIdUsuario());
-            ps.setInt(3, quizTO.getNumQuestoes());
-            ps.setInt(4, quizTO.getNumAcertos());
-            ps.setInt(5, quizTO.getQtPontosPorQuestao());
-            ps.setInt(6, quizTO.getQtPontosGerados());
-            ps.setObject(7, quizTO.getDtQuiz());
+            ps.setString(1, quizTO.getIdUsuario());
+            ps.setInt(2, quizTO.getNumQuestoes());
+            ps.setInt(3, quizTO.getNumAcertos());
+            ps.setInt(4, quizTO.getQtPontosPorQuestao());
+            ps.setInt(5, quizTO.getQtPontosGerados());
+            ps.setObject(6, quizTO.getDtQuiz());
 
             if (ps.executeUpdate() > 0) {
-                return "Inserido com sucesso";
+                return quizTO;
             } else {
-                return "Erro ao inserir";
+                return null;
             }
         } catch (SQLException e) {
-            return "Erro de SQL: " + e.getMessage();
+            throw new SQLException("Erro de SQL: " + e.getMessage());
+        } finally {
+            ConnectionFactory.fecharConexao();
         }
     }
 
-    public String alterar(Object id, Object object) throws SQLException {
+    public QuizTO update(Object id, Object object) throws SQLException {
         QuizTO quizTO = (QuizTO) object;
         Integer idQuiz = (Integer) id;
         String sql = "update quiz set USUARIO_ID_USUARIO=?, NUM_QUESTOES=?, NUM_ACERTOS=?, QT_PONTOSPORQUESTAO=?, QT_PONTOSGERADOS=?, DT_QUIZ=? where ID_QUIZ=?";
@@ -55,9 +46,9 @@ public class QuizDAO implements IDAO{
             ps.setInt(7, idQuiz);
 
             if (ps.executeUpdate() > 0) {
-                return "Alterado com sucesso";
+                return quizTO;
             } else {
-                return "Erro ao alterar";
+                return null;
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
@@ -66,11 +57,11 @@ public class QuizDAO implements IDAO{
         }
     }
 
-    public Boolean excluir(Object object) throws SQLException {
-        QuizTO quizTO = (QuizTO) object;
+    public Boolean delete(Object id) throws SQLException {
+        Integer idQuiz = (Integer) id;
         String sql = "delete from quiz where ID_QUIZ=?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
-            ps.setInt(1, quizTO.getIdQuiz());
+            ps.setInt(1, idQuiz);
 
             if (ps.executeUpdate() > 0) {
                 return true;
@@ -84,7 +75,7 @@ public class QuizDAO implements IDAO{
         }
     }
 
-    public ArrayList<Object> listarTodos() throws SQLException {
+    public ArrayList<Object> findAll() throws SQLException {
         String sql = "select * from quiz order by ID_QUIZ";
         ArrayList<Object> listaQuiz = new ArrayList<>();
 
@@ -120,30 +111,7 @@ public class QuizDAO implements IDAO{
         }
     }
 
-    public Integer criarId() throws SQLException{
-        String sql = "SELECT ID_QUIZ FROM QUIZ";
-        ArrayList<Integer> listaIds = new ArrayList<Integer>();
-        try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-            if (rs != null) {
-                while (rs.next()) {
-                    int id = rs.getInt(1);
-                    listaIds.add(id);
-                }
-                //o orElse serve para não retornar 0«nada se a lista estiver vazia, o max retorna Integer
-                Integer id = listaIds.stream().max(Comparator.naturalOrder()).orElse(null);
-                return id+1;
-            } else {
-                return null;
-            }
-        } catch (SQLException e) {
-            throw new SQLException("Erro de SQL: " + e.getMessage());
-        } finally {
-            ConnectionFactory.fecharConexao();
-        }
-    }
-
-    public QuizTO listarUm(Object id) throws SQLException {
+    public QuizTO findById(Object id) throws SQLException {
         String sql = "SELECT * FROM QUIZ WHERE ID_QUIZ = ?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)){
             ps.setObject(1, id);

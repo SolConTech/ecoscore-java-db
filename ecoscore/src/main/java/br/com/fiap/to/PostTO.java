@@ -1,5 +1,7 @@
 package br.com.fiap.to;
 
+import jakarta.validation.constraints.NotBlank;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -8,7 +10,7 @@ import java.time.format.DateTimeFormatter;
  * @since Java 21
  */
 public class PostTO {
-    private int idPost;
+    private Integer idPost;
     private String idUsuario; //FK de UsuarioTO
     private String dsPost;
     private LocalDateTime dtPost;
@@ -17,16 +19,17 @@ public class PostTO {
     private int numSaldoVotes = 0; //começa em zero
 
     public PostTO() {}
-    public PostTO(int idPost, String idUsuario, String dsPost) {
+    public PostTO(String idUsuario, String dsPost) {
         this.idPost = idPost;
+        this.dsPost = dsPost;
         setIdUsuario(idUsuario);
         dtPost = LocalDateTime.now();
     }
 
-    public int getIdPost() {
+    public Integer getIdPost() {
         return idPost;
     }
-    public void setIdPost(int idPost) {
+    public void setIdPost(Integer idPost) {
         if (idPost < 0) { //não pode ser negativo
             throw new IllegalArgumentException("Valor do ID não pode ser negativo.");
         }

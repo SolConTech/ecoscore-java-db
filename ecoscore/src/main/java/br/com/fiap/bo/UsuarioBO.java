@@ -12,32 +12,32 @@ public class UsuarioBO implements IBO{
     @Override
     public ArrayList<Object> findAll() throws SQLException {
         UsuarioDAO = new UsuarioDAO();
-        return UsuarioDAO.listarTodos();
+        return UsuarioDAO.findAll();
     }
 
     @Override
     public Object findById(Object id) throws SQLException {
         UsuarioDAO = new UsuarioDAO();
-        return UsuarioDAO.listarUm(id);
+        return UsuarioDAO.findById(id);
     }
 
     @Override
     public Object save(Object body) throws SQLException {
         UsuarioDAO = new UsuarioDAO();
         UsuarioTO usuarioTO = (UsuarioTO) body;
-        return UsuarioDAO.inserir(usuarioTO);
+        return UsuarioDAO.save(usuarioTO);
     }
 
     @Override
     public Object update(Object id, Object body) throws SQLException {
         UsuarioDAO = new UsuarioDAO();
         UsuarioTO usuarioTO = (UsuarioTO) body;
-        return UsuarioDAO.alterar(id, usuarioTO);
+        return UsuarioDAO.update(id, usuarioTO);
     }
 
     @Override
     public Boolean delete(Object id) throws SQLException {
         UsuarioDAO = new UsuarioDAO();
-        return UsuarioDAO.excluir(id);
+        return UsuarioDAO.delete(id);
     }
 }

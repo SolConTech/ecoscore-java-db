@@ -1,24 +1,17 @@
 package br.com.fiap.controller;
 
-import br.com.fiap.dao.ConnectionFactory;
 import br.com.fiap.dao.QuizDAO;
 import br.com.fiap.to.QuizTO;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class QuizController {
 
-    public String inserirQuiz(int idQuiz, String idUsuario, int numQuestoes, int numAcertos, int qtPontosPorQuestao, LocalDateTime dtQuiz)
+    public String inserirQuiz(String idUsuario, int numQuestoes, int numAcertos, int qtPontosPorQuestao, LocalDateTime dtQuiz)
             throws ClassNotFoundException, SQLException {
-
-        String resultado;
-        Connection con = ConnectionFactory.abrirConexao();
-
         QuizTO quizTO = new QuizTO();
-        quizTO.setIdQuiz(idQuiz);
         quizTO.setIdUsuario(idUsuario);
         quizTO.setNumQuestoes(numQuestoes);
         quizTO.setNumAcertos(numAcertos);
@@ -26,21 +19,19 @@ public class QuizController {
         quizTO.setQtPontosGerados(); // Executa o cálculo interno do DTO antes do insert
         quizTO.setDtQuiz(dtQuiz);
 
-        QuizDAO quizDAO = new QuizDAO(con);
-        resultado = quizDAO.inserir(quizTO);
-
-        ConnectionFactory.fecharConexao();
-        return resultado;
+        QuizDAO quizDAO = new QuizDAO();
+        QuizTO resultado = quizDAO.save(quizTO);
+        System.out.println("LOG: " + resultado);
+        if (resultado != null) {
+            return "Inserido com sucesso";
+        } else {
+            return "Erro a inserir";
+        }
     }
 
-    public String alterarQuiz(int idQuiz, String idUsuario, int numQuestoes, int numAcertos, int qtPontosPorQuestao, LocalDateTime dtQuiz)
+    public String alterarQuiz(Integer idQuiz, String idUsuario, int numQuestoes, int numAcertos, int qtPontosPorQuestao, LocalDateTime dtQuiz)
             throws ClassNotFoundException, SQLException {
-
-        String resultado;
-        Connection con = ConnectionFactory.abrirConexao();
-
         QuizTO quizTO = new QuizTO();
-        quizTO.setIdQuiz(idQuiz);
         quizTO.setIdUsuario(idUsuario);
         quizTO.setNumQuestoes(numQuestoes);
         quizTO.setNumAcertos(numAcertos);
@@ -48,58 +39,38 @@ public class QuizController {
         quizTO.setQtPontosGerados(); // Atualiza os pontos caso as questões ou acertos tenham mudado
         quizTO.setDtQuiz(dtQuiz);
 
-        QuizDAO quizDAO = new QuizDAO(con);
-        resultado = quizDAO.alterar(quizTO.getIdQuiz(), quizTO);
-
-        ConnectionFactory.fecharConexao();
-        return resultado;
+        QuizDAO quizDAO = new QuizDAO();
+        QuizTO resultado = quizDAO.update(idQuiz, quizTO);
+        System.out.println("LOG: " + resultado);
+        if (resultado != null) {
+            return "Inserido com sucesso";
+        } else {
+            return "Erro a inserir";
+        }
     }
 
-    public String excluirQuiz(int idQuiz) throws ClassNotFoundException, SQLException {
-
-        String resultado = "";
-        Connection con = ConnectionFactory.abrirConexao();
-
-        QuizTO quizTO = new QuizTO();
-        quizTO.setIdQuiz(idQuiz);
-
-        QuizDAO quizDAO = new QuizDAO(con);
-        quizDAO.excluir(quizTO.getIdQuiz());
-
-        ConnectionFactory.fecharConexao();
-        return resultado;
+    public String excluirQuiz(Integer idQuiz) throws ClassNotFoundException, SQLException {
+        QuizDAO quizDAO = new QuizDAO();
+        boolean resultado = quizDAO.delete(idQuiz);
+        System.out.println("LOG: " + resultado);
+        if (resultado) {
+            return "Deletado com sucesso";
+        } else {
+            return "Erro ao deletar";
+        }
     }
 
     public ArrayList<Object> listarTodosQuiz() throws ClassNotFoundException, SQLException {
-
         ArrayList<Object> resultado;
-        Connection con = ConnectionFactory.abrirConexao();
-
-        QuizDAO quizDAO = new QuizDAO(con);
-        resultado = quizDAO.listarTodos();
-
-        ConnectionFactory.fecharConexao();
+        QuizDAO quizDAO = new QuizDAO();
+        resultado = quizDAO.findAll();
         return resultado;
     }
 
-    public QuizTO pegarUmQuiz(int idQuiz) throws ClassNotFoundException, SQLException {
-
+    public QuizTO pegarUmQuiz(Integer idQuiz) throws ClassNotFoundException, SQLException {
         QuizTO resultado;
-        Connection con = ConnectionFactory.abrirConexao();
-
-        QuizDAO quizDAO = new QuizDAO(con);
-        resultado = (QuizTO) quizDAO.listarUm(idQuiz);
-
-        ConnectionFactory.fecharConexao();
-        return resultado;
-    }
-
-    public int criarIdQuiz() throws ClassNotFoundException, SQLException {
-        int resultado;
-        Connection con = ConnectionFactory.abrirConexao();
-        QuizDAO quizDAO = new QuizDAO(con);
-        resultado = quizDAO.criarId();
-        ConnectionFactory.fecharConexao();
+        QuizDAO quizDAO = new QuizDAO();
+        resultado = quizDAO.findById(idQuiz);
         return resultado;
     }
 }

@@ -20,7 +20,7 @@ public interface IBO {
      * Recupera todos os registros cadastrados daquele TO.
      * @return Uma lista contendo os objetos TO encontrados |
      * lista vazia se não houverem objetos correspondentes.
-     * @see IDAO#listarTodos()
+     * @see IDAO#findAll()
      * @see IResource#findAll() 
      */
     public ArrayList<Object> findAll() throws SQLException;
@@ -30,7 +30,7 @@ public interface IBO {
      *
      * @param id O identificador (chave primária no banco) do registro.
      * @return O objeto TO correspondente ao ID informado.
-     * @see IDAO#listarUm(Object)
+     * @see IDAO#findById(Object)
      * @see IResource#findById(Object) 
      */
     public Object findById(Object id) throws SQLException;
@@ -39,7 +39,7 @@ public interface IBO {
      * Salva um novo registro na base de dados.
      * @param body O objeto TO contendo os dados a serem registrado.
      * @return O objeto salvo, com o ID gerado, se tudo deu certo.
-     * @see IDAO#inserir(Object)
+     * @see IDAO#save(Object)
      * @see IResource#save(Object) 
      */
     public Object save(Object body) throws SQLException;
@@ -49,7 +49,7 @@ public interface IBO {
      * @param id O identificador do registro que será atualizado (PK no banco).
      * @param body O objeto TO com os novos dados estruturados.
      * @return O objeto atualizado com sucesso.
-     * @see IDAO#alterar(Object, Object)
+     * @see IDAO#update(Object, Object)
      * @see IResource#update(Object, Object) 
      */
     public Object update(Object id, Object body) throws SQLException;
@@ -58,7 +58,7 @@ public interface IBO {
      * Remove um registro da base de dados.
      * @param id O identificador do registro a ser excluído (PK no banco).
      * @return O objeto TO que foi removido.
-     * @see IDAO#excluir(Object)
+     * @see IDAO#delete(Object)
      * @see IResource#delete(Object)
      */
     public Boolean delete(Object id) throws SQLException;

@@ -113,13 +113,12 @@ public class GUIAcaoView extends JFrame {
                     //conferir se ds descrição está certa
                     acaoTO.setDsAcao(tfDsAcao.getText());
                     if (! acaoTO.getDsAcao().isBlank()){
-                        acaoTO.setIdAcao(acaoController.criarIdAcao());
                         acaoTO.setIdUsuario(usuarioTO.getIdUsuario());
                         acaoTO.setDtAcao(LocalDateTime.now());
 
                         usuarioTO.registrarAtividade(acaoTO.detalhesAcao(),
                                 acaoTO.getQtPontosGerados());
-                        String resultado = acaoController.inserirAcao(acaoTO.getIdAcao(), acaoTO.getIdUsuario(), acaoTO.getDsAcao(), acaoTO.getQtPontosGerados(), acaoTO.getDtAcao());
+                        String resultado = acaoController.inserirAcao(acaoTO.getIdUsuario(), acaoTO.getDsAcao(), acaoTO.getQtPontosGerados(), acaoTO.getDtAcao());
 
                         usuarioController = new UsuarioController();
                         usuarioController.alterarUsuario(usuarioTO.getIdUsuario(), usuarioTO.getNmUsuario(), usuarioTO.getVlMerito(), usuarioTO.getQtSoulCoins(), usuarioTO.getDsAtividadeRecente(), usuarioTO.getSelosGanhos());

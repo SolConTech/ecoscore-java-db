@@ -4,53 +4,22 @@ import br.com.fiap.to.RankingUsuarioTO;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 public class RankingUsuarioDAO implements IDAO{
-    private Connection con;
 
     public RankingUsuarioDAO() {}
-    public RankingUsuarioDAO(Connection con) {
-        this.con = con;
-    }
 
-    public Connection getCon() {
-        return con;
-    }
-
-    public String inserir(Object object) throws SQLException {
+    public RankingUsuarioTO save(Object object) throws SQLException {
         RankingUsuarioTO rankingUsuarioTO = (RankingUsuarioTO) object;
-        String sql = "insert into ranking_usuario(ID_RANKING,ID_USUARIO,QT_VOTOS) values(?,?,?)";
-        try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
-            ps.setInt(1, rankingUsuarioTO.getIdRanking());
-            ps.setString(2, rankingUsuarioTO.getIdUsuario());
-            ps.setInt(3, rankingUsuarioTO.getQtVotos());
-
-            if (ps.executeUpdate() > 0) {
-                return "Inserido com sucesso";
-            } else {
-                return "Erro ao inserir";
-            }
-        } catch (SQLException e) {
-            throw new SQLException("Erro de SQL: " + e.getMessage());
-        } finally {
-            ConnectionFactory.fecharConexao();
-        }
-    }
-
-    public String alterar(Object id, Object object) throws SQLException {
-        RankingUsuarioTO rankingUsuarioTO = (RankingUsuarioTO) object;
-        Integer idRanking = (Integer) id;
-        String sql = "update ranking_usuario set ID_USUARIO=?, QT_VOTOS=? where ID_RANKING=?";
+        String sql = "insert into ranking_usuario(ID_USUARIO,QT_VOTOS) values(?,?)";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
             ps.setString(1, rankingUsuarioTO.getIdUsuario());
             ps.setInt(2, rankingUsuarioTO.getQtVotos());
-            ps.setInt(3, idRanking);
 
             if (ps.executeUpdate() > 0) {
-                return "Alterado com sucesso";
+                return rankingUsuarioTO;
             } else {
-                return "Erro ao alterar";
+                return null;
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
@@ -59,11 +28,31 @@ public class RankingUsuarioDAO implements IDAO{
         }
     }
 
-    public Boolean excluir(Object object) throws SQLException {
+    public RankingUsuarioTO update(Object id, Object object) throws SQLException {
         RankingUsuarioTO rankingUsuarioTO = (RankingUsuarioTO) object;
-        String sql = "delete from ranking_usuario where ID_RANKING=?";
+        String sql = "update ranking_usuario set ID_USUARIO=?, QT_VOTOS=? where ID_RANKING=?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
-            ps.setInt(1, rankingUsuarioTO.getIdRanking());
+            ps.setInt(2, rankingUsuarioTO.getQtVotos());
+            ps.setString(1, rankingUsuarioTO.getIdUsuario());
+            ps.setInt(3, Integer.parseInt((String) id));
+
+            if (ps.executeUpdate() > 0) {
+                return rankingUsuarioTO;
+            } else {
+                return null;
+            }
+        } catch (SQLException e) {
+            throw new SQLException("Erro de SQL: " + e.getMessage());
+        } finally {
+            ConnectionFactory.fecharConexao();
+        }
+    }
+
+    public Boolean delete(Object id) throws SQLException {
+        String idUsuario = (String) id;
+        String sql = "delete from ranking_usuario where ID_USUARIO=?";
+        try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
+            ps.setString(1, idUsuario);
 
             if (ps.executeUpdate() > 0) {
                 return true;
@@ -77,7 +66,7 @@ public class RankingUsuarioDAO implements IDAO{
         }
     }
 
-    public ArrayList<Object> listarTodos() throws SQLException {
+    public ArrayList<Object> findAll() throws SQLException {
         String sql = "select * from ranking_usuario order by QT_VOTOS DESC";
         ArrayList<Object> listaRankingUsuario = new ArrayList<>();
 
@@ -107,10 +96,11 @@ public class RankingUsuarioDAO implements IDAO{
         }
     }
 
-    public RankingUsuarioTO listarUm(Object id) throws SQLException {
+    public RankingUsuarioTO findById(Object id) throws SQLException {
+        String idRanking = (String) id;
         String sql = "SELECT * FROM RANKING_USUARIO WHERE ID_USUARIO = ?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)){
-            ps.setObject(1, id);
+            ps.setString(1, idRanking);
             try (ResultSet rs = ps.executeQuery()){
                 if (rs.next()){
                     RankingUsuarioTO ranking = new RankingUsuarioTO();
@@ -121,29 +111,6 @@ public class RankingUsuarioDAO implements IDAO{
                 } else {
                     return null;
                 }
-            }
-        } catch (SQLException e) {
-            throw new SQLException("Erro de SQL: " + e.getMessage());
-        } finally {
-            ConnectionFactory.fecharConexao();
-        }
-    }
-
-    public Object criarId() throws SQLException{
-        String sql = "SELECT ID_RANKING FROM RANKING_USUARIO";
-        ArrayList<Integer> listaIds = new ArrayList<Integer>();
-        try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-            if (rs != null) {
-                while (rs.next()) {
-                    int id = rs.getInt(1);
-                    listaIds.add(id);
-                }
-                //o orElse serve para não retornar 0 nada se a lista estiver vazia, o max retorna Integer
-                Integer id = listaIds.stream().max(Comparator.naturalOrder()).orElse(null);
-                return id+1;
-            } else {
-                return null;
             }
         } catch (SQLException e) {
             throw new SQLException("Erro de SQL: " + e.getMessage());
