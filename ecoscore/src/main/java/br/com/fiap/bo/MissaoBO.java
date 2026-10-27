@@ -24,6 +24,7 @@ public class MissaoBO implements IBO{
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("ID inválido.");
         }
+        missaoDAO = new MissaoDAO();
         return missaoDAO.findById(idMissao);
     }
 
