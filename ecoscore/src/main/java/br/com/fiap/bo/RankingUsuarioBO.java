@@ -18,17 +18,14 @@ public class RankingUsuarioBO implements IBO{
     @Override
     public Object findById(Object id) throws SQLException, IllegalArgumentException {
         Integer idRankingUsuario;
-        RankingUsuarioTO rankingUsuarioTO;
         try {
             // pra pegar erros de parse e cast se o objeto ou id for invalido
             idRankingUsuario = Integer.parseInt(id.toString());
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("ID inválido.");
         }
-        rankingUsuarioTO = new RankingUsuarioTO();
-        rankingUsuarioTO.setIdRanking(idRankingUsuario);
         rankingUsuarioDAO = new RankingUsuarioDAO();
-        return rankingUsuarioDAO.findById(rankingUsuarioTO.getIdRanking());
+        return rankingUsuarioDAO.findById(idRankingUsuario);
     }
 
     @Override
@@ -61,8 +58,7 @@ public class RankingUsuarioBO implements IBO{
         if (rankingUsuarioDAO.findById(idRankingUsuario) == null){
             throw new IllegalArgumentException("ID \'" + idRankingUsuario + "\' não encontrado no banco!");
         }
-        rankingUsuarioTO.setIdRanking(idRankingUsuario); //pra reforçar validação com o set.
-        return rankingUsuarioDAO.update(rankingUsuarioTO.getIdRanking(), rankingUsuarioTO);
+        return rankingUsuarioDAO.update(idRankingUsuario, rankingUsuarioTO);
     }
 
     @Override
@@ -78,9 +74,7 @@ public class RankingUsuarioBO implements IBO{
         if (rankingUsuarioDAO.findById(idRankingUsuario) == null){
             throw new SQLException("ID \'" + idRankingUsuario + "\' não encontrado no banco!");
         }
-        RankingUsuarioTO rankingUsuarioTO = new RankingUsuarioTO();
-        rankingUsuarioTO.setIdRanking(idRankingUsuario);
-        return rankingUsuarioDAO.delete(rankingUsuarioTO.getIdRanking());
+        return rankingUsuarioDAO.delete(idRankingUsuario);
     }
 }
 

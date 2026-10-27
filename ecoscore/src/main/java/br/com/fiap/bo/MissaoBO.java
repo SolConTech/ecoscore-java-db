@@ -18,17 +18,13 @@ public class MissaoBO implements IBO{
     @Override
     public Object findById(Object id) throws SQLException, IllegalArgumentException {
         Integer idMissao;
-        MissaoTO missaoTO;
         try {
             // pra pegar erros de parse e cast se o objeto ou id for invalido
             idMissao = Integer.parseInt(id.toString());
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("ID inválido.");
         }
-        missaoTO = new MissaoTO();
-        missaoTO.setIdMissao(idMissao);
-        missaoDAO = new MissaoDAO();
-        return missaoDAO.findById(missaoTO.getIdMissao());
+        return missaoDAO.findById(idMissao);
     }
 
     @Override
@@ -61,8 +57,7 @@ public class MissaoBO implements IBO{
         if (missaoDAO.findById(idMissao) == null){
             throw new IllegalArgumentException("ID \'" + idMissao + "\' não encontrado no banco!");
         }
-        missaoTO.setIdMissao(idMissao); //pra reforçar validação com o set.
-        return missaoDAO.update(missaoTO.getIdMissao(), missaoTO);
+        return missaoDAO.update(idMissao, missaoTO);
     }
 
     @Override
@@ -78,8 +73,6 @@ public class MissaoBO implements IBO{
         if (missaoDAO.findById(idMissao) == null){
             throw new SQLException("ID \'" + idMissao + "\' não encontrado no banco!");
         }
-        MissaoTO missaoTO = new MissaoTO();
-        missaoTO.setIdMissao(idMissao);
-        return missaoDAO.delete(missaoTO.getIdMissao());
+        return missaoDAO.delete(idMissao);
     }
 }

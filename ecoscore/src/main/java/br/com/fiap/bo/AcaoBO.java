@@ -19,17 +19,14 @@ public class AcaoBO implements IBO{
     @Override
     public Object findById(Object id) throws SQLException, IllegalArgumentException {
         Integer idAcao;
-        AcaoTO acaoTO;
         try {
             // pra pegar erros de parse e cast se o objeto ou id for invalido
             idAcao = Integer.parseInt(id.toString());
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("ID inválido.");
         }
-        acaoTO = new AcaoTO();
-        acaoTO.setIdAcao(idAcao);
         acaoDAO = new AcaoDAO();
-        return acaoDAO.findById(acaoTO.getIdAcao());
+        return acaoDAO.findById(idAcao);
     }
 
     @Override
@@ -62,13 +59,11 @@ public class AcaoBO implements IBO{
         if (acaoDAO.findById(idAcao) == null){
             throw new IllegalArgumentException("ID \'" + idAcao + "\' não encontrado no banco!");
         }
-        acaoTO.setIdAcao(idAcao); //pra reforçar validação com o set.
-        return acaoDAO.update(acaoTO.getIdAcao(), acaoTO);
+        return acaoDAO.update(idAcao, acaoTO);
     }
 
     @Override
     public Boolean delete(Object id) throws SQLException, IllegalArgumentException {
-        acaoDAO = new AcaoDAO();
         Integer idAcao;
         try {
             // pra pegar erros de parse e cast se o objeto ou id for invalido
@@ -76,11 +71,10 @@ public class AcaoBO implements IBO{
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("ID inválido.");
         }
+        acaoDAO = new AcaoDAO();
         if (acaoDAO.findById(idAcao) == null){
-            throw new SQLException("ID \'" + idAcao + "\' não encontrado no banco!");
+            throw new IllegalArgumentException("ID \'" + idAcao + "\' não encontrado no banco!");
         }
-        AcaoTO acaoTO = new AcaoTO();
-        acaoTO.setIdAcao(idAcao);
-        return acaoDAO.delete(acaoTO.getIdAcao());
+        return acaoDAO.delete(idAcao);
     }
 }

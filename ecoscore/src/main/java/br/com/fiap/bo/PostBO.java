@@ -18,17 +18,14 @@ public class PostBO implements IBO{
     @Override
     public Object findById(Object id) throws SQLException, IllegalArgumentException {
         Integer idPost;
-        PostTO postTO;
         try {
             // pra pegar erros de parse e cast se o objeto ou id for invalido
             idPost = Integer.parseInt(id.toString());
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("ID inválido.");
         }
-        postTO = new PostTO();
-        postTO.setIdPost(idPost);
         postDAO = new PostDAO();
-        return postDAO.findById(postTO.getIdPost());
+        return postDAO.findById(idPost);
     }
 
     @Override
@@ -62,7 +59,7 @@ public class PostBO implements IBO{
             throw new IllegalArgumentException("ID \'" + idPost + "\' não encontrado no banco!");
         }
         postTO.setIdPost(idPost); //pra reforçar validação com o set.
-        return postDAO.update(postTO.getIdPost(), postTO);
+        return postDAO.update(idPost, postTO);
     }
 
     @Override
@@ -78,9 +75,7 @@ public class PostBO implements IBO{
         if (postDAO.findById(idPost) == null){
             throw new SQLException("ID \'" + idPost + "\' não encontrado no banco!");
         }
-        PostTO postTO = new PostTO();
-        postTO.setIdPost(idPost);
-        return postDAO.delete(postTO.getIdPost());
+        return postDAO.delete(idPost);
     }
 }
 

@@ -18,11 +18,8 @@ public class UsuarioBO implements IBO{
     @Override
     public Object findById(Object id) throws SQLException, IllegalArgumentException {
         String idUsuario = (String) id;
-        UsuarioTO usuarioTO;
-        usuarioTO = new UsuarioTO();
-        usuarioTO.setIdUsuario(idUsuario);
         usuarioDAO = new UsuarioDAO();
-        return usuarioDAO.findById(usuarioTO.getIdUsuario());
+        return usuarioDAO.findById(idUsuario);
     }
 
     @Override
@@ -65,8 +62,6 @@ public class UsuarioBO implements IBO{
         if (usuarioDAO.findById(idUsuario) == null){
             throw new SQLException("ID \'" + idUsuario + "\' não encontrado no banco!");
         }
-        UsuarioTO usuarioTO = new UsuarioTO();
-        usuarioTO.setIdUsuario(idUsuario);
-        return usuarioDAO.delete(usuarioTO.getIdUsuario());
+        return usuarioDAO.delete(idUsuario);
     }
 }

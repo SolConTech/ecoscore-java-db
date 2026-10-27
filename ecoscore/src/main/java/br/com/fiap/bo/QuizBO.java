@@ -18,17 +18,14 @@ public class QuizBO implements IBO{
     @Override
     public Object findById(Object id) throws SQLException, IllegalArgumentException {
         Integer idQuiz;
-        QuizTO quizTO;
         try {
             // pra pegar erros de parse e cast se o objeto ou id for invalido
             idQuiz = Integer.parseInt(id.toString());
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("ID inválido.");
         }
-        quizTO = new QuizTO();
-        quizTO.setIdQuiz(idQuiz);
         quizDAO = new QuizDAO();
-        return quizDAO.findById(quizTO.getIdQuiz());
+        return quizDAO.findById(idQuiz);
     }
 
     @Override
@@ -61,8 +58,7 @@ public class QuizBO implements IBO{
         if (quizDAO.findById(idQuiz) == null){
             throw new IllegalArgumentException("ID \'" + idQuiz + "\' não encontrado no banco!");
         }
-        quizTO.setIdQuiz(idQuiz); //pra reforçar validação com o set.
-        return quizDAO.update(quizTO.getIdQuiz(), quizTO);
+        return quizDAO.update(idQuiz, quizTO);
     }
 
     @Override
@@ -78,9 +74,7 @@ public class QuizBO implements IBO{
         if (quizDAO.findById(idQuiz) == null){
             throw new SQLException("ID \'" + idQuiz + "\' não encontrado no banco!");
         }
-        QuizTO quizTO = new QuizTO();
-        quizTO.setIdQuiz(idQuiz);
-        return quizDAO.delete(quizTO.getIdQuiz());
+        return quizDAO.delete(idQuiz);
     }
 }
 
