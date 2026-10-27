@@ -10,8 +10,8 @@ import java.time.format.DateTimeFormatter;
  * @since Java 21
  */
 public class AcaoTO {
-    @Min(value = 0, message = "Valor do id não pode ser negativo")
-    @NotNull(message = "Valor não pode ser vazio")
+    @Positive(message = "Valor do id não pode ser negativo")
+    @Null(message = "ID vai ser registrado pelo próprio sistema")
     private Integer idAcao;
     @Size(max = 30, message = "IDs de usuário tem no máximo 30 caracteres")
     @NotBlank(message = "Valor não pode ser vazio")

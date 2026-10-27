@@ -10,8 +10,8 @@ import java.time.format.DateTimeFormatter;
  * @since Java 21
  */
 public class MissaoTO {
-    @Min(value = 0, message = "Valor do id não pode ser negativo")
-    @NotNull(message = "Valor não pode ser vazio")
+    @Positive(message = "Valor do id não pode ser negativo")
+    @Null(message = "Valor não pode ser vazio")
     private Integer idMissao;
     @Size(max = 25, message = "Limite de caracteres é 25 para o nome da missão")
     @NotBlank(message = "Nome da missão não pode ser vazio")
