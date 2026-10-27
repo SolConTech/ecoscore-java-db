@@ -1,5 +1,7 @@
 package br.com.fiap.to;
 
+import jakarta.validation.constraints.*;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -8,12 +10,22 @@ import java.time.format.DateTimeFormatter;
  * @since Java 21
  */
 public class QuizTO {
+    @Min(value = 0, message = "Valor do id não pode ser negativo")
+    @NotNull(message = "Valor não pode ser vazio")
     private Integer idQuiz;
+    @Size(max = 30, message = "IDs de usuário tem no máximo 30 caracteres")
+    @NotBlank(message = "Valor não pode ser vazio")
     private String idUsuario;
+    @Min(value = 0, message = "Valor não pode ser negativo")
+    @NotNull(message = "Valor não pode ser vazio")
     private int numQuestoes;
+    @Min(value = 0, message = "Valor não pode ser negativo")
+    @NotNull(message = "Valor não pode ser vazio")
     private int numAcertos;
-    private int qtPontosPorQuestao;
+    @Min(value = 0, message = "Valor não pode ser negativo")
+    private int qtPontosPorQuestao = 0;
     private int qtPontosGerados;
+    @PastOrPresent(message = "O quiz não pode ter sido realizado no futuro")
     private LocalDateTime dtQuiz;
 
     public QuizTO() {

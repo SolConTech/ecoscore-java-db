@@ -1,5 +1,7 @@
 package br.com.fiap.to;
 
+import jakarta.validation.constraints.*;
+
 import javax.swing.*;
 
 /**
@@ -7,10 +9,17 @@ import javax.swing.*;
  * @since Java 21
  */
 public class UsuarioTO {
+    @Size(max = 30, message = "IDs de usuário tem no máximo 30 caracteres")
+    @NotBlank(message = "Valor não pode ser vazio")
     private String idUsuario;
+    @Size(max = 50, message = "Nomes de usuário tem no máximo 50 caracteres")
+    @NotBlank(message = "Valor não pode ser vazio")
     private String nmUsuario;
-    private float vlMerito; //A confiabilidade do usuário, quanto o voto e as ações dele são confiáveis
-    private int qtSoulCoins;
+    @Min(value = 0, message = "Valor do mérito não pode ser negativo, deve ser entre 0-100.")
+    @Max(value = 100, message = "Valor do mérito deve ser entre 0 e 100.")
+    private float vlMerito = 50; //A confiabilidade do usuário, quanto o voto e as ações dele são confiáveis
+    @Min(value = 0, message = "Quantidade de SoulCoins não pode ser negativo.")
+    private int qtSoulCoins = 0;
     private String dsAtividadeRecente = "\n"; //Últimas ações realizadas
     private String selosGanhos = "\n"; // tentei usar ArrayList (não deu no banco)
 

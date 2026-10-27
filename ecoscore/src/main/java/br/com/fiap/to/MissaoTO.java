@@ -1,5 +1,7 @@
 package br.com.fiap.to;
 
+import jakarta.validation.constraints.*;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -8,11 +10,19 @@ import java.time.format.DateTimeFormatter;
  * @since Java 21
  */
 public class MissaoTO {
+    @Min(value = 0, message = "Valor do id não pode ser negativo")
+    @NotNull(message = "Valor não pode ser vazio")
     private Integer idMissao;
+    @Size(max = 25, message = "Limite de caracteres é 25 para o nome da missão")
+    @NotBlank(message = "Nome da missão não pode ser vazio")
     private String nmMissao;
+    @Size(max = 200, message = "Limite de caracteres é 200 para a descrição da missão")
     private String dsMissao;
+    @Size(max = 25, message = "Limite de caracteres é 30 para o nome do selo")
     private String selo; //demonstração infelizmente não sei se consigo exibir os selos dps.
-    private int qtPontosGerados;
+    @Min(value = 0, message = "Pontos gerados não podem ser negativos.")
+    private int qtPontosGerados = 0;
+    @PastOrPresent(message = "A missão não pode ter sido feita no futuro")
     private LocalDateTime dtMissao;
 
     public MissaoTO() {}
