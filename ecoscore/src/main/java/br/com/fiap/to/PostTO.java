@@ -1,6 +1,6 @@
 package br.com.fiap.to;
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -10,11 +10,20 @@ import java.time.format.DateTimeFormatter;
  * @since Java 21
  */
 public class PostTO {
+    @Positive(message = "Valor do id não pode ser negativo")
+    @Null(message = "Valor não pode ser vazio")
     private Integer idPost;
+    @Size(max = 30, message = "IDs de usuário tem no máximo 30 caracteres")
+    @NotBlank(message = "Valor não pode ser vazio")
     private String idUsuario; //FK de UsuarioTO
+    @Size(max = 200, message = "Limite de caracteres é 200 para a descrição da missão")
+    @NotBlank(message = "A descrição do post não pode ser vazia")
     private String dsPost;
+    @PastOrPresent(message = "O post não pode ter sido publicado no futuro")
     private LocalDateTime dtPost;
+    @Min(value = 0, message = "Valor não pode ser negativo")
     private int numUpVotes = 0; //começa em zero
+    @Min(value = 0, message = "Valor do id não pode ser negativo")
     private int numDownVotes = 0; //começa em zero
     private int numSaldoVotes = 0; //começa em zero
 

@@ -1,5 +1,7 @@
 package br.com.fiap.to;
 
+import jakarta.validation.constraints.*;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -8,11 +10,20 @@ import java.time.format.DateTimeFormatter;
  * @since Java 21
  */
 public class AcaoTO {
+    @Positive(message = "Valor do id não pode ser negativo")
+    @Null(message = "ID vai ser registrado pelo próprio sistema")
     private Integer idAcao;
+    @Size(max = 30, message = "IDs de usuário tem no máximo 30 caracteres")
+    @NotBlank(message = "Valor não pode ser vazio")
     private String idUsuario; //FK de UsuarioTO.
+    @Size(max = 50, message = "Limite de caracteres é 50 para a descrição da ação")
+    @NotBlank(message = "Decrição da ação não pode ser vazia")
     private String dsAcao; //x reciclados
-    private int qtPontosGerados;
+    @Min(value = 0, message = "Valor do id não pode ser negativo")
+    private int qtPontosGerados = 0;
+    @PastOrPresent(message = "A ação não pode ter ocorrido no futuro")
     private LocalDateTime dtAcao;
+
     public AcaoTO() {
         dtAcao = LocalDateTime.now();
     }

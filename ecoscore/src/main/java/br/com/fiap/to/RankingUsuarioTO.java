@@ -1,11 +1,19 @@
 package br.com.fiap.to;
 
+import jakarta.validation.constraints.*;
+
 /**
  * Cada registro de um usuário do ranking
  */
 public class RankingUsuarioTO {
+    @Positive(message = "Valor do id não pode ser negativo")
+    @Null(message = "Valor não pode ser vazio")
     private Integer idRanking;
+    @Size(max = 30, message = "IDs de usuário tem no máximo 30 caracteres")
+    @NotBlank(message = "Valor não pode ser vazio")
     private String idUsuario;
+    @Min(value = 0, message = "Valor não pode ser negativo")
+    @NotNull(message = "Valor não pode ser vazio")
     private int qtVotos;
 
     public RankingUsuarioTO() {}
