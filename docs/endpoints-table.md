@@ -1,12 +1,12 @@
 # Tabelas de Endpoints
 Diferentes tabelas, a geral são todas as requisições juntas, as outras estão separadas por classe.
 - [1. Tabela geral](#1-geral)
-- [2. Tabela de Ação](#2-acao)
-- [3. Tabela de Missão](#3-missao)
+- [2. Tabela de Ação](#2-ação)
+- [3. Tabela de Missão](#3-missão)
 - [4. Tabela de Post](#4-post)
 - [5. Tabela de Quiz](#5-quiz)
 - [6. Tabela de Ranking](#6-ranking)
-- [7. Tabela de Usuário](#7-usuario)
+- [7. Tabela de Usuário](#7-usuário)
 
 ## 1. Geral
 | Nome | Método | Endereço | Status Esperados | Explicação |
