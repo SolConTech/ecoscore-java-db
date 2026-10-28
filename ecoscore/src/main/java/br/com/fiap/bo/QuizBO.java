@@ -55,9 +55,6 @@ public class QuizBO implements IBO{
             throw new IllegalArgumentException("ID ou Corpo inválido");
         }
         quizDAO = new QuizDAO();
-        if (quizDAO.findById(idQuiz) == null){
-            throw new IllegalArgumentException("ID \'" + idQuiz + "\' não encontrado no banco!");
-        }
         return quizDAO.update(idQuiz, quizTO);
     }
 
@@ -70,9 +67,6 @@ public class QuizBO implements IBO{
             idQuiz = Integer.parseInt(id.toString());
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("ID inválido.");
-        }
-        if (quizDAO.findById(idQuiz) == null){
-            throw new SQLException("ID \'" + idQuiz + "\' não encontrado no banco!");
         }
         return quizDAO.delete(idQuiz);
     }

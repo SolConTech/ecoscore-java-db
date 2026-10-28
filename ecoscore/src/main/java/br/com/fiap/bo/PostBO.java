@@ -55,9 +55,6 @@ public class PostBO implements IBO{
             throw new IllegalArgumentException("ID ou Corpo inválido");
         }
         postDAO = new PostDAO();
-        if (postDAO.findById(idPost) == null){
-            throw new IllegalArgumentException("ID \'" + idPost + "\' não encontrado no banco!");
-        }
         postTO.setIdPost(idPost); //pra reforçar validação com o set.
         return postDAO.update(idPost, postTO);
     }
@@ -71,9 +68,6 @@ public class PostBO implements IBO{
             idPost = Integer.parseInt(id.toString());
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("ID inválido.");
-        }
-        if (postDAO.findById(idPost) == null){
-            throw new SQLException("ID \'" + idPost + "\' não encontrado no banco!");
         }
         return postDAO.delete(idPost);
     }

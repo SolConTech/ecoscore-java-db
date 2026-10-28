@@ -55,9 +55,6 @@ public class MissaoBO implements IBO{
             throw new IllegalArgumentException("ID ou Corpo inválido");
         }
         missaoDAO = new MissaoDAO();
-        if (missaoDAO.findById(idMissao) == null){
-            throw new IllegalArgumentException("ID \'" + idMissao + "\' não encontrado no banco!");
-        }
         return missaoDAO.update(idMissao, missaoTO);
     }
 
@@ -70,9 +67,6 @@ public class MissaoBO implements IBO{
             idMissao = Integer.parseInt(id.toString());
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("ID inválido.");
-        }
-        if (missaoDAO.findById(idMissao) == null){
-            throw new SQLException("ID \'" + idMissao + "\' não encontrado no banco!");
         }
         return missaoDAO.delete(idMissao);
     }

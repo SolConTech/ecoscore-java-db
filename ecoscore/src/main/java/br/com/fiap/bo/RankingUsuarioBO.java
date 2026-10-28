@@ -55,9 +55,6 @@ public class RankingUsuarioBO implements IBO{
             throw new IllegalArgumentException("ID ou Corpo inválido");
         }
         rankingUsuarioDAO = new RankingUsuarioDAO();
-        if (rankingUsuarioDAO.findById(idRankingUsuario) == null){
-            throw new IllegalArgumentException("ID \'" + idRankingUsuario + "\' não encontrado no banco!");
-        }
         return rankingUsuarioDAO.update(idRankingUsuario, rankingUsuarioTO);
     }
 
@@ -70,9 +67,6 @@ public class RankingUsuarioBO implements IBO{
             idRankingUsuario = Integer.parseInt(id.toString());
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("ID inválido.");
-        }
-        if (rankingUsuarioDAO.findById(idRankingUsuario) == null){
-            throw new SQLException("ID \'" + idRankingUsuario + "\' não encontrado no banco!");
         }
         return rankingUsuarioDAO.delete(idRankingUsuario);
     }

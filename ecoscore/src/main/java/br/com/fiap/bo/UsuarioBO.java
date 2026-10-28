@@ -48,11 +48,7 @@ public class UsuarioBO implements IBO{
             throw new IllegalArgumentException("ID ou Corpo inválido");
         }
         usuarioDAO = new UsuarioDAO();
-        if (usuarioDAO.findById(idUsuario) == null){
-            throw new IllegalArgumentException("ID \'" + idUsuario + "\' não encontrado no banco!");
-        }
-        usuarioTO.setIdUsuario(idUsuario); //pra reforçar validação com o set.
-        return usuarioDAO.update(usuarioTO.getIdUsuario(), usuarioTO);
+        return usuarioDAO.update(idUsuario, usuarioTO);
     }
 
     @Override

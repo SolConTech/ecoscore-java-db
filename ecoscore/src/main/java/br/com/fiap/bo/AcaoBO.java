@@ -56,9 +56,6 @@ public class AcaoBO implements IBO{
             throw new IllegalArgumentException("ID ou Corpo inválido");
         }
         acaoDAO = new AcaoDAO();
-        if (acaoDAO.findById(idAcao) == null){
-            throw new IllegalArgumentException("ID \'" + idAcao + "\' não encontrado no banco!");
-        }
         return acaoDAO.update(idAcao, acaoTO);
     }
 
@@ -72,9 +69,6 @@ public class AcaoBO implements IBO{
             throw new IllegalArgumentException("ID inválido.");
         }
         acaoDAO = new AcaoDAO();
-        if (acaoDAO.findById(idAcao) == null){
-            throw new IllegalArgumentException("ID \'" + idAcao + "\' não encontrado no banco!");
-        }
         return acaoDAO.delete(idAcao);
     }
 }
