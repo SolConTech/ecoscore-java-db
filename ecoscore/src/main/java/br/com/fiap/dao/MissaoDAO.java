@@ -4,14 +4,13 @@ import br.com.fiap.to.MissaoTO;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 public class MissaoDAO implements IDAO{
 
     public MissaoDAO() {}
 
-    public MissaoTO save(Object objeto) throws SQLException {
-        MissaoTO missaoTO = (MissaoTO) objeto;
+    public MissaoTO save(Object body) throws SQLException {
+        MissaoTO missaoTO = (MissaoTO) body;
         String sql = "insert into missao(nm_missao, DS_MISSAO, SELO, qt_pontosGerados, dt_missao) values(?,?,?,?,?)";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
             ps.setString(1, missaoTO.getNmMissao());
@@ -31,8 +30,8 @@ public class MissaoDAO implements IDAO{
         }
     }
 
-    public MissaoTO update(Object id, Object objeto) throws SQLException {
-        MissaoTO missaoTO = (MissaoTO) objeto;
+    public MissaoTO update(Object id, Object body) throws SQLException {
+        MissaoTO missaoTO = (MissaoTO) body;
         Integer idMissao = (Integer) id;
         String sql = "update missao set NM_MISSAO=?, DS_MISSAO=?, SELO=?, QT_PONTOSGERADOS=?, DT_MISSAO=? where ID_MISSAO=?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {

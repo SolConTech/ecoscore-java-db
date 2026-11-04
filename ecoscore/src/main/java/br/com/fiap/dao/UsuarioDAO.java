@@ -11,8 +11,8 @@ public class UsuarioDAO implements IDAO{
 
     public UsuarioDAO() {}
 
-    public UsuarioTO save(Object object) throws SQLException {
-        UsuarioTO usuarioTO = (UsuarioTO) object;
+    public UsuarioTO save(Object body) throws SQLException {
+        UsuarioTO usuarioTO = (UsuarioTO) body;
         String sql = "insert into usuario(ID_USUARIO,NM_USUARIO,VL_MERITO,QT_SOULCOINS,DS_DESCRICAO,SELOS_GANHOS) values(?,?,?,?,?,?)";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
             ps.setString(1, usuarioTO.getIdUsuario());
@@ -34,8 +34,8 @@ public class UsuarioDAO implements IDAO{
         }
     }
 
-    public UsuarioTO update(Object id, Object object) throws SQLException {
-        UsuarioTO usuarioTO = (UsuarioTO) object;
+    public UsuarioTO update(Object id, Object body) throws SQLException {
+        UsuarioTO usuarioTO = (UsuarioTO) body;
         String idUsuario = (String) id;
         String sql = "update usuario set NM_USUARIO=?, VL_MERITO=?, QT_SOULCOINS=?,DS_DESCRICAO=?,SELOS_GANHOS=? where ID_USUARIO=?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
