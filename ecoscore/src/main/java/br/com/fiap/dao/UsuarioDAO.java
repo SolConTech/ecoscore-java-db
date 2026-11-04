@@ -1,0 +1,139 @@
+package br.com.fiap.dao;
+
+import br.com.fiap.to.UsuarioTO;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+public class UsuarioDAO implements IDAO{
+
+    public UsuarioDAO() {}
+
+    public UsuarioTO save(Object body) throws SQLException {
+        UsuarioTO usuarioTO = (UsuarioTO) body;
+        String sql = "insert into usuario(ID_USUARIO,NM_USUARIO,VL_MERITO,QT_SOULCOINS,DS_DESCRICAO,SELOS_GANHOS) values(?,?,?,?,?,?)";
+        try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
+            ps.setString(1, usuarioTO.getIdUsuario());
+            ps.setString(2, usuarioTO.getNmUsuario());
+            ps.setFloat(3, usuarioTO.getVlMerito());
+            ps.setInt(4, usuarioTO.getQtSoulCoins());
+            ps.setString(5, usuarioTO.getDsAtividadeRecente());
+            ps.setString(6, usuarioTO.getSelosGanhos());
+
+            if (ps.executeUpdate() > 0) {
+                return usuarioTO;
+            } else {
+                return null;
+            }
+        } catch (SQLException e) {
+            throw new SQLException("Erro de SQL: " + e.getMessage());
+        } finally {
+            ConnectionFactory.fecharConexao();
+        }
+    }
+
+    public UsuarioTO update(Object id, Object body) throws SQLException {
+        UsuarioTO usuarioTO = (UsuarioTO) body;
+        String idUsuario = (String) id;
+        String sql = "update usuario set NM_USUARIO=?, VL_MERITO=?, QT_SOULCOINS=?,DS_DESCRICAO=?,SELOS_GANHOS=? where ID_USUARIO=?";
+        try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
+            ps.setString(1, usuarioTO.getNmUsuario());
+            ps.setFloat(2, usuarioTO.getVlMerito());
+            ps.setInt(3, usuarioTO.getQtSoulCoins());
+            ps.setString(4, usuarioTO.getIdUsuario());
+            ps.setString(5, usuarioTO.getDsAtividadeRecente());
+            ps.setString(6, idUsuario);
+
+            if (ps.executeUpdate() > 0) {
+                return usuarioTO;
+            } else {
+                return null;
+            }
+        } catch (SQLException e) {
+            throw new SQLException("Erro de SQL: " + e.getMessage());
+        } finally {
+            ConnectionFactory.fecharConexao();
+        }
+    }
+
+    public Boolean delete(Object id) throws SQLException {
+        String idUsuario = (String) id;
+        String sql = "delete from usuario where ID_USUARIO=?";
+        try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
+            ps.setString(1, idUsuario);
+
+            if (ps.executeUpdate() > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            throw new SQLException("Erro de SQL: " + e.getMessage());
+        } finally {
+            ConnectionFactory.fecharConexao();
+        }
+    }
+
+    public ArrayList<Object> findAll() throws SQLException {
+        String sql = "select * from usuario order by ID_USUARIO";
+        ArrayList<Object> listaUsuario = new ArrayList<>();
+
+        try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()){
+
+            if (rs != null){
+                while (rs.next()){
+                    UsuarioTO usuarioTO = new UsuarioTO();
+
+                    usuarioTO.setIdUsuario(rs.getString(1));
+                    usuarioTO.setNmUsuario(rs.getString(2));
+                    usuarioTO.setVlMerito(rs.getFloat(3));
+                    usuarioTO.setQtSoulCoins(rs.getInt(4));
+                    usuarioTO.setDsAtividadeRecente(rs.getString(5));
+                    usuarioTO.setSelosGanhos(rs.getString(6));
+
+                    listaUsuario.add(usuarioTO);
+                }
+
+                return listaUsuario;
+            } else {
+                return null;
+            }
+
+        } catch (SQLException e) {
+            throw new SQLException("Erro de SQL: " + e.getMessage());
+        } finally {
+            ConnectionFactory.fecharConexao();
+        }
+    }
+
+    public UsuarioTO findById(Object id) throws SQLException {
+        String idUsuario = (String) id;
+        String sql = "SELECT * FROM USUARIO WHERE ID_USUARIO = ?";
+        try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)){
+            ps.setString(1, idUsuario);
+            try (ResultSet rs = ps.executeQuery()){
+                if (rs.next()){
+                    UsuarioTO usuarioTO = new UsuarioTO();
+                    usuarioTO.setIdUsuario(rs.getString(1));
+                    usuarioTO.setNmUsuario(rs.getString(2));
+                    usuarioTO.setVlMerito(rs.getFloat(3));
+                    usuarioTO.setQtSoulCoins(rs.getInt(4));
+                    usuarioTO.setDsAtividadeRecente(rs.getString(5));
+                    usuarioTO.setSelosGanhos(rs.getString(6));
+
+                    return usuarioTO;
+                } else {
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            throw new SQLException("Erro de SQL: " + e.getMessage());
+        } finally {
+            ConnectionFactory.fecharConexao();
+        }
+    }
+
+}

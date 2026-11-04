@@ -1,0 +1,818 @@
+type: collection.insomnia.rest/5.0
+schema_version: "5.1"
+name: ecoscore-endpoints
+meta:
+  id: wrk_66fecfa4cc704a708deaf625fbf628e8
+  created: 1792854943304
+  modified: 1792854943304
+  description: ""
+collection:
+  - name: acao
+    meta:
+      id: fld_e64de62284a24a77ab57721859bb6dc1
+      created: 1792855176979
+      modified: 1792855462063
+      sortKey: -1792855154835
+      description: ""
+    children:
+      - url: http://localhost:8080/acao
+        name: findAllAcao
+        meta:
+          id: req_9d310edf7e31474aa34521c1bbc24825
+          created: 1792855224381
+          modified: 1792855554205
+          isPrivate: false
+          description: ""
+          sortKey: -1792855471077
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/acao/:id
+        name: findByIdAcao
+        meta:
+          id: req_9fb8f4be1baa4618bfd650b7b86dc593
+          created: 1792855537086
+          modified: 1792947202257
+          isPrivate: false
+          description: ""
+          sortKey: -1792855470977
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: id
+            value: "0"
+      - url: http://localhost:8080/acao
+        name: saveAcao
+        meta:
+          id: req_b84d72aba8b84742a57feabf83a66df0
+          created: 1792855682973
+          modified: 1792947575126
+          isPrivate: false
+          description: ""
+          sortKey: -1791509761120
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            	{
+            		"dsAcao": "10L de água economizados",
+            		"dtAcao": "2026-09-10T12:46:10",
+            		"idUsuario": "dragonborn123",
+            		"qtPontosGerados": 10
+            	}
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/acao/:id
+        name: updateAcao
+        meta:
+          id: req_970380025efe4a928c1b2674a6911d74
+          created: 1792855914898
+          modified: 1792947608612
+          isPrivate: false
+          description: ""
+          sortKey: -1790836906191.5
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"dsAcao": "3kg de lixo reciclados",
+            	"dtAcao": "2026-09-10T00:16:07",
+            	"idUsuario": "murilosouza",
+            	"qtPontosGerados": 700
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: id
+            value: "9"
+      - url: http://localhost:8080/acao/:id
+        name: deleteAcao
+        meta:
+          id: req_c8c3753d57e243b190716d66a714d15b
+          created: 1792856045656
+          modified: 1792948351999
+          isPrivate: false
+          description: ""
+          sortKey: -1790836906091.5
+        method: DELETE
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: id
+            value: "9"
+  - name: missao
+    meta:
+      id: fld_94639ffe6c80471d8927fc15466555a4
+      created: 1792948482237
+      modified: 1792948482237
+      sortKey: -1792855154785
+      description: ""
+    children:
+      - url: http://localhost:8080/missao
+        name: saveMissao
+        meta:
+          id: req_00b5990cbf4d4caba961e017579e629c
+          created: 1792948482237
+          modified: 1792948594871
+          isPrivate: false
+          description: ""
+          sortKey: -1791509761120
+        method: POST
+        body:
+          mimeType: application/json
+          text: >-
+            	{
+            		"nmMissao": "Trilha de Agricultor",
+            		"dsMissao": "Tarefas relacionadas com nosso parceiro que vende produtos de jardinagem.",
+            		"selo": "Agricultor Mestre",
+            		"qtPontosGerados": 1000,
+            		"dtMissao": "2026-09-10T13:23:45"
+            	}
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/missao/:id
+        name: updateMissao
+        meta:
+          id: req_41a02edb66d544f3aadec2ec906ff321
+          created: 1792948482237
+          modified: 1792949288348
+          isPrivate: false
+          description: ""
+          sortKey: -1790836906191.5
+        method: PUT
+        body:
+          mimeType: application/json
+          text: >-
+            	{
+            		"nmMissao": "Trilha de Agricultor",
+            		"dsMissao": "Tarefas relacionadas com nosso parceiro que vende produtos de jardinagem.",
+            		"selo": "Agricultor Mestre",
+            		"qtPontosGerados": 1500,
+            		"dtMissao": "2026-09-10T13:23:45"
+            	}
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: id
+            value: "2"
+      - url: http://localhost:8080/missao/:id
+        name: deleteMissao
+        meta:
+          id: req_7ab16a4f669548ea9afba90fbdb9cc8e
+          created: 1792948482237
+          modified: 1792949300871
+          isPrivate: false
+          description: ""
+          sortKey: -1790836906091.5
+        method: DELETE
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: id
+            value: "2"
+      - url: http://localhost:8080/missao/:id
+        name: findByIdMissao
+        meta:
+          id: req_b3bf8818a4984ca8927ee49b15a95540
+          created: 1792948482237
+          modified: 1792948527680
+          isPrivate: false
+          description: ""
+          sortKey: -1792855470977
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: id
+            value: "0"
+      - url: http://localhost:8080/missao
+        name: findAllMissao
+        meta:
+          id: req_f095d5be661649509c1fd6fd572025f6
+          created: 1792948482237
+          modified: 1792948522250
+          isPrivate: false
+          description: ""
+          sortKey: -1792855471077
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: quiz
+    meta:
+      id: fld_ad1052acaa10415caa3c37c613b65278
+      created: 1792949422170
+      modified: 1792950391979
+      sortKey: -1792855154710
+      description: ""
+    children:
+      - url: http://localhost:8080/quiz/:id
+        name: deleteQuiz
+        meta:
+          id: req_1d92e0496dbf44eea53192504dfa0a2b
+          created: 1792949422170
+          modified: 1792950353397
+          isPrivate: false
+          description: ""
+          sortKey: -1790836906091.5
+        method: DELETE
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: id
+            value: "2"
+      - url: http://localhost:8080/quiz
+        name: saveQuiz
+        meta:
+          id: req_5006181304324626a82aabe84a7f73ee
+          created: 1792949422170
+          modified: 1792950292454
+          isPrivate: false
+          description: ""
+          sortKey: -1791509761120
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            	{
+            		"idUsuario": "dragonborn123",
+            		"numQuestoes": 10,
+            		"numAcertos": 7,
+            		"qtPontosPorQuestao": 5,
+            		"dtQuiz": "2026-09-10T14:07:36",
+            		"qtPontosGerados": 35
+            	}
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/quiz/:id
+        name: updateQuiz
+        meta:
+          id: req_74e73fa5e7964bef9e9b9d606ecce009
+          created: 1792949422170
+          modified: 1792950335599
+          isPrivate: false
+          description: ""
+          sortKey: -1790836906191.5
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            	{
+            		"idUsuario": "murilosouza",
+            		"numQuestoes": 10,
+            		"numAcertos": 7,
+            		"qtPontosPorQuestao": 5,
+            		"dtQuiz": "2026-09-10T14:07:36",
+            		"qtPontosGerados": 35
+            	}
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: id
+            value: "2"
+      - url: http://localhost:8080/quiz
+        name: findAllQuiz
+        meta:
+          id: req_c8c858ae5c0449b5ad5f3d0a308eebc2
+          created: 1792949422170
+          modified: 1792950242187
+          isPrivate: false
+          description: ""
+          sortKey: -1792855471077
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/quiz/:id
+        name: findByIdQuiz
+        meta:
+          id: req_f104d70ee78149dda18cccada073b84a
+          created: 1792949422170
+          modified: 1792950348182
+          isPrivate: false
+          description: ""
+          sortKey: -1792855470977
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: id
+            value: "2"
+  - name: post
+    meta:
+      id: fld_ff32b98752fb49c7b27f80892cc8a517
+      created: 1792950195461
+      modified: 1792950385168
+      sortKey: -1792855154622.5
+      description: ""
+    children:
+      - url: http://localhost:8080/post/:id
+        name: updatePost
+        meta:
+          id: req_b048b88ee9894c7db072b92352ce708d
+          created: 1792950195461
+          modified: 1792950195461
+          isPrivate: false
+          description: ""
+          sortKey: -1790836906191.5
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            	{
+            		"idUsuario": "murilosouza",
+            		"dsPost": "tergerhbrthn",
+            		"dtPost": "2026-09-10T20:01:04",
+            		"numDownVotes": 46,
+            		"numSaldoVotes": 240,
+            		"numUpVotes": 286
+            	}
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: id
+            value: "23"
+      - url: http://localhost:8080/post
+        name: findAllPost
+        meta:
+          id: req_c532708049d14ae49112adc88fe7eba3
+          created: 1792950195461
+          modified: 1792950195461
+          isPrivate: false
+          description: ""
+          sortKey: -1792855471077
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/post/:id
+        name: findByIdPost
+        meta:
+          id: req_f5fe1d816bcd41bd9523fa8ea946089c
+          created: 1792950195461
+          modified: 1792950195461
+          isPrivate: false
+          description: ""
+          sortKey: -1792855470977
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: id
+            value: "22"
+      - url: http://localhost:8080/post/:id
+        name: deletePost
+        meta:
+          id: req_f67ace8ba3844c82bfb52c53d20eca36
+          created: 1792950195461
+          modified: 1792950195461
+          isPrivate: false
+          description: ""
+          sortKey: -1790836906091.5
+        method: DELETE
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: id
+            value: "23"
+      - url: http://localhost:8080/post
+        name: savePost
+        meta:
+          id: req_f6a4a0871c474e5f962fc0c3dcd39969
+          created: 1792950195461
+          modified: 1792950195461
+          isPrivate: false
+          description: ""
+          sortKey: -1791509761120
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            	{
+            		"idUsuario": "murilosouza",
+            		"dsPost": "teste",
+            		"dtPost": "2026-09-10T20:01:04",
+            		"numDownVotes": 46,
+            		"numSaldoVotes": 240,
+            		"numUpVotes": 286
+            	}
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: ranking
+    meta:
+      id: fld_634e9145ced64a5eacb1d30dfb008e76
+      created: 1792950433535
+      modified: 1792950433535
+      sortKey: -1792855154478.75
+      description: ""
+    children:
+      - url: http://localhost:8080/ranking/:id
+        name: findByIdRanking
+        meta:
+          id: req_a38961c838704cbc88f02810189f8c35
+          created: 1792950433535
+          modified: 1792951316476
+          isPrivate: false
+          description: ""
+          sortKey: -1792855470977
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: id
+            value: "13"
+      - url: http://localhost:8080/ranking/:id
+        name: deleteRanking
+        meta:
+          id: req_d527156785254752a3c93ca82eb68126
+          created: 1792950433535
+          modified: 1792951741640
+          isPrivate: false
+          description: ""
+          sortKey: -1790836906091.5
+        method: DELETE
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: id
+            value: "13"
+      - url: http://localhost:8080/ranking/:id
+        name: updateRanking
+        meta:
+          id: req_db3168be100f4be59877d2858d1fcb13
+          created: 1792950433535
+          modified: 1792951595688
+          isPrivate: false
+          description: ""
+          sortKey: -1790836906191.5
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"idUsuario": 13,
+            	"qtVotos": 456
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: id
+            value: "3"
+      - url: http://localhost:8080/ranking
+        name: saveRanking
+        meta:
+          id: req_dd0e66ea0515414ba476f1a7b772dc88
+          created: 1792950433535
+          modified: 1792950954799
+          isPrivate: false
+          description: ""
+          sortKey: -1791509761120
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"idUsuario": "13",
+            	"qtVotos": 154
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/ranking
+        name: findAllRanking
+        meta:
+          id: req_fa6a5414ee214efc8919c1b11f8149f2
+          created: 1792950433535
+          modified: 1792950463167
+          isPrivate: false
+          description: ""
+          sortKey: -1792855471077
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: usuario
+    meta:
+      id: fld_7e05c54ad2234f34ae2e788bd9a11ee0
+      created: 1792950717672
+      modified: 1792950717672
+      sortKey: -1792855154406.875
+      description: ""
+    children:
+      - url: http://localhost:8080/usuario/:id
+        name: deleteUsuario
+        meta:
+          id: req_0848bc4a0bbd4434b90b4567a1562933
+          created: 1792950717672
+          modified: 1792950921111
+          isPrivate: false
+          description: ""
+          sortKey: -1790836906091.5
+        method: DELETE
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: id
+            value: teste
+      - url: http://localhost:8080/usuario/:id
+        name: updateUsuario
+        meta:
+          id: req_1b349e140013410a95d0b7474edd67a5
+          created: 1792950717672
+          modified: 1792950912723
+          isPrivate: false
+          description: ""
+          sortKey: -1790836906191.5
+        method: PUT
+        body:
+          mimeType: application/json
+          text: >-
+            {
+            	"dsAtividadeRecente": "teste",
+            	"idUsuario": "teste",
+            	"nmUsuario": "Astrogildo",
+            	"qtSoulCoins": 621,
+            	"selosGanhos": "\ndragonborn123Um quiz foi realizada em (23/10/2026 22:19:14), acertando 2/2. [2 pontos]\n\n",
+            	"vlMerito": 23.0
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: id
+            value: teste
+      - url: http://localhost:8080/usuario
+        name: findAllUsuario
+        meta:
+          id: req_9e6f46db35c24cda9117956650d06353
+          created: 1792950717672
+          modified: 1792950892248
+          isPrivate: false
+          description: ""
+          sortKey: -1792855471077
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/usuario/:id
+        name: findByIdUsuario
+        meta:
+          id: req_ef8f4da2f6764263938898375e82cef3
+          created: 1792950717672
+          modified: 1792950899928
+          isPrivate: false
+          description: ""
+          sortKey: -1792855470977
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: id
+            value: teste
+      - url: http://localhost:8080/usuario
+        name: saveUsuario
+        meta:
+          id: req_fda5c473bb5b44c89455de41dab5ffea
+          created: 1792950717672
+          modified: 1792950906565
+          isPrivate: false
+          description: ""
+          sortKey: -1791509761120
+        method: POST
+        body:
+          mimeType: application/json
+          text: >-
+            {
+            	"dsAtividadeRecente": "dragonborn123",
+            	"idUsuario": "teste",
+            	"nmUsuario": "Astrogildo",
+            	"qtSoulCoins": 621,
+            	"selosGanhos": "\ndragonborn123Um quiz foi realizada em (23/10/2026 22:19:14), acertando 2/2. [2 pontos]\n\n",
+            	"vlMerito": 23.0
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_2ca0b48d5d0eb1edb211cabd23119154690b09e1
+    created: 1792854943310
+    modified: 1792854943310
+environments:
+  name: Base Environment
+  meta:
+    id: env_2ca0b48d5d0eb1edb211cabd23119154690b09e1
+    created: 1792854943309
+    modified: 1792854943309
+    isPrivate: false

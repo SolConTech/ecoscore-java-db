@@ -1,0 +1,43 @@
+package br.com.fiap.dao;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+public interface IDAO {
+
+    /**
+     * Inseri um registro na tabela do banco de dados
+     * @param body Um body de uma tabela correspondente
+     * @return Mensagem de resultado da operação
+     */
+    public Object save(Object body) throws SQLException;
+
+    /**
+     * Altera um registro na tabela do banco de dados
+     * @param id O identificador do body a ser alterado
+     * @param body Um body de uma tabela correspondente
+     * @return Mensagem de resultado da operação
+     */
+    public Object update(Object id, Object body) throws SQLException;
+
+    /**
+     * Exclui um registro na tabela do banco de dados
+     * @param id Um id de uma tabela correspondente
+     * @return Mensagem de resultado da operação
+     */
+    public Boolean delete(Object id) throws SQLException;
+
+    /**
+     * Lista todos os registros do banco
+     * @return Uma lista com objetos dos registros
+     */
+    public ArrayList<Object> findAll() throws SQLException;
+
+    /**
+     * Atribui a um objeto o registro da tabela no banco
+     * @param id O valor da chave primária
+     * @return O objeto com registro da tabela correspondente à chave informada
+     */
+    public Object findById(Object id) throws SQLException;
+
+}

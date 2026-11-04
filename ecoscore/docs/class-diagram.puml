@@ -1,0 +1,527 @@
+@startuml
+class GUIQuizView {
+- Container contentPane
+- JPanel painel
+- JTextField tfNumQuestoes
+- JLabel lbNumQuestoes
+- JButton btRecalcularPontos
+- QuizTO quizTO
+- QuizController quizController
+- UsuarioController usuarioController
+- void inicializarComponentes()
+- void iniciarValores(UsuarioTO)
+- void definirEventos(UsuarioTO)
+}
+
+
+class GUIMainView {
+- UsuarioTO usuarioTO
+- AcaoTO acaoTO
+- MissaoTO missaoTO
+- PostTO postTO
+- QuizTO quizTO
+- RankingUsuarioTO ranking
+- UsuarioController usuarioController
+- AcaoController acaoController
+- MissaoController missaoController
+- QuizController quizController
+- PostController postController
+- RankingUsuarioController rankingUsuarioController
+- Container contentPane
++ JMenuBar mnBarra
+- JMenu mnArquivo
+- JMenuItem miSair
+- JPanel painel
+- JButton btRegistrarAcao
+- JTextArea taDetalhesPerfil
+- JLabel lbPerfil
++ void iniciarUsuario()
+- void inicializarComponentes()
+- void definirEventos()
+}
+
+
+class UsuarioResource {
+~ UsuarioBO usuarioBO
++ ResponseEntity<List<Object>> findAll()
++ ResponseEntity<?> findById(String)
++ ResponseEntity<?> save(UsuarioTO)
++ ResponseEntity<?> update(String,UsuarioTO)
++ ResponseEntity<String> delete(String)
+}
+
+
+class MissaoController {
++ String inserirMissao(String,String,String,int,LocalDateTime)
++ String alterarMissao(Integer,String,String,String,int,LocalDateTime)
++ String excluirMissao(Integer)
++ ArrayList<Object> listarTodosMissao()
++ MissaoTO pegarUmMissao(Integer)
+}
+
+interface IDAO {
++ Object save(Object)
++ Object update(Object,Object)
++ Boolean delete(Object)
++ ArrayList<Object> findAll()
++ Object findById(Object)
+}
+
+class RunApplication {
++ {static} void main(String[])
+}
+
+class UsuarioBO {
+- UsuarioDAO usuarioDAO
++ ArrayList<Object> findAll()
++ Object findById(Object)
++ Object save(Object)
++ Object update(Object,Object)
++ Boolean delete(Object)
+}
+
+
+class QuizDAO {
++ QuizTO save(Object)
++ QuizTO update(Object,Object)
++ Boolean delete(Object)
++ ArrayList<Object> findAll()
++ QuizTO findById(Object)
+}
+
+class UsuarioTO {
+- String idUsuario
+- String nmUsuario
+- float vlMerito
+- int qtSoulCoins
+- String dsAtividadeRecente
+- String selosGanhos
++ String getNmUsuario()
++ void setNmUsuario(String)
++ String getIdUsuario()
++ void setIdUsuario(String)
++ float getVlMerito()
++ void setVlMerito(float)
++ int getQtSoulCoins()
++ void setQtSoulCoins(int)
++ String getDsAtividadeRecente()
++ void setDsAtividadeRecente(String)
++ String getSelosGanhos()
++ void setSelosGanhos(String)
++ void registrarAtividade(String)
++ void registrarAtividade(String,int)
++ void registrarAtividade(String,int,String)
++ String detalhesPerfil()
++ String registrarPenalidade(float,String)
+}
+
+
+class AcaoTO {
+- Integer idAcao
+- String idUsuario
+- String dsAcao
+- int qtPontosGerados
+- LocalDateTime dtAcao
++ Integer getIdAcao()
++ void setIdAcao(Integer)
++ String getIdUsuario()
++ void setIdUsuario(String)
++ String getDsAcao()
++ void setDsAcao(String)
++ int getQtPontosGerados()
++ void setQtPontosGerados(int)
++ LocalDateTime getDtAcao()
++ void setDtAcao(LocalDateTime)
++ int registrarPontos(int)
++ String detalhesAcao()
+}
+
+
+class UsuarioController {
++ String inserirUsuario(String,String,float,int,String,String)
++ String alterarUsuario(String,String,float,int,String,String)
++ String excluirUsuario(String)
++ ArrayList<Object> listarTodosUsuario()
++ UsuarioTO pegarUmUsuario(String)
+}
+
+class MissaoDAO {
++ MissaoTO save(Object)
++ MissaoTO update(Object,Object)
++ Boolean delete(Object)
++ ArrayList<Object> findAll()
++ MissaoTO findById(Object)
+}
+
+class PostTO {
+- Integer idPost
+- String idUsuario
+- String dsPost
+- LocalDateTime dtPost
+- int numUpVotes
+- int numDownVotes
+- int numSaldoVotes
++ Integer getIdPost()
++ void setIdPost(Integer)
++ String getIdUsuario()
++ void setIdUsuario(String)
++ String getDsPost()
++ void setDsPost(String)
++ LocalDateTime getDtPost()
++ void setDtPost(LocalDateTime)
++ int getNumUpVotes()
++ void setNumUpVotes(int)
++ int getNumDownVotes()
++ void setNumDownVotes(int)
++ int getNumSaldoVotes()
++ void setNumSaldoVotes()
++ void publicar(String)
++ void addUpVote(int)
++ void addDownVote(int)
++ String detalhesPost()
+}
+
+
+class CorsFilter {
+# void doFilterInternal(HttpServletRequest,HttpServletResponse,FilterChain)
+}
+
+class RankingUsuarioTO {
+- Integer idRanking
+- String idUsuario
+- int qtVotos
++ Integer getIdRanking()
++ void setIdRanking(Integer)
++ String getIdUsuario()
++ void setIdUsuario(String)
++ int getQtVotos()
++ void setQtVotos(int)
++ void addQtVotos(int)
+}
+
+
+class ConnectionFactory {
+- {static} Connection connection
++ {static} Connection abrirConexao()
++ {static} void fecharConexao()
+}
+
+
+class MissaoTO {
+- Integer idMissao
+- String nmMissao
+- String dsMissao
+- String selo
+- int qtPontosGerados
+- LocalDateTime dtMissao
++ Integer getIdMissao()
++ void setIdMissao(Integer)
++ String getNmMissao()
++ void setNmMissao(String)
++ String getDsMissao()
++ void setDsMissao(String)
++ String getSelo()
++ void setSelo(String)
++ int getQtPontosGerados()
++ void setQtPontosGerados(int)
++ LocalDateTime getDtMissao()
++ void setDtMissao(LocalDateTime)
++ int registrarPontos()
++ String detalhesMissao()
+}
+
+
+class CalculadoraPontos {
++ int pontosNatureza(int)
++ int pontosCarbono(float)
++ int pontosAgua(float)
++ int pontosReciclagem(float)
+}
+
+class QuizResource {
+~ QuizBO quizBO
++ ResponseEntity<List<Object>> findAll()
++ ResponseEntity<?> findById(Integer)
++ ResponseEntity<?> save(QuizTO)
++ ResponseEntity<?> update(Integer,QuizTO)
++ ResponseEntity<String> delete(Integer)
+}
+
+
+class AcaoBO {
+- AcaoDAO acaoDAO
++ ArrayList<Object> findAll()
++ Object findById(Object)
++ Object save(Object)
++ Object update(Object,Object)
++ Boolean delete(Object)
+}
+
+
+class MissaoResource {
+~ MissaoBO MissaoBO
++ ResponseEntity<List<Object>> findAll()
++ ResponseEntity<?> findById(Integer)
++ ResponseEntity<?> save(MissaoTO)
++ ResponseEntity<?> update(Integer,MissaoTO)
++ ResponseEntity<String> delete(Integer)
+}
+
+
+class AcaoController {
++ String inserirAcao(String,String,int,LocalDateTime)
++ String alterarAcao(Integer,String,String,int,LocalDateTime)
++ String excluirAcao(Integer)
++ ArrayList<Object> listarTodosAcao()
++ AcaoTO pegarUmAcao(Integer)
+}
+
+class RankingUsuarioDAO {
++ RankingUsuarioTO save(Object)
++ RankingUsuarioTO update(Object,Object)
++ Boolean delete(Object)
++ ArrayList<Object> findAll()
++ RankingUsuarioTO findById(Object)
+}
+
+class PostBO {
+- PostDAO postDAO
++ ArrayList<Object> findAll()
++ Object findById(Object)
++ Object save(Object)
++ Object update(Object,Object)
++ Boolean delete(Object)
+}
+
+
+class GUIMissaoView {
+- Container contentPane
+- JPanel painel
+- JTextField tfNmMissao
+- JLabel lbNmMissao
+- JButton btRegistrarMissao
+- MissaoTO missaoTO
+- MissaoController missaoController
+- UsuarioController usuarioController
+- void inicializarComponentes()
+- void definirEventos(UsuarioTO)
+}
+
+
+class QuizTO {
+- Integer idQuiz
+- String idUsuario
+- int numQuestoes
+- int numAcertos
+- int qtPontosPorQuestao
+- int qtPontosGerados
+- LocalDateTime dtQuiz
++ Integer getIdQuiz()
++ void setIdQuiz(Integer)
++ String getIdUsuario()
++ void setIdUsuario(String)
++ int getNumQuestoes()
++ void setNumQuestoes(int)
++ int getNumAcertos()
++ void setNumAcertos(int)
++ int getQtPontosPorQuestao()
++ void setQtPontosPorQuestao(int)
++ int getQtPontosGerados()
++ void setQtPontosGerados()
++ LocalDateTime getDtQuiz()
++ void setDtQuiz(LocalDateTime)
++ int registrarPontos()
++ String detalhesQuiz()
+}
+
+
+class GUIAcaoView {
+- Container contentPane
+- JPanel painel
+- JTextField tfDsAcao
+- JLabel lbDsAcao
+- JButton btRegistrarAcao
+- AcaoTO acaoTO
+- AcaoController acaoController
+- UsuarioController usuarioController
+- CalculadoraPontos calculadora
+- void inicializarComponentes()
+- void calcularPontos()
+- void definirEventos(UsuarioTO)
+}
+
+
+class PostResource {
+~ PostBO postBO
++ ResponseEntity<List<Object>> findAll()
++ ResponseEntity<?> findById(Integer)
++ ResponseEntity<?> save(PostTO)
++ ResponseEntity<?> update(Integer,PostTO)
++ ResponseEntity<String> delete(Integer)
+}
+
+
+class MissaoBO {
+- MissaoDAO missaoDAO
++ ArrayList<Object> findAll()
++ Object findById(Object)
++ Object save(Object)
++ Object update(Object,Object)
++ Boolean delete(Object)
+}
+
+
+class PostDAO {
++ PostTO save(Object)
++ PostTO update(Object,Object)
++ Boolean delete(Object)
++ ArrayList<Object> findAll()
++ PostTO findById(Object)
+}
+
+interface IResource {
+~ ResponseEntity<List<Object>> findAll()
+~ ResponseEntity<?> findById(I)
+~ ResponseEntity<?> save(T)
+~ ResponseEntity<?> update(I,T)
+~ ResponseEntity<String> delete(I)
+}
+
+class PostController {
++ String inserirPost(String,String,LocalDateTime,int,int)
++ String alterarPost(Integer,String,String,LocalDateTime,int,int)
++ String excluirPost(Integer)
++ ArrayList<Object> listarTodosPost()
++ PostTO pegarUmPost(Integer)
+}
+
+class UsuarioDAO {
++ UsuarioTO save(Object)
++ UsuarioTO update(Object,Object)
++ Boolean delete(Object)
++ ArrayList<Object> findAll()
++ UsuarioTO findById(Object)
+}
+
+class EcoscoreApplication {
++ {static} void main(String[])
+}
+
+class RankingUsuarioController {
++ String inserirRankingUsuario(String,int)
++ String alterarRankingUsuario(Integer,String,int)
++ String excluirRankingUsuario(Integer)
++ ArrayList<Object> listarTodosRankingUsuario()
++ RankingUsuarioTO pegarUmRankingUsuario(String)
+}
+
+class RankingUsuarioBO {
+- RankingUsuarioDAO rankingUsuarioDAO
++ ArrayList<Object> findAll()
++ Object findById(Object)
++ Object save(Object)
++ Object update(Object,Object)
++ Boolean delete(Object)
+}
+
+
+interface IBO {
++ ArrayList<Object> findAll()
++ Object findById(Object)
++ Object save(Object)
++ Object update(Object,Object)
++ Boolean delete(Object)
+}
+
+class RankingUsuarioResource {
+~ RankingUsuarioBO rankingUsuarioBO
++ ResponseEntity<List<Object>> findAll()
++ ResponseEntity<?> findById(String)
++ ResponseEntity<?> save(RankingUsuarioTO)
++ ResponseEntity<?> update(String,RankingUsuarioTO)
++ ResponseEntity<String> delete(String)
+}
+
+
+class QuizController {
++ String inserirQuiz(String,int,int,int,LocalDateTime)
++ String alterarQuiz(Integer,String,int,int,int,LocalDateTime)
++ String excluirQuiz(Integer)
++ ArrayList<Object> listarTodosQuiz()
++ QuizTO pegarUmQuiz(Integer)
+}
+
+class GUIPostView {
+- Container contentPane
+- JPanel painel
+- JTextArea tfDsPost
+- JScrollPane spDsPost
+- JTextField tfNumUpVotes
+- JLabel lbDsPost
+- JButton btRegistrarPost
+- PostTO postTO
+- PostController postController
+- UsuarioController usuarioController
+- RankingUsuarioTO rankingUsuarioTO
+- RankingUsuarioController rankingUsuarioController
+- void inicializarComponentes()
+- void calcularVotos()
+- void definirEventos(UsuarioTO)
+}
+
+
+class QuizBO {
+- QuizDAO quizDAO
++ ArrayList<Object> findAll()
++ Object findById(Object)
++ Object save(Object)
++ Object update(Object,Object)
++ Boolean delete(Object)
+}
+
+
+class AcaoDAO {
++ AcaoTO save(Object)
++ AcaoTO update(Object,Object)
++ Boolean delete(Object)
++ ArrayList<Object> findAll()
++ AcaoTO findById(Object)
+}
+
+class AcaoResource {
+~ AcaoBO acaoBO
++ ResponseEntity<List<Object>> findAll()
++ ResponseEntity<?> findById(Integer)
++ ResponseEntity<?> save(AcaoTO)
++ ResponseEntity<?> update(Integer,AcaoTO)
++ ResponseEntity<String> delete(Integer)
+}
+
+
+
+
+JFrame <|-- GUIQuizView
+JFrame <|-- GUIMainView
+IResource <|.. UsuarioResource
+IBO <|.. UsuarioBO
+IDAO <|.. QuizDAO
+IDAO <|.. MissaoDAO
+OncePerRequestFilter <|-- CorsFilter
+IResource <|.. QuizResource
+IBO <|.. AcaoBO
+IResource <|.. MissaoResource
+IDAO <|.. RankingUsuarioDAO
+IBO <|.. PostBO
+JFrame <|-- GUIMissaoView
+JFrame <|-- GUIAcaoView
+IResource <|.. PostResource
+IBO <|.. MissaoBO
+IDAO <|.. PostDAO
+IDAO <|.. UsuarioDAO
+IBO <|.. RankingUsuarioBO
+IResource <|.. RankingUsuarioResource
+JFrame <|-- GUIPostView
+IBO <|.. QuizBO
+IDAO <|.. AcaoDAO
+IResource <|.. AcaoResource
+@enduml
