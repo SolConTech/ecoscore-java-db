@@ -9,8 +9,8 @@ public class RankingUsuarioDAO implements IDAO{
 
     public RankingUsuarioDAO() {}
 
-    public RankingUsuarioTO save(Object object) throws SQLException {
-        RankingUsuarioTO rankingUsuarioTO = (RankingUsuarioTO) object;
+    public RankingUsuarioTO save(Object body) throws SQLException {
+        RankingUsuarioTO rankingUsuarioTO = (RankingUsuarioTO) body;
         String sql = "insert into ranking_usuario(ID_USUARIO,QT_VOTOS) values(?,?)";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
             ps.setString(1, rankingUsuarioTO.getIdUsuario());
@@ -28,8 +28,8 @@ public class RankingUsuarioDAO implements IDAO{
         }
     }
 
-    public RankingUsuarioTO update(Object id, Object object) throws SQLException {
-        RankingUsuarioTO rankingUsuarioTO = (RankingUsuarioTO) object;
+    public RankingUsuarioTO update(Object id, Object body) throws SQLException {
+        RankingUsuarioTO rankingUsuarioTO = (RankingUsuarioTO) body;
         String sql = "update ranking_usuario set ID_USUARIO=?, QT_VOTOS=? where ID_RANKING=?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
             ps.setInt(2, rankingUsuarioTO.getQtVotos());

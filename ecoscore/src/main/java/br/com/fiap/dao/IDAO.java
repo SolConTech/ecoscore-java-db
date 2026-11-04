@@ -7,18 +7,18 @@ public interface IDAO {
 
     /**
      * Inseri um registro na tabela do banco de dados
-     * @param objeto Um objeto de uma tabela correspondente
+     * @param body Um body de uma tabela correspondente
      * @return Mensagem de resultado da operação
      */
-    public Object save(Object objeto) throws SQLException;
+    public Object save(Object body) throws SQLException;
 
     /**
      * Altera um registro na tabela do banco de dados
-     * @param id O identificador do objeto a ser alterado
-     * @param objeto Um objeto de uma tabela correspondente
+     * @param id O identificador do body a ser alterado
+     * @param body Um body de uma tabela correspondente
      * @return Mensagem de resultado da operação
      */
-    public Object update(Object id, Object objeto) throws SQLException;
+    public Object update(Object id, Object body) throws SQLException;
 
     /**
      * Exclui um registro na tabela do banco de dados

@@ -9,8 +9,8 @@ public class PostDAO implements IDAO{
 
     public PostDAO() {}
 
-    public PostTO save(Object object) throws SQLException {
-        PostTO postTO = (PostTO) object;
+    public PostTO save(Object body) throws SQLException {
+        PostTO postTO = (PostTO) body;
         String sql = "insert into post(USUARIO_ID_USUARIO,DS_POST,DT_POST,NUM_UPVOTES,NUM_DOWNVOTES,NUM_SALDOVOTES) values(?,?,?,?,?,?)";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
             ps.setString(1, postTO.getIdUsuario());
@@ -32,8 +32,8 @@ public class PostDAO implements IDAO{
         }
     }
 
-    public PostTO update(Object id, Object object) throws SQLException {
-        PostTO postTO = (PostTO) object;
+    public PostTO update(Object id, Object body) throws SQLException {
+        PostTO postTO = (PostTO) body;
         Integer idPost = (Integer) id;
         String sql = "update post set USUARIO_ID_USUARIO=?, DS_POST=?, DT_POST=?, NUM_UPVOTES=?, NUM_DOWNVOTES=?, NUM_SALDOVOTES=? where ID_POST=?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {

@@ -9,8 +9,8 @@ public class QuizDAO implements IDAO{
 
     public QuizDAO() {}
 
-    public QuizTO save(Object object) throws SQLException {
-        QuizTO quizTO = (QuizTO) object;
+    public QuizTO save(Object body) throws SQLException {
+        QuizTO quizTO = (QuizTO) body;
         String sql = "insert into quiz(USUARIO_ID_USUARIO,NUM_QUESTOES,NUM_ACERTOS,QT_PONTOSPORQUESTAO,QT_PONTOSGERADOS,DT_QUIZ) values(?,?,?,?,?,?)";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
             ps.setString(1, quizTO.getIdUsuario());
@@ -32,8 +32,8 @@ public class QuizDAO implements IDAO{
         }
     }
 
-    public QuizTO update(Object id, Object object) throws SQLException {
-        QuizTO quizTO = (QuizTO) object;
+    public QuizTO update(Object id, Object body) throws SQLException {
+        QuizTO quizTO = (QuizTO) body;
         Integer idQuiz = (Integer) id;
         String sql = "update quiz set USUARIO_ID_USUARIO=?, NUM_QUESTOES=?, NUM_ACERTOS=?, QT_PONTOSPORQUESTAO=?, QT_PONTOSGERADOS=?, DT_QUIZ=? where ID_QUIZ=?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {

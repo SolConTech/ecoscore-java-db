@@ -8,8 +8,8 @@ import java.util.ArrayList;
 public class AcaoDAO implements IDAO{
     public AcaoDAO() {}
 
-    public AcaoTO save(Object object) throws SQLException {
-        AcaoTO acaoTO = (AcaoTO) object;
+    public AcaoTO save(Object body) throws SQLException {
+        AcaoTO acaoTO = (AcaoTO) body;
         String sql = "insert into acao(usuario_id_usuario, ds_acao, qt_pontosGerados, dt_acao) values(?,?,?,?)";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {
             ps.setString(1, acaoTO.getIdUsuario());
@@ -29,8 +29,8 @@ public class AcaoDAO implements IDAO{
         }
     }
 
-    public AcaoTO update(Object id, Object object) throws SQLException {
-        AcaoTO acaoTO = (AcaoTO) object;
+    public AcaoTO update(Object id, Object body) throws SQLException {
+        AcaoTO acaoTO = (AcaoTO) body;
         Integer idAcao = (Integer) id;
         String sql = "update acao set USUARIO_ID_USUARIO=?, DS_ACAO=?, QT_PONTOSGERADOS=?, DT_ACAO=? where ID_ACAO=?";
         try (PreparedStatement ps = ConnectionFactory.abrirConexao().prepareStatement(sql)) {

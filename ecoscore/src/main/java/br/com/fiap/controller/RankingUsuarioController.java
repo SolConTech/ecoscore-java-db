@@ -1,6 +1,5 @@
 package br.com.fiap.controller;
 
-import br.com.fiap.dao.ConnectionFactory;
 import br.com.fiap.dao.RankingUsuarioDAO;
 import br.com.fiap.to.RankingUsuarioTO;
 

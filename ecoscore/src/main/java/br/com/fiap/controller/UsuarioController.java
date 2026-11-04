@@ -1,10 +1,8 @@
 package br.com.fiap.controller;
 
-import br.com.fiap.dao.ConnectionFactory;
 import br.com.fiap.dao.UsuarioDAO;
 import br.com.fiap.to.UsuarioTO;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
