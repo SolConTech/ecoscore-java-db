@@ -166,7 +166,7 @@ A URL base em produção é: `http://ecoscore-java-db.onrender.com`
 A conexão com o banco de dados Oracle é configurada via variáveis de ambiente. Você pode defini-las no sistema operacional ou criar um arquivo `.env` dentro da pasta `ecoscore/`:
 
 ```env
-DB_URL=jdbc:oracle:thin:@oracle.fiap.com.br:1521:ORCL
+DB_URL=jdbc:oracle:thin:@oracle.com.br:1521:ORCL
 DB_USER=seu_usuario_oracle
 DB_PASSWORD=sua_senha_oracle
 ```
